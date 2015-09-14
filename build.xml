@@ -22,6 +22,11 @@
 			<fileset dir="jars/" includes="*.jar" />
 		</copy>
 		
+		<!-- copy dll files -->
+		<copy todir="${dir.build}/">
+			<fileset dir="jars/" includes="*.dll" />
+		</copy>
+		
 		<!-- copy launch files -->
 		<copy file="time-tracker.jar" tofile="${dir.build}/time-tracker.jar" />
 		<copy file="time-tracker.exe" tofile="${dir.build}/Time Tracker.exe" />
@@ -42,7 +47,7 @@
             </classpath>
         </javac>
         
-        <jar jarfile="launcher.jar" basedir="bin/">
+        <jar jarfile="time-tracker.jar" basedir="bin/">
             <manifest>
                 <attribute name="Main-Class" value="com.ecec.rweber.time.tracker.gui.TrayService" />
                 <attribute name="Class-Path" value="${jar.manifest}" />
