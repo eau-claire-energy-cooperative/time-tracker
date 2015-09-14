@@ -1,0 +1,225 @@
+package com.ecec.rweber.time.tracker.gui;
+import java.awt.AWTException;
+import java.awt.Dialog;
+import java.awt.Dialog.ModalityType;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+import java.awt.TrayIcon.MessageType;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.UIManager;
+
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.DailyRollingFileAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.SimpleLayout;
+
+import com.ecec.rweber.time.tracker.ActivityManager;
+import com.ecec.rweber.time.tracker.Timer;
+import com.ecec.rweber.time.tracker.util.Notifier;
+import com.melloware.jintellitype.HotkeyListener;
+import com.melloware.jintellitype.JIntellitype;
+
+public class TrayService implements HotkeyListener {
+	private final String PROGRAM_NAME = "Time Tracker";
+	private Logger m_log = null;
+	private ActivityManager m_actManage = null;
+	private Timer m_timer = null;
+	
+	//for the gui
+	private TrayIcon m_trayIcon = null;
+	
+	public TrayService(){
+		setupLogger();
+		
+		//add the global hotkey
+		JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_WIN, (int)'Q');
+		JIntellitype.getInstance().addHotKeyListener(this);
+		
+		m_timer = new Timer();
+		m_actManage = new ActivityManager();
+	}
+	
+	private void setupLogger(){
+		String directory = System.getProperty("user.dir");
+		
+		m_log = Logger.getLogger(this.getClass());
+		
+		Logger rootLog = Logger.getRootLogger();
+		rootLog.setLevel(Level.INFO);
+		
+		try{
+			//setup the console
+			rootLog.addAppender(new ConsoleAppender(new SimpleLayout(),ConsoleAppender.SYSTEM_OUT));
+			rootLog.addAppender(new DailyRollingFileAppender(new PatternLayout("%p %d{DATE} - %m %n"),directory + "/logs/tracker.log","yyyy-ww"));
+		}
+		catch(Exception e)
+		{
+			m_log.error("Cannot write to log file");
+			e.printStackTrace();
+		}
+	}
+	
+	private Image createImage(String path, String description) {
+	       File f = new File(path);
+	       
+	        if (path == null) {
+	            m_log.error("Resource not found: " + path);
+	            return null;
+	        } else {
+	            return (new ImageIcon(Toolkit.getDefaultToolkit().getImage(f.getAbsolutePath()), description)).getImage();
+	        }
+	    }
+	
+	private int activityPrompt(){
+		int result = -1;
+		
+		int height = 300;
+		int width = 500;
+		
+		//open a dialog box to select the activity you were doing
+		SelectActivityDialog selectBox = new SelectActivityDialog(m_actManage);
+		selectBox.setup();
+		
+		JDialog dialog = new JDialog(null,"Choose Activity",ModalityType.APPLICATION_MODAL);
+		dialog.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
+		dialog.setSize(width, height);
+		dialog.getContentPane().add(selectBox);
+		
+		//open in the middle of the screen
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		dialog.setLocation((int)(screenSize.getWidth()/2 - (width/2)), (int)(screenSize.getHeight()/2 - (height/2)));
+		
+		dialog.pack();
+		dialog.setVisible(true);
+		
+		result = selectBox.getSelected();
+		
+		return result;
+	}
+	
+	public void run(){
+		//Check the SystemTray support
+        if (!SystemTray.isSupported()) {
+            m_log.error("SystemTray is not supported");
+            return;
+        }
+        
+        final PopupMenu popup = new PopupMenu();
+        m_trayIcon = new TrayIcon(createImage("resources/timer-small.png", PROGRAM_NAME));
+        m_trayIcon.setToolTip(PROGRAM_NAME);
+        
+        final SystemTray tray = SystemTray.getSystemTray();
+        
+        //create the menu item
+        MenuItem reportItem = new MenuItem("Generate Report");
+        MenuItem activitiesItem = new MenuItem("Activities");
+        MenuItem exitItem = new MenuItem("Exit");
+        
+        //add the menu items to the popup menu
+        popup.add(reportItem);
+        popup.add(activitiesItem);
+        popup.add(exitItem);
+        
+        m_trayIcon.setPopupMenu(popup);
+        
+        try {
+            tray.add(m_trayIcon);
+        } catch (AWTException e) {
+            m_log.error("TrayIcon could not be added.");
+            return;
+        }
+        
+        //setup the listeners for events
+        
+        reportItem.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				LogViewer viewer = new LogViewer(m_actManage);
+				viewer.addNotifier(new Notifier(){
+
+					@Override
+					public void onMessage(String message, MessageType level) {
+						m_trayIcon.displayMessage(PROGRAM_NAME, message, level);
+					}
+					
+				});
+				viewer.run();
+			}
+        	
+        });
+        
+        activitiesItem.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				ActivityTable table = new ActivityTable(m_actManage);
+				table.run();
+			}
+        	
+        });
+        
+        exitItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	
+            	JIntellitype.getInstance().unregisterHotKey(1);
+                tray.remove(m_trayIcon);
+                System.exit(0);
+            }
+        });
+	}
+
+	@Override
+	public void onHotKey(int ident) {
+		if(ident == 1){
+			if(m_timer.getState() != Timer.RUNNING)
+			{
+				//start the timer
+				m_timer.start();
+				m_trayIcon.displayMessage(PROGRAM_NAME, "Timer started", MessageType.INFO);
+			}
+			else
+			{
+				//stop the timer
+				m_timer.stop();
+				
+				//ask the user for the activity
+				int activity = this.activityPrompt();
+				
+				m_actManage.doActivity(activity, m_timer);
+				
+				m_timer.reset();
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		
+		//set the look and feel
+		try{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch(Exception e)
+		{
+			System.exit(1);
+		}
+		
+		TrayService g = new TrayService();
+		g.run();
+	}
+
+}

@@ -1,0 +1,9 @@
+ERROR 11 Sep 2015 15:29:58,040 - activities: Connection is closed 
+ERROR 11 Sep 2015 15:31:04,135 - activities: Connection is closed 
+DEBUG 11 Sep 2015 15:32:04,277 - activities: Found 1 rows with 3 columns 
+DEBUG 11 Sep 2015 15:32:44,401 - activities: Found 1 rows with 3 columns 
+DEBUG 11 Sep 2015 15:35:57,438 - activities: Found 1 rows with 3 columns 
+DEBUG 11 Sep 2015 15:36:24,473 - activities: Found 3 rows with 3 columns 
+DEBUG 11 Sep 2015 15:36:38,939 - activities: Found 3 rows with 3 columns 
+DEBUG 11 Sep 2015 15:40:32,078 - activities: Found 3 rows with 3 columns 
+DEBUG 11 Sep 2015 15:40:35,764 - activities: Found 3 rows with 3 columns 
