@@ -1,6 +1,5 @@
 package com.ecec.rweber.time.tracker;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,8 +56,8 @@ public class ActivityManager {
 		m_database.executeUpdate("insert into activities (name,description) values (?,?)", a.getName(), a.getDescription());
 	}
 	
-	private void saveLog(Activity act, long startTime, long endTime){
-		m_database.executeUpdate("insert into log (activity,start,end) values (?,?,?)", act.getName(),startTime,endTime);
+	private void saveLog(String act, String description, long startTime, long endTime){
+		m_database.executeUpdate("insert into log (activity,start,end,description) values (?,?,?,?)",act,startTime,endTime,description);
 	}
 	
 	public List<Log> generateReport(long startDate, long endDate){
@@ -93,14 +92,16 @@ public class ActivityManager {
 		return result;
 	}
 	
-	public void  doActivity(int actIndex, Timer t){
-		Activity a = this.getActivities().get(actIndex);
-		
-		saveLog(a,t.getStartTime(),t.getStopTime());
+	public void  doActivity(Log l){
+		saveLog(l.getActivity(),l.getDescription(), l.getStartDate().getTime(), l.getEndDate().getTime());
 	}
 	
 	public List<Activity> getActivities(){
 		return this.loadActivities();
+	}
+	
+	public Activity getActivity(int index){
+		return this.getActivities().get(index);
 	}
 	
 	public void setActivities(Vector table){

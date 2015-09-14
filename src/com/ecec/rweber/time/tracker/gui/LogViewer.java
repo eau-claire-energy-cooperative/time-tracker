@@ -58,7 +58,7 @@ public class LogViewer extends GuiWindow {
 				//generate the report
 				List<Log> report = g_manage.generateReport(m_startDate.getTime(), m_endDate.getTime());
 				
-				DefaultTableModel tModel = new DefaultTableModel(new String[]{"Activity Name","Start Date","End Date","Total Minutes"},report.size());
+				DefaultTableModel tModel = new DefaultTableModel(new String[]{"Activity Name","Start Date","End Date","Total Minutes","Description"},report.size());
 				
 				//add the data to the table
 				Log aLog = null;
@@ -69,6 +69,7 @@ public class LogViewer extends GuiWindow {
 					tModel.setValueAt(aLog.getStartDate().toString(), count, 1);
 					tModel.setValueAt(aLog.getEndDate().toString(), count, 2);
 					tModel.setValueAt(aLog.getTotal() + "",count,3);
+					tModel.setValueAt(aLog.getShortDescription(),count,4);
 				}
 				
 				m_table.setModel(tModel);;

@@ -1,5 +1,6 @@
 package com.ecec.rweber.time.tracker.gui;
 import java.awt.AWTException;
+import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
@@ -28,6 +29,7 @@ import org.apache.log4j.PatternLayout;
 import org.apache.log4j.SimpleLayout;
 
 import com.ecec.rweber.time.tracker.ActivityManager;
+import com.ecec.rweber.time.tracker.Log;
 import com.ecec.rweber.time.tracker.Timer;
 import com.ecec.rweber.time.tracker.util.Notifier;
 import com.melloware.jintellitype.HotkeyListener;
@@ -84,8 +86,8 @@ public class TrayService implements HotkeyListener {
 	        }
 	    }
 	
-	private int activityPrompt(){
-		int result = -1;
+	private Log activityPrompt(){
+		Log result = null;
 		
 		int height = 300;
 		int width = 500;
@@ -97,7 +99,10 @@ public class TrayService implements HotkeyListener {
 		JDialog dialog = new JDialog(null,"Choose Activity",ModalityType.APPLICATION_MODAL);
 		dialog.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
 		dialog.setSize(width, height);
-		dialog.getContentPane().add(selectBox);
+		
+		Container contentPane = dialog.getContentPane();
+		contentPane.setSize(width,height);
+		contentPane.add(selectBox);
 		
 		//open in the middle of the screen
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -106,7 +111,10 @@ public class TrayService implements HotkeyListener {
 		dialog.pack();
 		dialog.setVisible(true);
 		
-		result = selectBox.getSelected();
+		if(selectBox.shouldSave())
+		{
+			result = new Log(m_actManage.getActivity(selectBox.getSelected()),m_timer,selectBox.getDescription());
+		}
 		
 		return result;
 	}
@@ -198,9 +206,12 @@ public class TrayService implements HotkeyListener {
 				m_timer.stop();
 				
 				//ask the user for the activity
-				int activity = this.activityPrompt();
+				Log activity = this.activityPrompt();
 				
-				m_actManage.doActivity(activity, m_timer);
+				if(activity != null)
+				{
+					m_actManage.doActivity(activity);
+				}
 				
 				m_timer.reset();
 			}
