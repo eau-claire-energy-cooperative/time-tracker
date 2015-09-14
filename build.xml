@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Time Tracker" default="package" basedir=".">
+    <property name="jar.manifest" value="jars/jintellitype-1.3.9.jar jars/log4j-1.2.16.jar jars/sqlitejdbc.jar"/>
+	<property name="dir.jars" value="jars" />
+    <property name="dir.build" value="build" />
+	
+	<target name="package" description="Deploy into a build environment" depends="build">
+		<!-- remove old build files -->
+		<delete file="TimeTracker.zip" quiet="true" />
+		
+		<mkdir dir="${dir.build}" />
+		<mkdir dir="${dir.build}/resources" />
+		<mkdir dir="${dir.build}/jars" />
+		
+		<!-- copy data contents -->
+		<copy todir="${dir.build}/resources">
+			<fileset dir="resources/" includes="*" />
+		</copy>
+		
+		<!-- copy jars -->
+		<copy todir="${dir.build}/jars">
+			<fileset dir="jars/" includes="*.jar" />
+		</copy>
+		
+		<!-- copy launch files -->
+		<copy file="time-tracker.jar" tofile="${dir.build}/time-tracker.jar" />
+		<copy file="time-tracker.exe" tofile="${dir.build}/Time Tracker.exe" />
+		
+		<!-- zip the whole thing -->
+		<zip destfile="TimeTracker.zip" basedir="${dir.build}" />
+		
+		<delete dir="${dir.build}/" quiet="true" />
+	</target>
+	
+    <target name="build" description="Build Runtime Jar File" depends="create_dir">
+        
+        <javac verbose="false" srcdir="src/" destdir="bin/" fork="yes" includeantruntime="false">
+            <classpath>
+                <fileset dir="${dir.jars}">
+            		<include name="*.jar" />
+            	</fileset>
+            </classpath>
+        </javac>
+        
+        <jar jarfile="launcher.jar" basedir="bin/">
+            <manifest>
+                <attribute name="Main-Class" value="com.ecec.rweber.time.tracker.gui.TrayService" />
+                <attribute name="Class-Path" value="${jar.manifest}" />
+            </manifest>
+        </jar>
+        
+    </target>
+    
+    <target name="create_dir" depends="bin_exists" if="binExists">
+    	<mkdir dir="bin/" />
+    </target>
+    
+    <target name="bin_exists">
+        <condition property="binExists">
+            <not>
+            	<available file="bin/" type="dir" />
+            </not>
+        </condition>
+    </target>
+</project>
