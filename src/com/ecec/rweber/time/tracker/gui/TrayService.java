@@ -211,6 +211,8 @@ public class TrayService implements HotkeyListener {
 				if(activity != null)
 				{
 					m_actManage.doActivity(activity);
+					
+					m_trayIcon.displayMessage(PROGRAM_NAME, activity.getActivity() +  " Saved", MessageType.INFO);
 				}
 				
 				m_timer.reset();
