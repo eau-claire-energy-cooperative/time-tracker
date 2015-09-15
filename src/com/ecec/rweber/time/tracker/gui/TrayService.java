@@ -13,10 +13,13 @@ import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.apache.log4j.ConsoleAppender;
@@ -41,6 +44,7 @@ public class TrayService implements HotkeyListener {
 	
 	//for the gui
 	private TrayIcon m_trayIcon = null;
+	private MenuItem m_isRunning = null;
 	
 	public TrayService(){
 		setupLogger();
@@ -131,6 +135,8 @@ public class TrayService implements HotkeyListener {
         final SystemTray tray = SystemTray.getSystemTray();
         
         //create the menu items
+        m_isRunning = new MenuItem("Not Running");
+        
         Menu reportMenu = new Menu("Reports");
         MenuItem normalReport = new MenuItem("All Logs Report");
         MenuItem groupReport = new MenuItem("Grouped Logs Report");
@@ -141,12 +147,57 @@ public class TrayService implements HotkeyListener {
         MenuItem exitItem = new MenuItem("Exit");
         
         //add the menu items to the popup menu
+        popup.add(m_isRunning);
+        popup.addSeparator();
         popup.add(reportMenu);
         popup.add(activitiesItem);
         popup.add(exitItem);
         
+        //add menu to tray
         m_trayIcon.setPopupMenu(popup);
-        
+        m_trayIcon.addMouseListener(new MouseListener(){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+				//check if this is a right click event
+				if(SwingUtilities.isRightMouseButton(e))
+				{
+					if(m_timer.getState() == Timer.RUNNING)
+					{
+						m_isRunning.setLabel("Running: " + m_timer.getElapsedMinutes() + " minutes");
+					}
+					else
+					{
+						m_isRunning.setLabel("Not Running");
+					}
+				}
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+        	
+        });
         try {
             tray.add(m_trayIcon);
         } catch (AWTException e) {
@@ -154,8 +205,7 @@ public class TrayService implements HotkeyListener {
             return;
         }
         
-        //setup the listeners for events
-        
+        //setup the listeners for events 
         normalReport.addActionListener(new ActionListener(){
 
 			@Override
