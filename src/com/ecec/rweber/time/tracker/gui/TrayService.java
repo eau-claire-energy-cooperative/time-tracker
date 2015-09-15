@@ -92,7 +92,7 @@ public class TrayService implements HotkeyListener {
 		
 		//open a dialog box to select the activity you were doing
 		SelectActivityDialog selectBox = new SelectActivityDialog(m_actManage);
-		selectBox.setup();
+		selectBox.setup(m_timer.getElapsedMinutes());
 		
 		JDialog dialog = new JDialog(null,"Choose Activity",ModalityType.APPLICATION_MODAL);
 		dialog.setIconImage(new ImageIcon("resources/timer-small.png").getImage());

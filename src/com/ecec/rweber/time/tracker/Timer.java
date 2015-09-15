@@ -75,6 +75,23 @@ public class Timer {
 		return current_state;
 	}
 	
+	public int getElapsedMinutes(){
+		int result = 0;
+		
+		if(current_state == IDLE){
+			result = 0;
+		}
+		else if(current_state == RUNNING)
+		{
+			result = (int)((System.currentTimeMillis() - startTime)/1000)/60;
+		}
+		else 
+		{
+			result = (int)((stopTime - startTime)/1000)/60;
+		}
+		return result;
+	}
+	
 	public String toString(){
 		String result = "";
 		
