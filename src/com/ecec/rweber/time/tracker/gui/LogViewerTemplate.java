@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,22 +26,21 @@ import javax.swing.table.DefaultTableModel;
 
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.Log;
+import com.ecec.rweber.time.tracker.util.CSVWriter;
 
-public class LogViewer extends GuiWindow {
-	private static final long serialVersionUID = 1L;
-	
+public abstract class LogViewerTemplate extends GuiWindow {
 	private Date m_startDate = null;
 	private Date m_endDate = null;
 	
 	//for the gui
 	private JLabel l_startDate = null;
 	private JLabel l_endDate = null;
-	private JTable m_table = null;
+	protected JTable m_table = null;
 	
-	public LogViewer(ActivityManager manager){
-		super("Log Viewer",manager);
+	public LogViewerTemplate(String windowName, ActivityManager manage) {
+		super(windowName, manage);
 	}
-	
+
 	private void generateReport(){
 		if(m_startDate != null && m_endDate != null)
 		{
@@ -55,24 +53,7 @@ public class LogViewer extends GuiWindow {
 				l_startDate.setText("Start: " + formatter.format(m_startDate));
 				l_endDate.setText("End: " + formatter.format(m_endDate));
 				
-				//generate the report
-				List<Log> report = g_manage.generateReport(m_startDate.getTime(), m_endDate.getTime());
-				
-				DefaultTableModel tModel = new DefaultTableModel(new String[]{"Activity Name","Start Date","End Date","Total Minutes","Description"},report.size());
-				
-				//add the data to the table
-				Log aLog = null;
-				for(int count = 0; count < report.size(); count ++)
-				{
-					aLog = report.get(count);
-					tModel.setValueAt(aLog.getActivity(), count, 0);
-					tModel.setValueAt(aLog.getStartDate().toString(), count, 1);
-					tModel.setValueAt(aLog.getEndDate().toString(), count, 2);
-					tModel.setValueAt(aLog.getTotal() + "",count,3);
-					tModel.setValueAt(aLog.getShortDescription(),count,4);
-				}
-				
-				m_table.setModel(tModel);;
+				m_table.setModel(this.createTableModel(m_startDate, m_endDate));;
 			}
 		}
 	}
@@ -92,7 +73,7 @@ public class LogViewer extends GuiWindow {
 				file = file + ".csv";
 			}
 			
-			if(!g_manage.saveReport(file, m_startDate.getTime(), m_endDate.getTime()))
+			if(!saveReport(file))
 			{
 				this.sendNotification("Error writing " + file, MessageType.ERROR);
 			}
@@ -110,6 +91,26 @@ public class LogViewer extends GuiWindow {
 	
 		return sChooser.select();
 	}
+	
+	private boolean saveReport(String filename){
+		boolean result = true;
+	
+		//create the CSVWriter
+		CSVWriter writer;
+		try {
+			writer = new CSVWriter(filename);
+			
+			//generate the table data
+			writer.writeData((DefaultTableModel)m_table.getModel());
+			
+		} catch (Exception e) {
+			result = false;
+		}
+		
+		return result;
+	}
+	
+	protected abstract DefaultTableModel createTableModel(Date startDate, Date endDate);
 	
 	@Override
 	protected void setupInformation() {
@@ -204,4 +205,5 @@ public class LogViewer extends GuiWindow {
 		//generate the report
 		generateReport();
 	}
+
 }

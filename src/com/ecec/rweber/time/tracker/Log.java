@@ -3,10 +3,8 @@ package com.ecec.rweber.time.tracker;
 import java.util.Date;
 import java.util.Map;
 
-import com.ecec.rweber.time.tracker.util.CSVWriteable;
-import com.ecec.rweber.time.tracker.util.CSVWriter;
 
-public class Log implements CSVWriteable{
+public class Log {
 	private long m_start = 0;
 	private long m_end = 0;
 	private String m_activity = null;
@@ -63,10 +61,5 @@ public class Log implements CSVWriteable{
 		}
 			
 		return result;
-	}
-	
-	@Override
-	public String formatCSV() {
-		return CSVWriter.makeCSV(new String[]{this.m_activity,this.getStartDate().toString(),this.getEndDate().toString(), this.getTotal() + "",this.getDescription()});
 	}
 }

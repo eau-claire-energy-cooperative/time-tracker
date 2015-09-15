@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Menu;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
@@ -13,6 +14,7 @@ import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.UIManager;
@@ -128,13 +130,18 @@ public class TrayService implements HotkeyListener {
         
         final SystemTray tray = SystemTray.getSystemTray();
         
-        //create the menu item
-        MenuItem reportItem = new MenuItem("Generate Report");
+        //create the menu items
+        Menu reportMenu = new Menu("Reports");
+        MenuItem normalReport = new MenuItem("All Logs Report");
+        MenuItem groupReport = new MenuItem("Grouped Logs Report");
+        reportMenu.add(normalReport);
+        reportMenu.add(groupReport);
+        
         MenuItem activitiesItem = new MenuItem("Activities");
         MenuItem exitItem = new MenuItem("Exit");
         
         //add the menu items to the popup menu
-        popup.add(reportItem);
+        popup.add(reportMenu);
         popup.add(activitiesItem);
         popup.add(exitItem);
         
@@ -149,11 +156,11 @@ public class TrayService implements HotkeyListener {
         
         //setup the listeners for events
         
-        reportItem.addActionListener(new ActionListener(){
+        normalReport.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				LogViewer viewer = new LogViewer(m_actManage);
+				AllLogViewer viewer = new AllLogViewer(m_actManage);
 				viewer.addNotifier(new Notifier(){
 
 					@Override

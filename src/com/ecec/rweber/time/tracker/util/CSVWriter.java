@@ -1,11 +1,11 @@
 package com.ecec.rweber.time.tracker.util;
 
 import java.io.BufferedWriter;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 
 public class CSVWriter {
 	private BufferedWriter writer = null;
@@ -14,12 +14,12 @@ public class CSVWriter {
 		writer = new BufferedWriter(new FileWriter(file));
 	}
 	
-	public static String makeCSV(String[] data){
+	private String makeCSV(Vector data){
 		String result = "";
 		
-		for(int count = 0; count < data.length; count ++)
+		for(int count = 0; count < data.size(); count ++)
 		{
-			result = result + "\"" + data[count] + "\",";
+			result = result + "\"" + data.get(count) + "\",";
 		}
 		
 		result = result.substring(0,result.length() - 1);
@@ -27,15 +27,15 @@ public class CSVWriter {
 		return result;
 	}
 	
-	public void writeData(String[] columns, List<? extends CSVWriteable> data) throws IOException{
+	public void writeData(DefaultTableModel model) throws IOException{
 		
 		//go through the column headers
 		String cacheString = "";
 		
 		//first go through and record the column names
-		for(int count = 0; count < columns.length; count ++)
+		for(int count = 0; count < model.getColumnCount(); count ++)
 		{
-			cacheString = cacheString + "\"" + columns[count] + "\",";
+			cacheString = cacheString + "\"" + model.getColumnName(count) + "\",";
 		}
 		
 		cacheString = cacheString.substring(0,cacheString.length() - 1);
@@ -44,10 +44,11 @@ public class CSVWriter {
 		writer.newLine();
 		
 		//go through each line of data
-		Iterator<? extends CSVWriteable> iter = data.iterator();
+		Iterator iter = model.getDataVector().iterator();
+		
 		while(iter.hasNext())
 		{
-			cacheString = iter.next().formatCSV();
+			cacheString = this.makeCSV((Vector)iter.next());
 			
 			//write out the cacheString
 			writer.write(cacheString);

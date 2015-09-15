@@ -82,25 +82,6 @@ public class ActivityManager {
 		return result;
 	}
 	
-	public boolean saveReport(String filename, long startDate, long endDate){
-		boolean result = true;
-		
-		//generate the report like normal
-		List<Log> report = this.generateReport(startDate, endDate);
-		
-		//create the CSVWriter
-		CSVWriter writer;
-		try {
-			writer = new CSVWriter(filename);
-			writer.writeData(new String[]{"Activity","Start Date", "End Date","Total Minutes","Description"}, report);
-			
-		} catch (Exception e) {
-			result = false;
-		}
-		
-		return result;
-	}
-	
 	public void  doActivity(Log l){
 		saveLog(l.getActivity(),l.getDescription(), l.getStartDate().getTime(), l.getEndDate().getTime());
 	}
