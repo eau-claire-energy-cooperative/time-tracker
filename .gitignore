@@ -5,3 +5,4 @@ stdout.txt
 TimeTracker-*.zip
 time-tracker.*
 resources/activities.db
+logs/*.log
