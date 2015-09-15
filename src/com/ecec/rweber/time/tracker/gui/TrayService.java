@@ -1,7 +1,6 @@
 package com.ecec.rweber.time.tracker.gui;
 import java.awt.AWTException;
 import java.awt.Container;
-import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -14,9 +13,6 @@ import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.UIManager;

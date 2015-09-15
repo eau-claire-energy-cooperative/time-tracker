@@ -65,7 +65,9 @@ import javax.swing.border.Border;
  **/
 public class DateChooser extends JDialog 
     implements ItemListener, MouseListener, FocusListener, KeyListener, ActionListener{
-    /** Names of the months. */
+	private static final long serialVersionUID = 1L;
+
+	/** Names of the months. */
     private static final String[] MONTHS = 
 	  new String[] {
 	      "January",
