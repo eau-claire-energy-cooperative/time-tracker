@@ -53,7 +53,7 @@ public class Log {
 	public String getActivity(){
 		return m_activity;
 	}
-
+	
 	public String getDescription(){
 		return m_description;
 	}
@@ -67,5 +67,9 @@ public class Log {
 		}
 			
 		return result;
+	}
+	
+	public void setDescription(String d){
+		m_description = d;
 	}
 }
