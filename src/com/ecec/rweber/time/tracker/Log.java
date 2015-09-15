@@ -34,6 +34,10 @@ public class Log {
 		m_description = description;
 	}
 	
+	protected int getId(){
+		return m_id;
+	}
+	
 	public Date getStartDate(){
 		return new Date(m_start);
 	}

@@ -65,8 +65,12 @@ public class ActivityManager {
 		m_database.executeUpdate("insert into activities (name,description) values (?,?)", a.getName(), a.getDescription());
 	}
 	
-	private void saveLog(String act, String description, long startTime, long endTime){
-		m_database.executeUpdate("insert into log (activity,start,end,description) values (?,?,?,?)",act,startTime,endTime,description);
+	private void saveLog(Log l){
+		m_database.executeUpdate("insert into log (activity,start,end,description) values (?,?,?,?)",l.getActivity(),l.getStartDate().getTime(),l.getEndDate().getTime(),l.getDescription());
+	}
+	
+	private void updateLog(Log l){
+		m_database.executeUpdate("update log set activity = ?, start = ?, end = ?, description = ? where id = ?", l.getActivity(),l.getStartDate().getTime(),l.getEndDate().getTime(),l.getDescription(),l.getId());
 	}
 	
 	public List<Log> generateReport(long startDate, long endDate){
@@ -96,7 +100,15 @@ public class ActivityManager {
 	}
 	
 	public void  doActivity(Log l){
-		saveLog(l.getActivity(),l.getDescription(), l.getStartDate().getTime(), l.getEndDate().getTime());
+		
+		if(l.getId() != -1)
+		{
+			updateLog(l);
+		}
+		else
+		{
+			saveLog(l);
+		}
 	}
 	
 	public List<Activity> getActivities(){
