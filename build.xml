@@ -17,7 +17,7 @@
 		
 		<!-- copy data contents -->
 		<copy todir="${dir.build}/resources">
-			<fileset dir="resources/" includes="*" />
+			<fileset dir="resources/" includes="*.png *.ico activities_default.db" />
 		</copy>
 		
 		<!-- copy jars -->
