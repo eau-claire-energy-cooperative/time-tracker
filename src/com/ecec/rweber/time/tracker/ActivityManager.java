@@ -48,7 +48,7 @@ public class ActivityManager {
 	private List<Activity> loadActivities(){
 		List<Activity> result = new ArrayList<Activity>();
 		
-		Iterator<Map<String,String>> sqlQuery = m_database.executeQuery("select * from activities").iterator();
+		Iterator<Map<String,String>> sqlQuery = m_database.executeQuery("select * from activities order by name asc").iterator();
 		Map<String,String> aRow = null;
 		
 		while(sqlQuery.hasNext())
@@ -57,8 +57,6 @@ public class ActivityManager {
 			
 			result.add(new Activity(aRow));
 		}
-		
-		Collections.sort(result);
 		
 		return result;
 	}
@@ -74,7 +72,7 @@ public class ActivityManager {
 	public List<Log> generateReport(long startDate, long endDate){
 		List<Log> result = new ArrayList<Log>();
 		
-		Iterator<Map<String,String>> sqlQuery = m_database.executeQuery("select * from log where start > ? and start < ?", startDate, endDate).iterator();
+		Iterator<Map<String,String>> sqlQuery = m_database.executeQuery("select * from log where start > ? and start < ? order by start asc", startDate, endDate).iterator();
 		
 		while(sqlQuery.hasNext())
 		{
