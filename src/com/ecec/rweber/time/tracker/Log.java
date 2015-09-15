@@ -5,12 +5,14 @@ import java.util.Map;
 
 
 public class Log {
+	private int m_id = -1;
 	private long m_start = 0;
 	private long m_end = 0;
 	private String m_activity = null;
 	private String m_description = null;
 	
 	public Log(Map<String,String> map){
+		m_id = Integer.parseInt(map.get("id"));
 		m_start = Long.parseLong(map.get("start"));
 		m_end = Long.parseLong(map.get("end"));
 		m_activity = map.get("activity");

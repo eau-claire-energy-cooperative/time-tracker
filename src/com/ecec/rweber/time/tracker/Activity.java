@@ -3,7 +3,7 @@ package com.ecec.rweber.time.tracker;
 import java.util.Map;
 
 public class Activity implements Comparable<Activity>{
-	private int m_id = 0;
+	private int m_id = -1;
 	private String m_name = null;
 	private String m_description = null;
 	
