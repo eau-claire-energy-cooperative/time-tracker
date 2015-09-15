@@ -1,5 +1,6 @@
 package com.ecec.rweber.time.tracker;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,6 +22,16 @@ public class ActivityManager {
 	}
 	
 	private SQLDatasource loadDatabase(){
+		
+		//first check if the database exists
+		File dbFile = new File("resources/activities.db");
+		
+		if(!dbFile.exists())
+		{
+			File defaultFile = new File("resources/activities_default.db");
+			defaultFile.renameTo(dbFile);
+		}
+		
 		SQLDatasource result = null;
 		
 		Map<String,String> props = new HashMap<String,String>();
