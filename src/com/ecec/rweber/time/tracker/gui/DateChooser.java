@@ -515,6 +515,9 @@ public class DateChooser extends JDialog
 		  calendar.set( Calendar.DATE, getSelectedDay() );
 		  calendar.set( Calendar.MONTH, month.getSelectedIndex()+Calendar.JANUARY );
 		  calendar.set( Calendar.YEAR, year.getSelectedIndex()+FIRST_YEAR );
+		  calendar.set(Calendar.HOUR_OF_DAY, 0);
+		  calendar.set(Calendar.MINUTE, 0);
+		  
 		  return calendar.getTime();
     }
 
