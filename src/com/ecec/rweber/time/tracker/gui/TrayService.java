@@ -174,6 +174,24 @@ public class TrayService implements HotkeyListener {
         	
         });
         
+        groupReport.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				GroupLogViewer viewer = new GroupLogViewer(m_actManage);
+				viewer.addNotifier(new Notifier(){
+
+					@Override
+					public void onMessage(String message, MessageType level) {
+						m_trayIcon.displayMessage(PROGRAM_NAME, message, level);
+					}
+					
+				});
+				viewer.run();
+			}
+        	
+        });
+        
         activitiesItem.addActionListener(new ActionListener(){
 
 			@Override

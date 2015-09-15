@@ -82,6 +82,19 @@ public class ActivityManager {
 		return result;
 	}
 	
+	public List<LogGroup> generateGroupReport(long startDate, long endDate){
+		List<LogGroup> result = new ArrayList<LogGroup>();
+		
+		Iterator<Map<String,String>> sqlQuery = m_database.executeQuery("select sum((log.end - log.start)/1000/60) as minutes, activity from log where start > ? and start < ? group by activity order by activity asc", startDate, endDate).iterator();
+		
+		while(sqlQuery.hasNext())
+		{
+			result.add(new LogGroup(sqlQuery.next()));
+		}
+		
+		return result;
+	}
+	
 	public void  doActivity(Log l){
 		saveLog(l.getActivity(),l.getDescription(), l.getStartDate().getTime(), l.getEndDate().getTime());
 	}
