@@ -85,11 +85,11 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		
 	}
 	
-	private Date chooseDate(String title){
+	private Date chooseDate(String title,Date startDate){
 		DateChooser sChooser = new DateChooser(this,title);
 		sChooser.setLocation(this.getX(), this.getY());
 	
-		return sChooser.select();
+		return sChooser.select(startDate);
 	}
 	
 	private boolean saveReport(String filename){
@@ -148,7 +148,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				m_startDate = chooseDate("Choose Start Date");
+				m_startDate = chooseDate("Choose Start Date",m_startDate);
 				
 				generateReport();
 			}
@@ -167,7 +167,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				m_endDate = chooseDate("Choose End Date");
+				m_endDate = chooseDate("Choose End Date",m_endDate);
 				
 				generateReport();
 			}
