@@ -167,7 +167,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				m_startDate = chooseDate("Choose End Date");
+				m_endDate = chooseDate("Choose End Date");
 				
 				generateReport();
 			}
