@@ -121,6 +121,32 @@ public class TrayService implements HotkeyListener {
 		return result;
 	}
 	
+	private void toggleTimer(){
+		if(m_timer.getState() != Timer.RUNNING)
+		{
+			//start the timer
+			m_timer.start();
+			m_trayIcon.displayMessage(PROGRAM_NAME, "Timer started", MessageType.INFO);
+		}
+		else
+		{
+			//stop the timer
+			m_timer.stop();
+			
+			//ask the user for the activity
+			Log activity = this.activityPrompt();
+			
+			if(activity != null)
+			{
+				m_actManage.doActivity(activity);
+				
+				m_trayIcon.displayMessage(PROGRAM_NAME, activity.getActivity() +  " Saved", MessageType.INFO);
+			}
+			
+			m_timer.reset();
+		}
+	}
+	
 	public void run(){
 		//Check the SystemTray support
         if (!SystemTray.isSupported()) {
@@ -206,6 +232,16 @@ public class TrayService implements HotkeyListener {
         }
         
         //setup the listeners for events 
+        m_isRunning.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//manual way to start/stop timer
+				toggleTimer();
+			}
+        	
+        });
+        
         normalReport.addActionListener(new ActionListener(){
 
 			@Override
@@ -265,29 +301,7 @@ public class TrayService implements HotkeyListener {
 	@Override
 	public void onHotKey(int ident) {
 		if(ident == 1){
-			if(m_timer.getState() != Timer.RUNNING)
-			{
-				//start the timer
-				m_timer.start();
-				m_trayIcon.displayMessage(PROGRAM_NAME, "Timer started", MessageType.INFO);
-			}
-			else
-			{
-				//stop the timer
-				m_timer.stop();
-				
-				//ask the user for the activity
-				Log activity = this.activityPrompt();
-				
-				if(activity != null)
-				{
-					m_actManage.doActivity(activity);
-					
-					m_trayIcon.displayMessage(PROGRAM_NAME, activity.getActivity() +  " Saved", MessageType.INFO);
-				}
-				
-				m_timer.reset();
-			}
+			toggleTimer();
 		}
 	}
 	
