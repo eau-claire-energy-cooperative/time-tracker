@@ -117,10 +117,10 @@ public class DateChooser extends JDialog
     private static final Border FOCUSED_BORDER = BorderFactory.createLineBorder(Color.yellow,1);
 
     /** First year that can be selected. */
-    private static final int FIRST_YEAR = 1900;
+    private static final int FIRST_YEAR = 2014;
 
     /** Last year that can be selected. */
-    private static final int LAST_YEAR = 2100;
+    private static int LAST_YEAR = 2050;
 
     /** Auxiliary variable to compute dates. */
     private GregorianCalendar calendar;
@@ -208,6 +208,10 @@ public class DateChooser extends JDialog
 	  month = new JComboBox(MONTHS);
 	  month.addItemListener( this );
 	
+	  //figure out the first and last years
+	  Calendar c = new GregorianCalendar();
+	  LAST_YEAR = c.get(Calendar.YEAR);
+	 
 	  year = new JComboBox();
 	  for ( int i=FIRST_YEAR; i<=LAST_YEAR; i++ )
 	      year.addItem( Integer.toString(i) );
