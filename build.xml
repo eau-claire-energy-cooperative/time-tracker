@@ -14,6 +14,7 @@
 		<mkdir dir="${dir.build}" />
 		<mkdir dir="${dir.build}/resources" />
 		<mkdir dir="${dir.build}/jars" />
+		<mkdir dir="${dir.build}/logs" />
 		
 		<!-- copy data contents -->
 		<copy todir="${dir.build}/resources">
