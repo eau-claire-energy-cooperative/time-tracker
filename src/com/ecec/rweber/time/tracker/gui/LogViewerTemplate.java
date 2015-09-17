@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -56,6 +57,10 @@ public abstract class LogViewerTemplate extends GuiWindow {
 				l_endDate.setText("End: " + formatter.format(m_endDate));
 				
 				m_table.setModel(this.createTableModel(m_startDate, m_endDate));;
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(this, "The start date must be before the end date");
 			}
 		}
 	}
