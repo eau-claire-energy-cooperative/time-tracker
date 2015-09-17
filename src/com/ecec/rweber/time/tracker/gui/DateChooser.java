@@ -101,13 +101,13 @@ public class DateChooser extends JDialog
     private static final Color WEEK_DAYS_FOREGROUND = Color.black;
 
     /** Text color of the days' numbers in the calendar. */
-    private static final Color DAYS_FOREGROUND = Color.blue;
+    private static final Color DAYS_FOREGROUND = Color.black;
 
     /** Background color of the selected day in the calendar. */
     private static final Color SELECTED_DAY_FOREGROUND = Color.white;
 
     /** Text color of the selected day in the calendar. */
-    private static final Color SELECTED_DAY_BACKGROUND = Color.blue;
+    private static final Color SELECTED_DAY_BACKGROUND = new Color(237,126,14);
 
     /** Empty border, used when the calendar does not have the focus. */
     private static final Border EMPTY_BORDER = BorderFactory.createEmptyBorder(1,1,1,1);
