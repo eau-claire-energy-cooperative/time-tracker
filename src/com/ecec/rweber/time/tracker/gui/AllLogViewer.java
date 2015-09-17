@@ -8,6 +8,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.Log;
+import com.ecec.rweber.time.tracker.TimeFormatter;
 
 public class AllLogViewer extends LogViewerTemplate {
 	private static final long serialVersionUID = 1L;
@@ -34,7 +35,7 @@ public class AllLogViewer extends LogViewerTemplate {
 			m_model.setValueAt(aLog.getActivity(), count, 0);
 			m_model.setValueAt(aLog.getStartDate().toString(), count, 1);
 			m_model.setValueAt(aLog.getEndDate().toString(), count, 2);
-			m_model.setValueAt(aLog.getTotal() + "",count,3);
+			m_model.setValueAt(aLog.getTotal(TimeFormatter.MINUTES) + "",count,3);
 			m_model.setValueAt(aLog.getDescription(),count,4);
 		}
 		

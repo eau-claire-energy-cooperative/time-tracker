@@ -3,16 +3,16 @@ package com.ecec.rweber.time.tracker;
 import java.util.Map;
 
 public class LogGroup {
-	private long m_minutes = 0;
+	private long m_milliseconds = 0;
 	private String m_activity = null;
 	
 	public LogGroup(Map<String,String> map){
 		m_activity = map.get("activity");
-		m_minutes = Long.parseLong(map.get("minutes"));
+		m_milliseconds = Long.parseLong(map.get("milliseconds"));
 	}
 	
-	public long getTotal(){
-		return m_minutes;
+	public double getTotal(int format){
+		return TimeFormatter.format(m_milliseconds, TimeFormatter.MILLISECONDS, format);
 	}
 	
 	public String getActivity(){

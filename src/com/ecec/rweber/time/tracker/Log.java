@@ -46,8 +46,8 @@ public class Log {
 		return new Date(m_end);
 	}
 
-	public long getTotal(){
-		return (m_end - m_start)/1000/60;
+	public double getTotal(int format){
+		return TimeFormatter.format(m_start, m_end, format);
 	}
 	
 	public String getActivity(){

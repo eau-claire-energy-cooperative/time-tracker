@@ -2,9 +2,12 @@ package com.ecec.rweber.time.tracker.gui;
 
 import java.util.Date;
 import java.util.List;
+
 import javax.swing.table.DefaultTableModel;
+
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.LogGroup;
+import com.ecec.rweber.time.tracker.TimeFormatter;
 
 public class GroupLogViewer extends LogViewerTemplate{
 	private static final long serialVersionUID = -4190305067721655539L;
@@ -27,7 +30,7 @@ public class GroupLogViewer extends LogViewerTemplate{
 		{
 			aLog = report.get(count);
 			tModel.setValueAt(aLog.getActivity(), count, 0);
-			tModel.setValueAt(aLog.getTotal() + "",count,1);
+			tModel.setValueAt(aLog.getTotal(TimeFormatter.MINUTES) + "",count,1);
 		}
 		
 		return tModel;
