@@ -1,10 +1,8 @@
 package com.ecec.rweber.time.tracker.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,8 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -26,9 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-
 import com.ecec.rweber.time.tracker.ActivityManager;
-import com.ecec.rweber.time.tracker.Log;
 import com.ecec.rweber.time.tracker.util.CSVWriter;
 
 public abstract class LogViewerTemplate extends GuiWindow {
