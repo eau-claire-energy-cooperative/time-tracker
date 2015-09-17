@@ -1,8 +1,10 @@
 package com.ecec.rweber.time.tracker.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -132,7 +134,6 @@ public abstract class LogViewerTemplate extends GuiWindow {
 	protected void viewModal(Container layoutPane) {
 		
 		layoutPane.setLayout(new BoxLayout(layoutPane,BoxLayout.Y_AXIS));
-		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,20)));
 		
 		JComponent wrapper1= new JPanel();
 		wrapper1.setSize(new Dimension(WIDTH,100));
@@ -174,6 +175,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 			
 		});
 		wrapper1.add(b_endDate);
+		wrapper1.setAlignmentX(Container.CENTER_ALIGNMENT);
 		
 		layoutPane.add(wrapper1);
 		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,10)));
@@ -183,9 +185,10 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		
 		JScrollPane scroller = new JScrollPane(m_table);
 		scroller.setAlignmentX(Component.CENTER_ALIGNMENT);
+		scroller.setPreferredSize(new Dimension(Short.MAX_VALUE,Short.MAX_VALUE));
 		layoutPane.add(scroller);
 		
-		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,15)));
+		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,10)));
 		
 		//add an export button
 		JButton b_export = new JButton("Export CSV");
