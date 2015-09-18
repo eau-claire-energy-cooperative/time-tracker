@@ -48,16 +48,16 @@ public class TimeFormatter {
 				//do nothing
 				break;
 			case TimeFormatter.SECONDS:
-				result = TimeUnit.MILLISECONDS.toSeconds(start);
+				result = (double)start/1000;
 				break;
 			case TimeFormatter.MINUTES:
-				result = TimeUnit.MILLISECONDS.toMinutes(start);
+				result = (double)start/1000/60;
 				break;
 			case TimeFormatter.HOURS:
-				result = TimeUnit.MILLISECONDS.toHours(start);
+				result = (double)start/1000/60/60;
 				break;
 			case TimeFormatter.DAYS:
-				result = TimeUnit.MILLISECONDS.toDays(start);
+				result = (double)start/1000/60/60/24;
 				break;
 		}
 		
