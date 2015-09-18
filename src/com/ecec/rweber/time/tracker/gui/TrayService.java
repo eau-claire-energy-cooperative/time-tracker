@@ -1,5 +1,6 @@
 package com.ecec.rweber.time.tracker.gui;
 import java.awt.AWTException;
+
 import java.awt.Container;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
@@ -13,8 +14,8 @@ import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 
 import javax.swing.ImageIcon;
@@ -181,24 +182,7 @@ public class TrayService implements HotkeyListener {
         
         //add menu to tray
         m_trayIcon.setPopupMenu(popup);
-        m_trayIcon.addMouseListener(new MouseListener(){
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+        m_trayIcon.addMouseListener(new MouseAdapter(){
 
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -215,12 +199,6 @@ public class TrayService implements HotkeyListener {
 						m_isRunning.setLabel("Not Running");
 					}
 				}
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
         	
         });
