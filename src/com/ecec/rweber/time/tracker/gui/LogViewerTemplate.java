@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -20,8 +21,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.util.CSVWriter;
 
@@ -181,6 +184,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		
 		m_table = new JTable();
 		m_table.getTableHeader().setReorderingAllowed(true);
+		m_table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		JScrollPane scroller = new JScrollPane(m_table);
 		scroller.setAlignmentX(Component.CENTER_ALIGNMENT);
