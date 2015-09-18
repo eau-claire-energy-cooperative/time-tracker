@@ -18,6 +18,10 @@ public class Activity implements Comparable<Activity>{
 		m_description = descrip;
 	}
 	
+	public int getId(){
+		return m_id;
+	}
+	
 	public String getName(){
 		return m_name;
 	}

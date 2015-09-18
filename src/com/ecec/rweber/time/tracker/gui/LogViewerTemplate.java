@@ -6,25 +6,28 @@ import java.awt.Dimension;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.util.CSVWriter;
 
@@ -62,6 +65,47 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		}
 	}
 	
+	private void deleteSelectedRow(){
+		int row = m_table.getSelectedRow();
+		
+		if(this.canDelete() && JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this?") == JOptionPane.YES_OPTION)
+		{
+			//delet the row from the table
+			this.deleteRowImpl(row);
+			
+			//regenerate the table
+			this.generateReport();
+		}
+	}
+	
+	private Date chooseDate(String title,Date startDate){
+		DateChooser sChooser = new DateChooser(this,title);
+		sChooser.setLocation(this.getX(), this.getY());
+	
+		return sChooser.select(startDate);
+	}
+	
+	private JPopupMenu createTablePopup(){
+		JPopupMenu result = new JPopupMenu();
+		
+		if(this.canDelete())
+		{
+			//create the delete action
+			JMenuItem deleteAction = new JMenuItem("Delete Row");
+			deleteAction.addActionListener(new ActionListener(){
+	
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					deleteSelectedRow();
+				}
+				
+			});
+			result.add(deleteAction);
+		}
+		
+		return result;
+	}
+	
 	private void saveReport(){
 		JFileChooser saveAs = new JFileChooser();
 		saveAs.setFileFilter(new FileNameExtensionFilter("CSV Files","csv"));
@@ -89,13 +133,6 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		
 	}
 	
-	private Date chooseDate(String title,Date startDate){
-		DateChooser sChooser = new DateChooser(this,title);
-		sChooser.setLocation(this.getX(), this.getY());
-	
-		return sChooser.select(startDate);
-	}
-	
 	private boolean saveReport(String filename){
 		boolean result = true;
 	
@@ -115,6 +152,12 @@ public abstract class LogViewerTemplate extends GuiWindow {
 	}
 	
 	protected abstract DefaultTableModel createTableModel(Date startDate, Date endDate);
+	
+	protected abstract void deleteRowImpl(int row);
+	
+	protected boolean canDelete(){
+		return false;
+	}
 	
 	@Override
 	protected void setupInformation() {
@@ -185,6 +228,31 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		m_table = new JTable();
 		m_table.getTableHeader().setReorderingAllowed(true);
 		m_table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		m_table.addMouseListener(new MouseAdapter(){
+
+			@Override
+			public void mouseReleased(MouseEvent event) {
+				//make sure it's a right click
+				if(SwingUtilities.isRightMouseButton(event))
+				{
+					int row = m_table.rowAtPoint(event.getPoint());
+					
+					//make sure this is a valid row
+					if(row >=0 && row < m_table.getRowCount())
+					{
+						m_table.setRowSelectionInterval(row, row);
+						
+						JPopupMenu popup = createTablePopup();
+						popup.show(event.getComponent(), event.getX(), event.getY());
+					}
+					else
+					{
+						m_table.clearSelection();
+					}
+				}
+			}
+			
+		});
 		
 		JScrollPane scroller = new JScrollPane(m_table);
 		scroller.setAlignmentX(Component.CENTER_ALIGNMENT);

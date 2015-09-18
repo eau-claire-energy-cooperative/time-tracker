@@ -15,7 +15,7 @@ public class GroupLogViewer extends LogViewerTemplate{
 	public GroupLogViewer(ActivityManager manage) {
 		super("Group Log Viewer", manage);
 	}
-
+	
 	@Override
 	protected DefaultTableModel createTableModel(Date startDate, Date endDate) {
 		
@@ -34,6 +34,11 @@ public class GroupLogViewer extends LogViewerTemplate{
 		}
 		
 		return tModel;
+	}
+
+	@Override
+	protected void deleteRowImpl(int row) {
+		//do nothing
 	}
 
 }

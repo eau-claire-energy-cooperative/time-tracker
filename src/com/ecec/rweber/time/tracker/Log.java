@@ -74,4 +74,9 @@ public class Log {
 	public void setDescription(String d){
 		m_description = d;
 	}
+	
+	@Override
+	public String toString(){
+		return this.getActivity();
+	}
 }

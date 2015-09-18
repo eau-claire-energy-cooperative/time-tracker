@@ -99,7 +99,7 @@ public class ActivityManager {
 		return result;
 	}
 	
-	public void  doActivity(Log l){
+	public void  saveEntry(Log l){
 		
 		if(l.getId() != -1)
 		{
@@ -109,6 +109,10 @@ public class ActivityManager {
 		{
 			saveLog(l);
 		}
+	}
+	
+	public void deleteEntry(Log l){
+		m_database.executeUpdate("delete from log where id = ?", l.getId());
 	}
 	
 	public List<Activity> getActivities(){

@@ -18,7 +18,7 @@ public class AllLogViewer extends LogViewerTemplate {
 	public AllLogViewer(ActivityManager manager){
 		super("Log Viewer",manager);
 	}
-
+	
 	@Override
 	protected DefaultTableModel createTableModel(Date startDate, Date endDate) {
 		
@@ -32,7 +32,8 @@ public class AllLogViewer extends LogViewerTemplate {
 		for(int count = 0; count < m_report.size(); count ++)
 		{
 			aLog = m_report.get(count);
-			m_model.setValueAt(aLog.getActivity(), count, 0);
+
+			m_model.setValueAt(aLog, count, 0);
 			m_model.setValueAt(aLog.getStartDate().toString(), count, 1);
 			m_model.setValueAt(aLog.getEndDate().toString(), count, 2);
 			m_model.setValueAt(aLog.getTotal(TimeFormatter.MINUTES) + "",count,3);
@@ -53,12 +54,24 @@ public class AllLogViewer extends LogViewerTemplate {
 					Log aLog = m_report.get(event.getFirstRow());
 					aLog.setDescription(m_model.getValueAt(event.getFirstRow(), event.getColumn()).toString());
 					
-					g_manage.doActivity(aLog);
+					g_manage.saveEntry(aLog);
 				}
 			}
 			
 		});
 		
 		return m_model;
+	}
+
+	@Override
+	protected void deleteRowImpl(int row) {
+		//get the log object and delete it
+		Log aLog = (Log)m_table.getValueAt(row, 0);
+		g_manage.deleteEntry(aLog);
+	}
+	
+	@Override 
+	public boolean canDelete(){
+		return true;
 	}
 }
