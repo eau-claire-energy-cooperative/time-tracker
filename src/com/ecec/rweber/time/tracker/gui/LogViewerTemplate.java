@@ -12,28 +12,36 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.util.CSVWriter;
+import com.ecec.rweber.time.tracker.util.TimeFormatter;
 
 public abstract class LogViewerTemplate extends GuiWindow {
 	private Date m_startDate = null;
 	private Date m_endDate = null;
+	private int m_timeFormat = TimeFormatter.MINUTES;
 	
 	//for the gui
 	private JLabel l_startDate = null;
@@ -106,6 +114,61 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		return result;
 	}
 	
+	private JMenuBar createMenuBar() {
+		JMenuBar result = new JMenuBar();
+		
+		//the file menu
+		JMenu file_Menu = new JMenu("File");
+		
+		JMenuItem file_Exit = new JMenuItem("Exit");
+		file_Exit.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+			
+		});
+		file_Menu.add(file_Exit);
+		result.add(file_Menu);
+		
+		//add the time menu
+		JMenu time_Menu = new JMenu("Time");
+		ButtonGroup time_Group = new ButtonGroup();
+	
+		JRadioButtonMenuItem time_Minutes = new JRadioButtonMenuItem("Minutes");
+		time_Minutes.setSelected(true); //default
+		time_Minutes.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				m_timeFormat = TimeFormatter.MINUTES;
+				generateReport();
+			}
+			
+		});
+		time_Group.add(time_Minutes);
+		time_Menu.add(time_Minutes);
+		
+		JRadioButtonMenuItem time_Hours = new JRadioButtonMenuItem("Hours");
+		time_Hours.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				m_timeFormat = TimeFormatter.HOURS;
+				generateReport();
+			}
+			
+		});
+		time_Group.add(time_Hours);
+		time_Menu.add(time_Hours);
+		
+		result.add(time_Menu);
+		
+		
+		return result;
+	}
+	
 	private void saveReport(){
 		JFileChooser saveAs = new JFileChooser();
 		saveAs.setFileFilter(new FileNameExtensionFilter("CSV Files","csv"));
@@ -155,6 +218,10 @@ public abstract class LogViewerTemplate extends GuiWindow {
 	
 	protected abstract void deleteRowImpl(int row);
 	
+	protected int getTimeFormat(){
+		return m_timeFormat;
+	}
+	
 	protected boolean canDelete(){
 		return false;
 	}
@@ -177,6 +244,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 
 	@Override
 	protected void viewModal(Container layoutPane) {
+		this.setJMenuBar(this.createMenuBar());
 		
 		layoutPane.setLayout(new BoxLayout(layoutPane,BoxLayout.Y_AXIS));
 		

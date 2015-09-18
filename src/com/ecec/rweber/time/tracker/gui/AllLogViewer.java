@@ -1,7 +1,6 @@
 package com.ecec.rweber.time.tracker.gui;
 import java.util.Date;
 import java.util.List;
-
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -25,7 +24,7 @@ public class AllLogViewer extends LogViewerTemplate {
 		//generate the report
 		m_report = g_manage.generateReport(startDate.getTime(), endDate.getTime());
 		
-		m_model = new LogTableModel(new String[]{"Activity Name","Start Date","End Date","Total Minutes","Description"},m_report.size());
+		m_model = new LogTableModel(new String[]{"Activity Name","Start Date","End Date","Total Time","Description"},m_report.size());
 		
 		//add the data to the table
 		Log aLog = null;
@@ -36,7 +35,7 @@ public class AllLogViewer extends LogViewerTemplate {
 			m_model.setValueAt(aLog, count, 0);
 			m_model.setValueAt(aLog.getStartDate().toString(), count, 1);
 			m_model.setValueAt(aLog.getEndDate().toString(), count, 2);
-			m_model.setValueAt(aLog.getTotal(TimeFormatter.MINUTES) + "",count,3);
+			m_model.setValueAt(aLog.getTotal(this.getTimeFormat()) + " " + TimeFormatter.toString(this.getTimeFormat()),count,3);
 			m_model.setValueAt(aLog.getDescription(),count,4);
 		}
 		
