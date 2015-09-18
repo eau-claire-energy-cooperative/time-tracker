@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.LogGroup;
-import com.ecec.rweber.time.tracker.TimeFormatter;
+import com.ecec.rweber.time.tracker.util.TimeFormatter;
 
 public class GroupLogViewer extends LogViewerTemplate{
 	private static final long serialVersionUID = -4190305067721655539L;

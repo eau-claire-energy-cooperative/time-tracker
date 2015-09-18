@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.Log;
-import com.ecec.rweber.time.tracker.TimeFormatter;
+import com.ecec.rweber.time.tracker.util.TimeFormatter;
 
 public class AllLogViewer extends LogViewerTemplate {
 	private static final long serialVersionUID = 1L;

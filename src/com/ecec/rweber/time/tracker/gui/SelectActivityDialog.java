@@ -38,11 +38,11 @@ public class SelectActivityDialog extends JPanel{
 		}
 	}
 	
-	public void setup(int totalMinutes){
+	public void setup(String elapsedTime){
 		Font f = new Font(Font.SERIF,Font.PLAIN,15);
 		this.setBorder(new EmptyBorder(10,10,10,10));
 		
-		JLabel l_date = new JLabel("Time: " + totalMinutes + " minutes");
+		JLabel l_date = new JLabel("Time: " + elapsedTime);
 		l_date.setFont(f);
 		
 		m_select = new JComboBox<Activity>(m_manage.getActivities().toArray(new Activity[0]));

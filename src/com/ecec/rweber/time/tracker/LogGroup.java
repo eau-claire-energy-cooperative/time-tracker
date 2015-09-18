@@ -2,6 +2,8 @@ package com.ecec.rweber.time.tracker;
 
 import java.util.Map;
 
+import com.ecec.rweber.time.tracker.util.TimeFormatter;
+
 public class LogGroup {
 	private long m_milliseconds = 0;
 	private String m_activity = null;

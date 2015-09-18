@@ -3,6 +3,8 @@ package com.ecec.rweber.time.tracker;
 import java.util.Date;
 import java.util.Map;
 
+import com.ecec.rweber.time.tracker.util.TimeFormatter;
+
 
 public class Log {
 	private int m_id = -1;

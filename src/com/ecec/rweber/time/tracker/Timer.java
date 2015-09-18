@@ -3,6 +3,8 @@ package com.ecec.rweber.time.tracker;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import com.ecec.rweber.time.tracker.util.TimeFormatter;
+
 public class Timer {
 	public static final int IDLE = 0;
 	public static final int RUNNING = 1;
@@ -75,19 +77,19 @@ public class Timer {
 		return current_state;
 	}
 	
-	public int getElapsedMinutes(){
-		int result = 0;
+	public double getElapsedTime(int format){
+		double result = 0;
 		
 		if(current_state == IDLE){
 			result = 0;
 		}
 		else if(current_state == RUNNING)
 		{
-			result = (int)((System.currentTimeMillis() - startTime)/1000)/60;
+			result = TimeFormatter.format(startTime, System.currentTimeMillis(), format);
 		}
 		else 
 		{
-			result = (int)((stopTime - startTime)/1000)/60;
+			result = TimeFormatter.format(startTime, stopTime, format);
 		}
 		return result;
 	}
@@ -95,33 +97,12 @@ public class Timer {
 	public String toString(){
 		String result = "";
 		
-		double total_time = 0;
-		if(current_state == IDLE){
-			return "Timer Idle";
-		}
-		else if(current_state == RUNNING)
-		{
-			total_time = ((double)(System.currentTimeMillis() - startTime)/1000);
-		}
-		else if(current_state == STOPPED)
-		{	
-			total_time = ((double)(stopTime - startTime)/1000);
-		}
+		double total_time = this.getElapsedTime(TimeFormatter.MILLISECONDS);
 		
-		//check if greater than 1 min
-		NumberFormat df = DecimalFormat.getInstance();
-		df.setMaximumFractionDigits(3);
+		//figure out the best format for this time 
+		int bestFormat = TimeFormatter.guessBestFormat((long)total_time,TimeFormatter.MILLISECONDS);
 		
-		if(total_time > 60)
-		{
-			total_time = total_time / 60;
-			
-			result = df.format(total_time) + " minutes";
-		}
-		else
-		{
-			result = df.format(total_time) + " seconds";
-		}
+		result = TimeFormatter.format((long)total_time, TimeFormatter.MILLISECONDS, bestFormat) + " " + TimeFormatter.toString(bestFormat);
 		
 		return result;
 	}
