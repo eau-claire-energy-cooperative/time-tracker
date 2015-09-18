@@ -184,6 +184,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 	private void saveReport(){
 		JFileChooser saveAs = new JFileChooser();
 		saveAs.setFileFilter(new FileNameExtensionFilter("CSV Files","csv"));
+		saveAs.setAcceptAllFileFilterUsed(false);
 		
 		int returnVal = saveAs.showSaveDialog(this);
 		
