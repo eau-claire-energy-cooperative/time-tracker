@@ -60,7 +60,7 @@ public class TimeFormatter {
 				result = TimeUnit.MILLISECONDS.toDays(start);
 				break;
 		}
-		System.out.println(result);
+		
 		return Double.parseDouble(formatter.format(result));
 		
 	}
