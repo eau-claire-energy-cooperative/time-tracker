@@ -120,6 +120,17 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		//the file menu
 		JMenu file_Menu = new JMenu("File");
 		
+		JMenuItem file_Export = new JMenuItem("Export CSV");
+		file_Export.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveReport();
+			}
+			
+		});
+		file_Menu.add(file_Export);
+		
 		JMenuItem file_Exit = new JMenuItem("Exit");
 		file_Exit.addActionListener(new ActionListener(){
 
@@ -130,6 +141,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 			
 		});
 		file_Menu.add(file_Exit);
+		
 		result.add(file_Menu);
 		
 		//add the time menu
@@ -326,21 +338,6 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		scroller.setAlignmentX(Component.CENTER_ALIGNMENT);
 		scroller.setPreferredSize(new Dimension(Short.MAX_VALUE,Short.MAX_VALUE));
 		layoutPane.add(scroller);
-		
-		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,10)));
-		
-		//add an export button
-		JButton b_export = new JButton("Export CSV");
-		b_export.setAlignmentX(Component.CENTER_ALIGNMENT);
-		b_export.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveReport();
-			}
-			
-		});
-		layoutPane.add(b_export);
 		
 		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,10)));
 		
