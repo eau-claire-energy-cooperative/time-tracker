@@ -41,7 +41,10 @@ public class Log {
 	}
 	
 	public void setStartDate(Date s){
-		m_start = s.getTime();
+		if(s.getTime() <= m_end)
+		{
+			m_start = s.getTime();
+		}
 	}
 	
 	public Date getStartDate(){
@@ -49,7 +52,10 @@ public class Log {
 	}
 	
 	public void setEndDate(Date e){
-		m_end = e.getTime();
+		if(e.getTime() >= m_start)
+		{
+			m_end = e.getTime();
+		}
 	}
 	
 	public Date getEndDate(){
