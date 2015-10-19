@@ -31,6 +31,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -64,7 +66,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 				l_startDate.setText("Start: " + formatter.format(m_startDate));
 				l_endDate.setText("End: " + formatter.format(m_endDate));
 				
-				m_table.setModel(this.createTableModel(m_startDate, m_endDate));;
+				m_table.setModel(this.createTableModel(m_startDate, m_endDate));
 			}
 			else
 			{
@@ -230,6 +232,10 @@ public abstract class LogViewerTemplate extends GuiWindow {
 	protected abstract DefaultTableModel createTableModel(Date startDate, Date endDate);
 	
 	protected abstract void deleteRowImpl(int row);
+	
+	protected void notifyUpdate(){
+		generateReport();
+	}
 	
 	protected int getTimeFormat(){
 		return m_timeFormat;

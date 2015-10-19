@@ -1,8 +1,9 @@
 package com.ecec.rweber.time.tracker.gui;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
+import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -20,7 +21,47 @@ public class AllLogViewer extends LogViewerTemplate {
 	public AllLogViewer(ActivityManager manager){
 		super("Log Viewer",manager);
 		
-		m_dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:KK a");
+		m_dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+	}
+	
+	private Date checkTime(Log aLog, String dateString, boolean isStart){
+		Date result = null;
+		
+		try{
+			//check that it's parseable
+			Date newDate = m_dateFormat.parse(dateString);
+			
+			if(isStart)
+			{
+				if(newDate.getTime() <= aLog.getEndDate().getTime())
+				{
+					//make sure the start happens before the end
+					result = newDate;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Start date/time must be before ending date/time");
+				}
+			}
+			else if(!isStart)
+			{
+				if(newDate.getTime() >= aLog.getStartDate().getTime())
+				{
+					//make sure end is after start
+					result = newDate;
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "End date/time must be after starting date/time");
+				}
+			}
+		}
+		catch(ParseException pe)
+		{
+			JOptionPane.showMessageDialog(null, "Date/Time format is incorrect");
+		}
+		
+		return result;
 	}
 	
 	@Override
@@ -45,6 +86,8 @@ public class AllLogViewer extends LogViewerTemplate {
 		}
 		
 		//set the description as editable
+		m_model.setEditableCol(1);
+		m_model.setEditableCol(2);
 		m_model.setEditableCol(4);
 		
 		m_model.addTableModelListener(new TableModelListener(){
@@ -52,7 +95,48 @@ public class AllLogViewer extends LogViewerTemplate {
 			@Override
 			public void tableChanged(TableModelEvent event) {
 				
-				if(event.getColumn() == 4)
+				if(event.getColumn() == 1)
+				{
+					//we are formatting the start date
+					Log aLog = m_report.get(event.getFirstRow());
+					
+					Date newDate = checkTime(aLog,m_model.getValueAt(event.getFirstRow(), 1).toString(),true);
+					
+					if(newDate != null)
+					{
+						aLog.setStartDate(newDate);
+						g_manage.saveEntry(aLog);
+					
+						notifyUpdate();
+					}
+					else
+					{
+						//reset the date
+						m_model.setValueAt(m_dateFormat.format(aLog.getStartDate()), event.getFirstRow(), 1);
+					}
+				}
+				else if(event.getColumn() == 2)
+				{
+					//we are formatting the start date
+					Log aLog = m_report.get(event.getFirstRow());
+					
+					Date newDate = checkTime(aLog,m_model.getValueAt(event.getFirstRow(), 2).toString(),false);
+					
+					if(newDate != null)
+					{
+						aLog.setEndDate(newDate);
+						g_manage.saveEntry(aLog);
+					
+						notifyUpdate();
+					}
+					else
+					{
+						//reset the date
+						m_model.setValueAt(m_dateFormat.format(aLog.getEndDate()), event.getFirstRow(), 2);
+					}
+	
+				}
+				else if(event.getColumn() == 4)
 				{
 					//get the log for this row
 					Log aLog = m_report.get(event.getFirstRow());

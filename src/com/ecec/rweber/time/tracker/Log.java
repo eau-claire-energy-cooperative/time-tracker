@@ -40,8 +40,16 @@ public class Log {
 		return m_id;
 	}
 	
+	public void setStartDate(Date s){
+		m_start = s.getTime();
+	}
+	
 	public Date getStartDate(){
 		return new Date(m_start);
+	}
+	
+	public void setEndDate(Date e){
+		m_end = e.getTime();
 	}
 	
 	public Date getEndDate(){
