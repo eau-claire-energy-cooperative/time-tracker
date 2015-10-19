@@ -1,6 +1,8 @@
 package com.ecec.rweber.time.tracker.gui;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -13,9 +15,12 @@ public class AllLogViewer extends LogViewerTemplate {
 	private static final long serialVersionUID = 1L;
 	private List<Log> m_report = null;
 	private LogTableModel m_model = null;
+	private SimpleDateFormat m_dateFormat = null;
 	
 	public AllLogViewer(ActivityManager manager){
 		super("Log Viewer",manager);
+		
+		m_dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:KK a");
 	}
 	
 	@Override
@@ -33,8 +38,8 @@ public class AllLogViewer extends LogViewerTemplate {
 			aLog = m_report.get(count);
 
 			m_model.setValueAt(aLog, count, 0);
-			m_model.setValueAt(aLog.getStartDate().toString(), count, 1);
-			m_model.setValueAt(aLog.getEndDate().toString(), count, 2);
+			m_model.setValueAt(m_dateFormat.format(aLog.getStartDate()), count, 1);
+			m_model.setValueAt(m_dateFormat.format(aLog.getEndDate()), count, 2);
 			m_model.setValueAt(aLog.getTotal(this.getTimeFormat()) + " " + TimeFormatter.toString(this.getTimeFormat()),count,3);
 			m_model.setValueAt(aLog.getDescription(),count,4);
 		}
