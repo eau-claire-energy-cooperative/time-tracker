@@ -25,13 +25,13 @@ public class Log {
 		}
 	}
 	
-	public Log(Activity a, Timer t){
+	public Log(Activity a, ElapsedTimer t){
 		m_start = t.getStartTime();
 		m_end = t.getStopTime();
 		m_activity = a.getName();
 	}
 	
-	public Log(Activity a, Timer t, String description){
+	public Log(Activity a, ElapsedTimer t, String description){
 		this(a,t);
 		m_description = description;
 	}
@@ -63,7 +63,7 @@ public class Log {
 	}
 
 	public double getTotal(int format){
-		return TimeFormatter.format(m_start, m_end, format);
+		return TimeFormatter.formatElapsed(m_start, m_end, format);
 	}
 	
 	public String getActivity(){

@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -31,17 +33,21 @@ import org.apache.log4j.PatternLayout;
 import org.apache.log4j.SimpleLayout;
 
 import com.ecec.rweber.time.tracker.ActivityManager;
+import com.ecec.rweber.time.tracker.CountdownTimer;
 import com.ecec.rweber.time.tracker.Log;
-import com.ecec.rweber.time.tracker.Timer;
+import com.ecec.rweber.time.tracker.TimerState;
+import com.ecec.rweber.time.tracker.ElapsedTimer;
 import com.ecec.rweber.time.tracker.util.Notifier;
+import com.ecec.rweber.time.tracker.util.TimeFormatter;
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
 
-public class TrayService implements HotkeyListener {
+public class TrayService implements HotkeyListener, Observer {
 	private final String PROGRAM_NAME = "Time Tracker";
 	private Logger m_log = null;
 	private ActivityManager m_actManage = null;
-	private Timer m_timer = null;
+	private ElapsedTimer m_timer = null;
+	private CountdownTimer m_countdown = null;
 	
 	//for the gui
 	private TrayIcon m_trayIcon = null;
@@ -54,7 +60,11 @@ public class TrayService implements HotkeyListener {
 		JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_WIN, (int)'Q');
 		JIntellitype.getInstance().addHotKeyListener(this);
 		
-		m_timer = new Timer();
+		//setup timers
+		m_timer = new ElapsedTimer();
+		m_countdown = new CountdownTimer();
+		m_countdown.addObserver(this);
+		
 		m_actManage = new ActivityManager();
 	}
 	
@@ -122,8 +132,46 @@ public class TrayService implements HotkeyListener {
 		return result;
 	}
 	
+	private void countdownCompletePrompt(double time){
+		
+		int height = 300;
+		int width = 500;
+		int timeFormat = TimeFormatter.guessBestFormat((long)time, TimeFormatter.MILLISECONDS);
+		
+		//open a dialog to set the amount of time that has passed
+		CountdownComplete completeBox = new CountdownComplete();
+		completeBox.setup(TimeFormatter.format((long)time, TimeFormatter.MILLISECONDS, timeFormat) + " " + TimeFormatter.toString(timeFormat));
+		
+		JDialog dialog = new JDialog(null,"Countdown Complete!",ModalityType.APPLICATION_MODAL);
+		dialog.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
+		dialog.setSize(width, height);
+		
+		Container contentPane = dialog.getContentPane();
+		contentPane.setSize(width,height);
+		contentPane.add(completeBox);
+		
+		//open in the middle of the screen
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		dialog.setLocation((int)(screenSize.getWidth()/2 - (width/2)), (int)(screenSize.getHeight()/2 - (height/2)));
+		
+		dialog.pack();
+		dialog.setVisible(true);
+	}
+	
+	private void startCountdown(int amount,int format){
+		m_countdown.setAmount(amount, format);
+		m_countdown.start();
+		
+		m_trayIcon.displayMessage(PROGRAM_NAME, "Countdown Started", MessageType.INFO);
+	}
+	
 	private void toggleTimer(){
-		if(m_timer.getState() != Timer.RUNNING)
+		//turn off the countdown timer
+		if(m_countdown.getState() == TimerState.RUNNING)
+		{
+			m_countdown.stop();
+		}
+		else if(m_timer.getState() != TimerState.RUNNING)
 		{
 			//start the timer
 			m_timer.start();
@@ -170,6 +218,16 @@ public class TrayService implements HotkeyListener {
         reportMenu.add(normalReport);
         reportMenu.add(groupReport);
         
+        Menu countdownMenu = new Menu("Countdown");
+        MenuItem fifteenMinCountdown = new MenuItem("15 Minutes");
+        MenuItem thirtyMinCountdown = new MenuItem("30 Minutes");
+        MenuItem sixtyMinCountdown = new MenuItem("60 Minutes");
+        MenuItem customCountdown = new MenuItem("Custom");
+        countdownMenu.add(fifteenMinCountdown);
+        countdownMenu.add(thirtyMinCountdown);
+        countdownMenu.add(sixtyMinCountdown);
+        countdownMenu.add(customCountdown);
+        
         MenuItem activitiesItem = new MenuItem("Activities");
         MenuItem exitItem = new MenuItem("Exit");
         
@@ -177,6 +235,7 @@ public class TrayService implements HotkeyListener {
         popup.add(m_isRunning);
         popup.addSeparator();
         popup.add(reportMenu);
+        popup.add(countdownMenu);
         popup.add(activitiesItem);
         popup.add(exitItem);
         
@@ -190,9 +249,13 @@ public class TrayService implements HotkeyListener {
 				//check if this is a right click event
 				if(SwingUtilities.isRightMouseButton(e))
 				{
-					if(m_timer.getState() == Timer.RUNNING)
+					if(m_timer.getState() == TimerState.RUNNING)
 					{
 						m_isRunning.setLabel("Running: " + m_timer.toString());
+					}
+					else if(m_countdown.getState() == TimerState.RUNNING)
+					{
+						m_isRunning.setLabel("Remaining: " + m_countdown.toString());
 					}
 					else
 					{
@@ -256,6 +319,67 @@ public class TrayService implements HotkeyListener {
         	
         });
         
+        fifteenMinCountdown.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				startCountdown(15, TimeFormatter.MINUTES);
+			}
+        	
+        });
+        
+        thirtyMinCountdown.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				startCountdown(30, TimeFormatter.MINUTES);
+			}
+        	
+        });
+        
+        sixtyMinCountdown.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				startCountdown(60, TimeFormatter.MINUTES);
+			}
+        	
+        });
+        
+        customCountdown.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int height = 300;
+				int width = 500;
+				
+				CustomCountdownDialog customBox = new CustomCountdownDialog();
+				customBox.setup();
+				
+				JDialog dialog = new JDialog(null,"Set Countdown Timer",ModalityType.APPLICATION_MODAL);
+				dialog.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
+				dialog.setSize(width, height);
+				
+				Container contentPane = dialog.getContentPane();
+				contentPane.setSize(width,height);
+				contentPane.add(customBox);
+				
+				//open in the middle of the screen
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+				dialog.setLocation((int)(screenSize.getWidth()/2 - (width/2)), (int)(screenSize.getHeight()/2 - (height/2)));
+				
+				dialog.pack();
+				dialog.setVisible(true);
+				
+				if(customBox.shouldSave())
+				{
+					startCountdown(customBox.getTime(),customBox.getFormat());
+				}
+			}
+        	
+        });
+        
         activitiesItem.addActionListener(new ActionListener(){
 
 			@Override
@@ -281,6 +405,11 @@ public class TrayService implements HotkeyListener {
 		if(ident == 1){
 			toggleTimer();
 		}
+	}
+	
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		countdownCompletePrompt(Double.parseDouble(arg1.toString()));
 	}
 	
 	public static void main(String[] args) {

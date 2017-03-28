@@ -71,7 +71,7 @@ public class TimeFormatter {
 		return result;
 	}
 	
-	public static final double format(long start, long end,int format){
+	public static final double formatElapsed(long start, long end,int format){
 		//first get the elapsed time
 		long milliseconds = end - start;
 		
@@ -102,11 +102,12 @@ public class TimeFormatter {
 				start = TimeUnit.DAYS.toMillis(start);
 				break;
 		}
-		
+
 		//now get the ending conversion
 		switch(format){
 			case TimeFormatter.MILLISECONDS:
-				//do nothing
+				//already in milli
+				result = start;
 				break;
 			case TimeFormatter.SECONDS:
 				result = (double)start/1000;
