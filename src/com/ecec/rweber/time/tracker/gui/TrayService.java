@@ -57,7 +57,7 @@ public class TrayService implements HotkeyListener, Observer {
 		setupLogger();
 		
 		//add the global hotkey
-		JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_WIN, (int)'Q');
+		JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_WIN, (int)'N');
 		JIntellitype.getInstance().addHotKeyListener(this);
 		
 		//setup timers
