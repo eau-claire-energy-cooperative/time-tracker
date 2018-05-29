@@ -22,7 +22,7 @@ public class GroupLogViewer extends LogViewerTemplate{
 		//generate the report
 		List<LogGroup> report = g_manage.generateGroupReport(startDate.getTime(), endDate.getTime());
 		
-		DefaultTableModel tModel = new LogTableModel(new String[]{"Activity Name","Total Time"},report.size());
+		DefaultTableModel tModel = new LogTableModel(new String[]{"Activity Name","Total Time","Time Unit"},report.size());
 		
 		//add the data to the table
 		LogGroup aLog = null;
@@ -30,7 +30,8 @@ public class GroupLogViewer extends LogViewerTemplate{
 		{
 			aLog = report.get(count);
 			tModel.setValueAt(aLog.getActivity(), count, 0);
-			tModel.setValueAt(aLog.getTotal(this.getTimeFormat()) + " " + TimeFormatter.toString(this.getTimeFormat()),count,1);
+			tModel.setValueAt(aLog.getTotal(this.getTimeFormat()),count,1);
+			tModel.setValueAt(TimeFormatter.toString(this.getTimeFormat()), count, 2);
 		}
 		
 		return tModel;
