@@ -2,17 +2,22 @@ package com.ecec.rweber.time.tracker.gui;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -31,16 +36,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.util.CSVWriter;
+import com.ecec.rweber.time.tracker.util.EmailWriter;
 import com.ecec.rweber.time.tracker.util.TimeFormatter;
 
 public abstract class LogViewerTemplate extends GuiWindow {
+	private static final long serialVersionUID = -4509764308515953846L;
 	private Date m_startDate = null;
 	private Date m_endDate = null;
 	private int m_timeFormat = TimeFormatter.MINUTES;
@@ -132,6 +137,34 @@ public abstract class LogViewerTemplate extends GuiWindow {
 			
 		});
 		file_Menu.add(file_Export);
+		
+		JMenuItem file_Email = new JMenuItem("Send Email");
+		file_Email.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//create the body
+				EmailWriter writer = new EmailWriter();
+				
+				
+				try {
+					//create the subject line
+					String subject = URLEncoder.encode("Tracked Hours", StandardCharsets.UTF_8.toString()).replaceAll("\\+", "%20");
+					
+					//get the body
+					String body = URLEncoder.encode(writer.writeData((DefaultTableModel)m_table.getModel()), StandardCharsets.UTF_8.toString()).replaceAll("\\+", "%20");
+					
+					//try and open the default mail client
+					Desktop.getDesktop().mail(new URI(String.format("mailto:?subject=%s&body=%s", subject,body)));
+					
+				} catch (IOException | URISyntaxException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
+		file_Menu.add(file_Email);
 		
 		JMenuItem file_Exit = new JMenuItem("Exit");
 		file_Exit.addActionListener(new ActionListener(){

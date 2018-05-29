@@ -7,24 +7,11 @@ import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
-public class CSVWriter {
+public class CSVWriter extends ModelFormatter {
 	private BufferedWriter writer = null;
 	
 	public CSVWriter(String file) throws IOException{
 		writer = new BufferedWriter(new FileWriter(file));
-	}
-	
-	private String makeCSV(Vector data){
-		String result = "";
-		
-		for(int count = 0; count < data.size(); count ++)
-		{
-			result = result + "\"" + data.get(count) + "\",";
-		}
-		
-		result = result.substring(0,result.length() - 1);
-		
-		return result;
 	}
 	
 	public void writeData(DefaultTableModel model) throws IOException{
@@ -48,7 +35,7 @@ public class CSVWriter {
 		
 		while(iter.hasNext())
 		{
-			cacheString = this.makeCSV((Vector)iter.next());
+			cacheString = this.formatLine((Vector)iter.next(),"\"","\"",",");
 			
 			//write out the cacheString
 			writer.write(cacheString);
