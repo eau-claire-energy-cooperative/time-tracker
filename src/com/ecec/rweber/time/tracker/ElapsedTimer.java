@@ -1,5 +1,8 @@
 package com.ecec.rweber.time.tracker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ecec.rweber.time.tracker.util.TimeFormatter;
 
 public class ElapsedTimer implements Timer{
@@ -9,6 +12,49 @@ public class ElapsedTimer implements Timer{
 	
 	public ElapsedTimer(){
 		//do nothing, just wait
+	}
+	
+	public ElapsedTimer(long start, long stop){
+		//initialize right away
+		current_state = TimerState.STOPPED;
+		startTime = start;
+		stopTime = stop;
+	}
+	
+	public static ElapsedTimer[] splitTime(ElapsedTimer orig, int split){
+		List<ElapsedTimer> timers = new ArrayList<ElapsedTimer>();
+		
+		//make sure we have a start/stop time
+		if(orig.getState() == TimerState.STOPPED)
+		{
+			if(split > 1)
+			{
+				//get the first series of start/stop values (orig start, start/split)
+				long startTime = orig.getStartTime();
+				long stopTime = orig.getStartTime() + (long)(orig.getElapsedTime(TimeFormatter.MILLISECONDS)/split);
+				ElapsedTimer temp = null;
+				
+				for(int count = 0; count < split; count ++)
+				{
+					temp = new ElapsedTimer(startTime,stopTime);
+					
+					//stop time becomes new startTime
+					startTime = stopTime;
+					
+					//stopTime is old stopTime + elapsedTime
+					stopTime = stopTime + (long)temp.getElapsedTime(TimeFormatter.MILLISECONDS);
+					
+					timers.add(temp);
+				}
+			}
+			else
+			{
+				//nothing to split
+				timers.add(orig);
+			}
+		}
+
+		return timers.toArray(new ElapsedTimer[0]);
 	}
 	
 	@Override

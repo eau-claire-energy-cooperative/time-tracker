@@ -99,6 +99,15 @@ public class ActivityManager {
 		return result;
 	}
 	
+	public void saveEntries(List<Log> logs){
+		Iterator<Log> iter = logs.iterator();
+		
+		while(iter.hasNext())
+		{
+			this.saveEntry(iter.next());
+		}
+	}
+	
 	public void  saveEntry(Log l){
 		
 		if(l.getId() != -1)

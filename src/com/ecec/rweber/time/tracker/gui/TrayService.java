@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -99,34 +101,47 @@ public class TrayService implements HotkeyListener, Observer {
 	        }
 	    }
 	
-	private Log activityPrompt(){
-		Log result = null;
-		
-		int height = 300;
-		int width = 500;
+	private List<Log> activityPrompt(){
+		List<Log> result = new ArrayList<Log>();
 		
 		//open a dialog box to select the activity you were doing
-		SelectActivityDialog selectBox = new SelectActivityDialog(m_actManage);
-		selectBox.setup(m_timer.toString());
+		SelectActivityDialog selectBox = new SelectActivityDialog(m_actManage,m_timer.toString());
+		selectBox.setup();
 		
 		JDialog dialog = new JDialog(null,"Choose Activity",ModalityType.APPLICATION_MODAL);
 		dialog.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
-		dialog.setSize(width, height);
+		dialog.setSize(selectBox.WIDTH, selectBox.HEIGHT);
 		
 		Container contentPane = dialog.getContentPane();
-		contentPane.setSize(width,height);
+		contentPane.setSize(selectBox.WIDTH,selectBox.HEIGHT);
 		contentPane.add(selectBox);
 		
 		//open in the middle of the screen
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		dialog.setLocation((int)(screenSize.getWidth()/2 - (width/2)), (int)(screenSize.getHeight()/2 - (height/2)));
+		dialog.setLocation((int)(screenSize.getWidth()/2 - (selectBox.WIDTH/2)), (int)(screenSize.getHeight()/2 - (selectBox.HEIGHT/2)));
 		
 		dialog.pack();
 		dialog.setVisible(true);
 		
 		if(selectBox.shouldSave())
 		{
-			result = new Log(m_actManage.getActivity(selectBox.getSelected()),m_timer,selectBox.getDescription());
+			int[] selected = selectBox.getSelected();
+			
+			if(selected.length > 0)
+			{
+				ElapsedTimer[] times = ElapsedTimer.splitTime(m_timer, selected.length);
+				
+				//save each of the times
+				m_log.info("Saving " + selected.length + " entries");
+				for(int count = 0; count < selected.length; count ++)
+				{
+					result.add(new Log(m_actManage.getActivity(selected[count]),times[count],selectBox.getDescription()));
+				}
+			}
+			else
+			{
+				m_trayIcon.displayMessage(PROGRAM_NAME, "No Activity Selected", MessageType.WARNING);
+			}
 		}
 		
 		return result;
@@ -183,13 +198,21 @@ public class TrayService implements HotkeyListener, Observer {
 			m_timer.stop();
 			
 			//ask the user for the activity
-			Log activity = this.activityPrompt();
+			List<Log> activity = this.activityPrompt();
 			
-			if(activity != null)
+			if(!activity.isEmpty())
 			{
-				m_actManage.saveEntry(activity);
+				m_actManage.saveEntries(activity);
 				
-				m_trayIcon.displayMessage(PROGRAM_NAME, activity.getActivity() +  " Saved", MessageType.INFO);
+				String message = String.format("%s Saved", activity.get(0).getActivity());
+				
+				if(activity.size() > 1)
+				{
+					//we have multiple
+					message = String.format("Saved to %d Activities", activity.size());
+				}
+				
+				m_trayIcon.displayMessage(PROGRAM_NAME, message, MessageType.INFO);
 			}
 			
 			m_timer.reset();
