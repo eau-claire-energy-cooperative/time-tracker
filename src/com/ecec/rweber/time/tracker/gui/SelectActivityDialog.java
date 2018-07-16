@@ -39,7 +39,7 @@ public class SelectActivityDialog extends DialogWindow {
 	
 	private int[] showMultipleSelect(){
 		
-		SelectListDialog selectList = new SelectListDialog(m_manage.getActivities());
+		SelectListDialog selectList = new SelectListDialog(m_manage.getActivities(),m_select.getSelectedIndex());
 		selectList.setup();
 		
 		JDialog dialog = new JDialog(null,"Select Activities",ModalityType.APPLICATION_MODAL);

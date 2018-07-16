@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.util.Notifier;
 
+@SuppressWarnings("serial")
 public abstract class GuiWindow extends JFrame{
 	private List<Notifier> m_observers = null;
 	

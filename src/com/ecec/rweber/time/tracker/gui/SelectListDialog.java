@@ -18,11 +18,15 @@ public class SelectListDialog extends DialogWindow {
 	private static final long serialVersionUID = 5753445871421295291L;
 	private List<Activity> m_activities = null;
 	private JList<Activity> m_list = null;
+	private int m_initialSelect = 0;
 	
-	public SelectListDialog(List<Activity> activities){
+	public SelectListDialog(List<Activity> activities, int selected){
 		super();
 		m_activities = activities;
-		WIDTH = 300;
+		m_initialSelect = selected;
+		
+		//diff width/height for this dialog
+		WIDTH = 200;
 		HEIGHT = 200;
 	}
 	
@@ -31,18 +35,19 @@ public class SelectListDialog extends DialogWindow {
 		this.setBorder(new EmptyBorder(10,10,10,10));
 		
 		JLabel l_text = new JLabel("<html>Select activites to split this time across<br />(CTL-click for multiple)</html>");
-		l_text.setPreferredSize(new Dimension(300,50));
+		l_text.setPreferredSize(new Dimension(200,70));
 		l_text.setFont(f);
 		
 		m_list = new JList<Activity>(m_activities.toArray(new Activity[0]));
 		m_list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		m_list.setSelectedIndex(m_initialSelect);
 		m_list.setFont(f);
 		
 		JScrollPane scroller = new JScrollPane(m_list);
 		
 		JButton b_save = new JButton("OK");
 		b_save.setFont(f);
-		b_save.setPreferredSize(new Dimension(300,50));
+		b_save.setPreferredSize(new Dimension(200,50));
 		b_save.addActionListener(new ActionListener(){
 
 			@Override
