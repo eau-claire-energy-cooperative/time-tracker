@@ -1,8 +1,8 @@
 package com.ecec.rweber.time.tracker;
 
 import java.io.File;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +12,6 @@ import java.util.Vector;
 import com.ecec.rweber.time.tracker.sql.DatasourceDrivers;
 import com.ecec.rweber.time.tracker.sql.SQLDatasource;
 import com.ecec.rweber.time.tracker.sql.SQLiteDatasource;
-import com.ecec.rweber.time.tracker.util.CSVWriter;
 
 public class ActivityManager {
 	private SQLDatasource m_database = null;
@@ -132,6 +131,7 @@ public class ActivityManager {
 		return this.getActivities().get(index);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setActivities(Vector table){
 		
 		m_database.executeUpdate("delete from activities");

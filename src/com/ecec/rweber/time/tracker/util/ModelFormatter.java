@@ -4,6 +4,7 @@ import java.util.Vector;
 
 public abstract class ModelFormatter {
 	
+	@SuppressWarnings("rawtypes")
 	protected String formatLine(Vector data, String pre, String post, String delmit){
 		String result = "";
 		

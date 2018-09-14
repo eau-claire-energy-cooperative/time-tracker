@@ -138,10 +138,10 @@ public class DateChooser extends JDialog
     private FocusablePanel daysGrid;
 
     /** Month selection control. */
-    private JComboBox month;
+    private JComboBox<String> month;
 
     /** Year selection control. */
-    private JComboBox year;
+    private JComboBox<String> year;
 
     /** "Ok" button. */
     private JButton ok;
@@ -172,7 +172,10 @@ public class DateChooser extends JDialog
      **/
     private static class FocusablePanel extends JPanel
     {
-	  /**
+		private static final long serialVersionUID = 1077688936855478805L;
+
+
+	/**
 	   * Constructs a new <code>FocusablePanel</code> with the given
 	   * layout manager.
 	   *
@@ -205,14 +208,14 @@ public class DateChooser extends JDialog
     	this.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
 	  calendar = new GregorianCalendar();
 	
-	  month = new JComboBox(MONTHS);
+	  month = new JComboBox<String>(MONTHS);
 	  month.addItemListener( this );
 	
 	  //figure out the first and last years
 	  Calendar c = new GregorianCalendar();
 	  LAST_YEAR = c.get(Calendar.YEAR);
 	 
-	  year = new JComboBox();
+	  year = new JComboBox<String>();
 	  for ( int i=FIRST_YEAR; i<=LAST_YEAR; i++ )
 	      year.addItem( Integer.toString(i) );
 	  year.addItemListener( this );
@@ -361,7 +364,7 @@ public class DateChooser extends JDialog
     public void actionPerformed( ActionEvent e ) {
 	  if ( e.getSource() == ok )
 	      okClicked = true;
-	  hide();
+	  this.setVisible(false);
     }
 
     /**
@@ -513,7 +516,7 @@ public class DateChooser extends JDialog
 		  month.setSelectedIndex( _month-Calendar.JANUARY );
 		  setSelected( _day );
 		  okClicked = false;
-		  show();
+		  this.setVisible(true);
 		  if ( !okClicked )
 		      return null;
 		  calendar.set( Calendar.DATE, getSelectedDay() );

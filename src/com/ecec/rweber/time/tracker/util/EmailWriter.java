@@ -12,6 +12,7 @@ public class EmailWriter extends ModelFormatter {
 		
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public String writeData(DefaultTableModel model) throws IOException {
 		String result = "";
 		

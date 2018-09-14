@@ -14,6 +14,7 @@ public class CSVWriter extends ModelFormatter {
 		writer = new BufferedWriter(new FileWriter(file));
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void writeData(DefaultTableModel model) throws IOException{
 		
 		//go through the column headers
