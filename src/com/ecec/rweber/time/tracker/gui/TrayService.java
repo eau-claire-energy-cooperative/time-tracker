@@ -17,6 +17,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -67,7 +71,29 @@ public class TrayService implements HotkeyListener, Observer {
 		m_countdown = new CountdownTimer();
 		m_countdown.addObserver(this);
 		
-		m_actManage = new ActivityManager();
+		//check if we've specified the DB location custom
+		File customDb = new File("resources/db.conf");
+		
+		if(!customDb.exists())
+		{
+			//load the default
+			m_actManage = new ActivityManager();
+		}
+		else
+		{
+			//try and load the db path from the file
+			String dbFile = ActivityManager.DEFAULT_DB;
+			
+			try {
+				byte[] encoded = Files.readAllBytes(Paths.get(customDb.getAbsolutePath()));
+				 dbFile = new String(encoded, Charset.defaultCharset());
+			} catch (IOException e) {
+				m_log.error("Cannot read custom DB file path");
+				e.printStackTrace();
+			}
+			
+			m_actManage = new ActivityManager(dbFile);
+		}
 	}
 	
 	private void setupLogger(){

@@ -16,19 +16,23 @@ import com.ecec.rweber.time.tracker.sql.SQLDatasource;
 import com.ecec.rweber.time.tracker.sql.SQLiteDatasource;
 
 public class ActivityManager {
+	public static final String DEFAULT_DB = "resources/activities.db";
+	
 	private Logger m_log = null;
 	private SQLDatasource m_database = null;
 	
 	public ActivityManager(){
-		m_log = Logger.getLogger(this.getClass());
-		m_database = this.loadDatabase(); 
+		this(ActivityManager.DEFAULT_DB);
 	}
 	
-	private SQLDatasource loadDatabase(){
+	public ActivityManager(String dbFile){
+		m_log = Logger.getLogger(this.getClass());
+		m_database = this.loadDatabase(new File(dbFile)); 
+	}
+	
+	private SQLDatasource loadDatabase(File dbFile){
 		
 		//first check if the database exists
-		File dbFile = new File("resources/activities.db");
-		
 		if(!dbFile.exists())
 		{
 			File defaultFile = new File("resources/activities_default.db");
@@ -37,11 +41,12 @@ public class ActivityManager {
 		
 		SQLDatasource result = null;
 		
+		m_log.info("Loading DB file: " + dbFile.getAbsolutePath());
 		Map<String,String> props = new HashMap<String,String>();
-		props.put("database","resources/activities.db");
-		props.put("schema_name","resources/activities.db");
-		props.put("username","resources/activities.db");
-		props.put("password","resources/activities.db");
+		props.put("database",dbFile.getAbsolutePath());
+		props.put("schema_name",dbFile.getAbsolutePath());
+		props.put("username",dbFile.getAbsolutePath());
+		props.put("password",dbFile.getAbsolutePath());
 		
 		result = new SQLiteDatasource("activities",DatasourceDrivers.getConnection("sql_lite", props));
 		
