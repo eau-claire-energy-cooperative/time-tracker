@@ -9,14 +9,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 import com.ecec.rweber.time.tracker.sql.DatasourceDrivers;
 import com.ecec.rweber.time.tracker.sql.SQLDatasource;
 import com.ecec.rweber.time.tracker.sql.SQLiteDatasource;
 
 public class ActivityManager {
+	private Logger m_log = null;
 	private SQLDatasource m_database = null;
 	
 	public ActivityManager(){
+		m_log = Logger.getLogger(this.getClass());
 		m_database = this.loadDatabase(); 
 	}
 	
@@ -45,6 +49,7 @@ public class ActivityManager {
 	}
 	
 	private List<Activity> loadActivities(){
+		m_log.debug("loading activities");
 		List<Activity> result = new ArrayList<Activity>();
 		
 		Iterator<Map<String,String>> sqlQuery = m_database.executeQuery("select * from activities order by name asc").iterator();
@@ -61,18 +66,22 @@ public class ActivityManager {
 	}
 	
 	private void saveActivity(Activity a){
+		m_log.debug("Saving activity: " + a.getName());
 		m_database.executeUpdate("insert into activities (name,description) values (?,?)", a.getName(), a.getDescription());
 	}
 	
 	private void saveLog(Log l){
+		m_log.debug("Saving log " + l.getActivity());
 		m_database.executeUpdate("insert into log (activity,start,end,description) values (?,?,?,?)",l.getActivity(),l.getStartDate().getTime(),l.getEndDate().getTime(),l.getDescription());
 	}
 	
 	private void updateLog(Log l){
+		m_log.debug("updating log: " + l.getId());
 		m_database.executeUpdate("update log set activity = ?, start = ?, end = ?, description = ? where id = ?", l.getActivity(),l.getStartDate().getTime(),l.getEndDate().getTime(),l.getDescription(),l.getId());
 	}
 	
 	public List<Log> generateReport(long startDate, long endDate){
+		m_log.debug("Generating report: " + startDate + " to " + endDate);
 		List<Log> result = new ArrayList<Log>();
 		
 		Iterator<Map<String,String>> sqlQuery = m_database.executeQuery("select * from log where start > ? and start < ? order by start asc", startDate, endDate).iterator();
@@ -86,6 +95,7 @@ public class ActivityManager {
 	}
 	
 	public List<LogGroup> generateGroupReport(long startDate, long endDate){
+		m_log.debug("Generating report: " + startDate + " to " + endDate);
 		List<LogGroup> result = new ArrayList<LogGroup>();
 	
 		Iterator<Map<String,String>> sqlQuery = m_database.executeQuery("select sum(log.end - log.start) as milliseconds, activity from log where start > ? and start < ? group by activity order by activity asc", startDate, endDate).iterator();
@@ -108,7 +118,6 @@ public class ActivityManager {
 	}
 	
 	public void  saveEntry(Log l){
-		
 		if(l.getId() != -1)
 		{
 			updateLog(l);
@@ -120,6 +129,7 @@ public class ActivityManager {
 	}
 	
 	public void deleteEntry(Log l){
+		m_log.debug("deleting log " + l.getId());
 		m_database.executeUpdate("delete from log where id = ?", l.getId());
 	}
 	
