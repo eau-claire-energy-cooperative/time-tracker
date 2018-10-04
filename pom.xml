@@ -24,14 +24,65 @@
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-      </plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-dependency-plugin</artifactId>
+		    <executions>
+		        <execution>
+		            <id>copy-dependencies</id>
+		            <phase>prepare-package</phase>
+		            <goals>
+		                <goal>copy-dependencies</goal>
+		            </goals>
+		            <configuration>
+		                <outputDirectory>${project.build.directory}/jars</outputDirectory>
+		                <excludeScope>provided</excludeScope>
+		                <overWriteReleases>false</overWriteReleases>
+		                <overWriteSnapshots>false</overWriteSnapshots>
+		                <overWriteIfNewer>true</overWriteIfNewer>
+		            </configuration>
+		        </execution>
+		    </executions>
+		  </plugin>
+		  <plugin>
+	    	<artifactId>maven-assembly-plugin</artifactId>
+	    	<version>2.5.3</version>
+	    	<configuration>
+	      		<descriptor>src/assembly/zip.xml</descriptor>
+	    	</configuration>
+	    	<executions>
+	      	<execution>
+	        	<id>create-archive</id>
+	        	<phase>package</phase>
+	        	<goals>
+	          		<goal>single</goal>
+	        	</goals>
+	      	</execution>
+	    	</executions>
+	  	</plugin>
+  		<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-jar-plugin</artifactId>
+		    <configuration>
+		        <archive>
+		            <manifest>
+		                <addClasspath>true</addClasspath>
+		                <classpathPrefix>jars/</classpathPrefix>
+		            </manifest>
+		            <manifestEntries>
+		                <Main-Class>com.ecec.rweber.time.tracker.gui.TrayService</Main-Class>
+		            </manifestEntries>
+		        </archive>
+		    </configuration>
+		</plugin>
+      	<plugin>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.3</version>
+	        <configuration>
+	          <source>1.7</source>
+	          <target>1.7</target>
+	        </configuration>
+      	</plugin>
     </plugins>
   </build>
   <organization>

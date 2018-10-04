@@ -1,0 +1,35 @@
+<assembly>
+    <id>install</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <files>
+    	<file>
+       		<source>${project.build.directory}/${artifactId}-${version}.jar</source>
+       		<outputDirectory>/</outputDirectory>
+       		<destName>time-tracker.jar</destName>
+       	</file>
+    </files>
+    <fileSets>
+       	<fileSet>
+       	    <directory>${project.build.directory}/jars</directory>
+       	    <outputDirectory>jars</outputDirectory>
+       	</fileSet>
+       	<fileSet>
+       		<directory>${project.basedir}/resources</directory>
+       		<outputDirectory>resources</outputDirectory>
+       		<includes>
+       			<include>activities_default.db</include>
+       			<include>*.png</include>
+       			<include>*.ico</include>
+       		</includes>
+       	</fileSet>
+       	<fileSet>
+       		<directory>${project.basedir}/logs</directory>
+       		<outputDirectory>logs</outputDirectory>
+       		<includes>
+       			<include>*.txt</include>
+       		</includes>
+       	</fileSet>
+    </fileSets>
+</assembly>
