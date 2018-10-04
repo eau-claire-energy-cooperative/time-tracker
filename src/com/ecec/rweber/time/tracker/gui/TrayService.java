@@ -1,6 +1,5 @@
 package com.ecec.rweber.time.tracker.gui;
 import java.awt.AWTException;
-
 import java.awt.Container;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
@@ -25,19 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.SimpleLayout;
-
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.CountdownTimer;
 import com.ecec.rweber.time.tracker.Log;
@@ -45,10 +41,8 @@ import com.ecec.rweber.time.tracker.TimerState;
 import com.ecec.rweber.time.tracker.ElapsedTimer;
 import com.ecec.rweber.time.tracker.util.Notifier;
 import com.ecec.rweber.time.tracker.util.TimeFormatter;
-import com.melloware.jintellitype.HotkeyListener;
-import com.melloware.jintellitype.JIntellitype;
 
-public class TrayService implements HotkeyListener, Observer {
+public class TrayService implements Observer {
 	private final String PROGRAM_NAME = "Time Tracker";
 	private Logger m_log = null;
 	private ActivityManager m_actManage = null;
@@ -61,10 +55,6 @@ public class TrayService implements HotkeyListener, Observer {
 	
 	public TrayService(){
 		setupLogger();
-		
-		//add the global hotkey
-		JIntellitype.getInstance().registerHotKey(1, JIntellitype.MOD_WIN, (int)'N');
-		JIntellitype.getInstance().addHotKeyListener(this);
 		
 		//setup timers
 		m_timer = new ElapsedTimer();
@@ -442,18 +432,10 @@ public class TrayService implements HotkeyListener, Observer {
         exitItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	
-            	JIntellitype.getInstance().unregisterHotKey(1);
                 tray.remove(m_trayIcon);
                 System.exit(0);
             }
         });
-	}
-
-	@Override
-	public void onHotKey(int ident) {
-		if(ident == 1){
-			toggleTimer();
-		}
 	}
 	
 	@Override
