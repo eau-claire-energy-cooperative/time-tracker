@@ -249,7 +249,7 @@ public class TrayService implements Observer {
         final SystemTray tray = SystemTray.getSystemTray();
         
         //create the menu items
-        m_isRunning = new MenuItem("Not Running");
+        m_isRunning = new MenuItem("Start Timer");
         
         Menu reportMenu = new Menu("Reports");
         MenuItem normalReport = new MenuItem("All Logs Report");
@@ -298,7 +298,7 @@ public class TrayService implements Observer {
 					}
 					else
 					{
-						m_isRunning.setLabel("Not Running");
+						m_isRunning.setLabel("Start Timer");
 					}
 				}
 			}
