@@ -14,7 +14,11 @@ You can run the program directly by launching the jar file, however there is als
 
 ## Using the Program
 
+Pretty simple operations, right click and select "Start Timer" to start the timer. When done right-click and select the "Running" menu item, which contains a readout of the current amount of time, to stop the timer. Once the timer is stopped you will get a prompt for where to log to the activity. 
+
 Reporting is done by right-clicking the tray icon and selecting reports. From here you can choose date options and run reports from your logged history. Exporting to CSV is available. 
+
+Additionally a Countdown timer is available. This simply counts down a specified number of minutes and alerts you when time is up. No logging available here, just another handy timer function. 
 
 ### Splitting Time
 
