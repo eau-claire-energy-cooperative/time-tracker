@@ -102,6 +102,16 @@ public class SelectActivityDialog extends DialogWindow {
 		m_select = new JComboBox<Activity>(m_manage.getActivities().toArray(new Activity[0]));
 		m_select.setFont(f);
 		
+		JButton b_cancel = new JButton("Cancel");
+		b_cancel.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cancel();
+			}
+			
+		});
+		
 		JButton b_save = new JButton("Save");
 		b_save.addActionListener(new ActionListener(){
 
@@ -112,10 +122,15 @@ public class SelectActivityDialog extends DialogWindow {
 			
 		});
 		
+		//create an endpanel to marry these two buttons for the end
+		JPanel endPanel = new JPanel(new BorderLayout(10,15));
+		
+		endPanel.add(b_cancel,BorderLayout.LINE_START);
+		endPanel.add(b_save,BorderLayout.LINE_END);
 		
 		this.add(m_select,BorderLayout.LINE_START);
 		this.add(midPanel,BorderLayout.CENTER);
-		this.add(b_save,BorderLayout.LINE_END);
+		this.add(endPanel,BorderLayout.LINE_END);
 		
 		m_descrip = new JTextArea("",4,50);
 		this.add(m_descrip,BorderLayout.PAGE_END);

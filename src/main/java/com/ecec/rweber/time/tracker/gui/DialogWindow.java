@@ -28,6 +28,15 @@ public abstract class DialogWindow extends JPanel {
 		}
 	}
 	
+	protected void cancel(){
+		Window win = SwingUtilities.getWindowAncestor(this);
+		
+		if (win != null) {
+			m_shouldSave = false;
+			win.dispose();
+		}
+	}
+	
 	public boolean shouldSave(){
 		return m_shouldSave;
 	}
