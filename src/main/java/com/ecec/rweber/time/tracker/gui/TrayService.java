@@ -26,6 +26,7 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.apache.log4j.ConsoleAppender;
@@ -72,17 +73,27 @@ public class TrayService implements Observer {
 		else
 		{
 			//try and load the db path from the file
-			String dbFile = ActivityManager.DEFAULT_DB;
+			File dbFile = null;
 			
 			try {
 				byte[] encoded = Files.readAllBytes(Paths.get(customDb.getAbsolutePath()));
-				 dbFile = new String(encoded, Charset.defaultCharset());
+				 dbFile = new File(new String(encoded, Charset.defaultCharset()));
 			} catch (IOException e) {
 				m_log.error("Cannot read custom DB file path");
 				e.printStackTrace();
 			}
 			
-			m_actManage = new ActivityManager(dbFile);
+			//make sure the DB file exists
+			if(dbFile.exists())
+			{
+				m_actManage = new ActivityManager(dbFile.getAbsolutePath());
+			}
+			else
+			{
+				m_log.error("DB file path does not exist: " + dbFile);
+				JOptionPane.showMessageDialog(null, "DB Path does not exist\n" + dbFile);
+				System.exit(1);
+			}
 		}
 	}
 	
