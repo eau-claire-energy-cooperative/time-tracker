@@ -125,8 +125,8 @@ public class SelectActivityDialog extends DialogWindow {
 		//create an endpanel to marry these two buttons for the end
 		JPanel endPanel = new JPanel(new BorderLayout(10,15));
 		
-		endPanel.add(b_cancel,BorderLayout.LINE_START);
-		endPanel.add(b_save,BorderLayout.LINE_END);
+		endPanel.add(b_save,BorderLayout.LINE_START);
+		endPanel.add(b_cancel,BorderLayout.LINE_END);
 		
 		this.add(m_select,BorderLayout.LINE_START);
 		this.add(midPanel,BorderLayout.CENTER);
