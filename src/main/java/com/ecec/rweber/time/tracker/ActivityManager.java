@@ -1,7 +1,7 @@
 package com.ecec.rweber.time.tracker;
 
 import java.io.File;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -163,5 +163,9 @@ public class ActivityManager {
 			
 			this.saveActivity(act);
 		}
+	}
+
+	public void close() {
+		m_database.disconnect();
 	}
 }
