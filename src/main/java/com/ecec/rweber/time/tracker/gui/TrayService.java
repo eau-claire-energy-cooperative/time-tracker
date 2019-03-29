@@ -442,7 +442,6 @@ public class TrayService implements Observer {
         
         exitItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	m_actManage.close();
                 tray.remove(m_trayIcon);
                 System.exit(0);
             }

@@ -1,16 +1,13 @@
 package com.ecec.rweber.time.tracker;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
 import org.apache.log4j.Logger;
-
 import com.ecec.rweber.time.tracker.sql.DatasourceDrivers;
 import com.ecec.rweber.time.tracker.sql.SQLDatasource;
 import com.ecec.rweber.time.tracker.sql.SQLiteDatasource;
@@ -19,7 +16,7 @@ public class ActivityManager {
 	public static final String DEFAULT_DB = "resources/activities.db";
 	
 	private Logger m_log = null;
-	private SQLDatasource m_database = null;
+	private File m_dbFile = null;
 	
 	public ActivityManager(){
 		this(ActivityManager.DEFAULT_DB);
@@ -27,7 +24,7 @@ public class ActivityManager {
 	
 	public ActivityManager(String dbFile){
 		m_log = Logger.getLogger(this.getClass());
-		m_database = this.loadDatabase(new File(dbFile)); 
+		m_dbFile = new File(dbFile); 
 	}
 	
 	private SQLDatasource loadDatabase(File dbFile){
@@ -41,7 +38,7 @@ public class ActivityManager {
 		
 		SQLDatasource result = null;
 		
-		m_log.info("Loading DB file: " + dbFile.getAbsolutePath());
+		m_log.debug("Loading DB file: " + dbFile.getAbsolutePath());
 		Map<String,String> props = new HashMap<String,String>();
 		props.put("database",dbFile.getAbsolutePath());
 		props.put("schema_name",dbFile.getAbsolutePath());
@@ -55,9 +52,11 @@ public class ActivityManager {
 	
 	private List<Activity> loadActivities(){
 		m_log.debug("loading activities");
+		SQLDatasource database = this.loadDatabase(m_dbFile);
+		
 		List<Activity> result = new ArrayList<Activity>();
 		
-		Iterator<Map<String,String>> sqlQuery = m_database.executeQuery("select * from activities order by name asc").iterator();
+		Iterator<Map<String,String>> sqlQuery = database.executeQuery("select * from activities order by name asc").iterator();
 		Map<String,String> aRow = null;
 		
 		while(sqlQuery.hasNext())
@@ -67,48 +66,70 @@ public class ActivityManager {
 			result.add(new Activity(aRow));
 		}
 		
+		database.disconnect();
+		
 		return result;
 	}
 	
 	private void saveActivity(Activity a){
 		m_log.debug("Saving activity: " + a.getName());
-		m_database.executeUpdate("insert into activities (name,description) values (?,?)", a.getName(), a.getDescription());
+		SQLDatasource database = this.loadDatabase(m_dbFile);
+		
+		database.executeUpdate("insert into activities (name,description) values (?,?)", a.getName(), a.getDescription());
+		
+		database.disconnect();
 	}
 	
 	private void saveLog(Log l){
 		m_log.debug("Saving log " + l.getActivity());
-		m_database.executeUpdate("insert into log (activity,start,end,description) values (?,?,?,?)",l.getActivity(),l.getStartDate().getTime(),l.getEndDate().getTime(),l.getDescription());
+		SQLDatasource database = this.loadDatabase(m_dbFile);
+		
+		database.executeUpdate("insert into log (activity,start,end,description) values (?,?,?,?)",l.getActivity(),l.getStartDate().getTime(),l.getEndDate().getTime(),l.getDescription());
+		
+		database.disconnect();
 	}
 	
 	private void updateLog(Log l){
 		m_log.debug("updating log: " + l.getId());
-		m_database.executeUpdate("update log set activity = ?, start = ?, end = ?, description = ? where id = ?", l.getActivity(),l.getStartDate().getTime(),l.getEndDate().getTime(),l.getDescription(),l.getId());
+		SQLDatasource database = this.loadDatabase(m_dbFile);
+		
+		database.executeUpdate("update log set activity = ?, start = ?, end = ?, description = ? where id = ?", l.getActivity(),l.getStartDate().getTime(),l.getEndDate().getTime(),l.getDescription(),l.getId());
+		
+		database.disconnect();
 	}
 	
 	public List<Log> generateReport(long startDate, long endDate){
 		m_log.debug("Generating report: " + startDate + " to " + endDate);
+		SQLDatasource database = this.loadDatabase(m_dbFile);
+		
 		List<Log> result = new ArrayList<Log>();
 		
-		Iterator<Map<String,String>> sqlQuery = m_database.executeQuery("select * from log where start > ? and start < ? order by start asc", startDate, endDate).iterator();
+		Iterator<Map<String,String>> sqlQuery = database.executeQuery("select * from log where start > ? and start < ? order by start asc", startDate, endDate).iterator();
 		
 		while(sqlQuery.hasNext())
 		{
 			result.add(new Log(sqlQuery.next()));
 		}
 		
+		database.disconnect();
+		
 		return result;
 	}
 	
 	public List<LogGroup> generateGroupReport(long startDate, long endDate){
 		m_log.debug("Generating report: " + startDate + " to " + endDate);
+		SQLDatasource database = this.loadDatabase(m_dbFile);
+		
 		List<LogGroup> result = new ArrayList<LogGroup>();
 	
-		Iterator<Map<String,String>> sqlQuery = m_database.executeQuery("select sum(log.end - log.start) as milliseconds, activity from log where start > ? and start < ? group by activity order by activity asc", startDate, endDate).iterator();
+		Iterator<Map<String,String>> sqlQuery = database.executeQuery("select sum(log.end - log.start) as milliseconds, activity from log where start > ? and start < ? group by activity order by activity asc", startDate, endDate).iterator();
 		
 		while(sqlQuery.hasNext())
 		{
 			result.add(new LogGroup(sqlQuery.next()));
 		}
+		
+		database.disconnect();
 		
 		return result;
 	}
@@ -135,7 +156,11 @@ public class ActivityManager {
 	
 	public void deleteEntry(Log l){
 		m_log.debug("deleting log " + l.getId());
-		m_database.executeUpdate("delete from log where id = ?", l.getId());
+		SQLDatasource database = this.loadDatabase(m_dbFile);
+		
+		database.executeUpdate("delete from log where id = ?", l.getId());
+		
+		database.disconnect();
 	}
 	
 	public List<Activity> getActivities(){
@@ -148,8 +173,9 @@ public class ActivityManager {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setActivities(Vector table){
+		SQLDatasource database = this.loadDatabase(m_dbFile);
 		
-		m_database.executeUpdate("delete from activities");
+		database.executeUpdate("delete from activities");
 		
 		Iterator<Vector> iter = table.iterator();
 		Vector v = null;
@@ -163,9 +189,7 @@ public class ActivityManager {
 			
 			this.saveActivity(act);
 		}
-	}
-
-	public void close() {
-		m_database.disconnect();
+		
+		database.disconnect();
 	}
 }
