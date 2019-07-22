@@ -3,7 +3,7 @@
   <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
   <jar>time-tracker.jar</jar>
-  <outfile>C:\git\time-tracker\time-tracker.exe</outfile>
+  <outfile>C:\xbmc\git\time-tracker\time-tracker.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -13,22 +13,22 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon>C:\git\time-tracker\resources\timer-icon.ico</icon>
+  <icon>C:\xbmc\git\time-tracker\resources\timer-icon.ico</icon>
   <jre>
-    <path></path>
+    <path>%JAVA_HOME%</path>
     <bundledJre64Bit>false</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
-    <minVersion>1.7.0</minVersion>
+    <minVersion></minVersion>
     <maxVersion></maxVersion>
     <jdkPreference>preferJre</jdkPreference>
     <runtimeBits>64/32</runtimeBits>
   </jre>
   <versionInfo>
-    <fileVersion>1.4.0.0</fileVersion>
+    <fileVersion>1.5.0.0</fileVersion>
     <txtFileVersion>Time Tracker</txtFileVersion>
     <fileDescription>Small Time Tracking utility</fileDescription>
-    <copyright></copyright>
-    <productVersion>1.4.0.0</productVersion>
+    <copyright>Eau Claire Energy Cooperative</copyright>
+    <productVersion>1.5.0.0</productVersion>
     <txtProductVersion>Time Tracker</txtProductVersion>
     <productName>Time Tracker</productName>
     <companyName>Eau Claire Energy Cooperative</companyName>
