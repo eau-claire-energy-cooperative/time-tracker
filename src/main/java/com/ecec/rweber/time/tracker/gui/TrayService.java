@@ -218,6 +218,9 @@ public class TrayService implements Observer {
 			//start the timer
 			m_timer.start();
 			m_trayIcon.displayMessage(PROGRAM_NAME, "Timer started", MessageType.INFO);
+			
+			m_trayIcon.setImage(new ImageIcon("resources/timer-running-small.png").getImage());
+			m_trayIcon.setToolTip(PROGRAM_NAME + " - Running");
 		}
 		else
 		{
@@ -243,6 +246,9 @@ public class TrayService implements Observer {
 			}
 			
 			m_timer.reset();
+			
+			m_trayIcon.setImage(new ImageIcon("resources/timer-small.png").getImage());
+			m_trayIcon.setToolTip(PROGRAM_NAME);
 		}
 	}
 	
