@@ -13,7 +13,7 @@ public class GroupLogViewer extends LogViewerTemplate{
 	private static final long serialVersionUID = -4190305067721655539L;
 
 	public GroupLogViewer(ActivityManager manage) {
-		super("Group Log Viewer", manage);
+		super("Group Log Viewer", manage, 1);
 	}
 	
 	@Override

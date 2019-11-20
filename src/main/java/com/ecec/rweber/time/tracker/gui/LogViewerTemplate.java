@@ -14,6 +14,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,14 +50,18 @@ public abstract class LogViewerTemplate extends GuiWindow {
 	private Date m_startDate = null;
 	private Date m_endDate = null;
 	private int m_timeFormat = TimeFormatter.MINUTES;
+	private int m_timeColumn = 0;
 	
 	//for the gui
 	private JLabel l_startDate = null;
 	private JLabel l_endDate = null;
+	private JLabel l_totalTime = null;
 	protected JTable m_table = null;
 	
-	public LogViewerTemplate(String windowName, ActivityManager manage) {
+	public LogViewerTemplate(String windowName, ActivityManager manage, int timeColumn) {
 		super(windowName, manage);
+		
+		m_timeColumn = timeColumn;
 	}
 
 	private void generateReport(){
@@ -72,12 +77,28 @@ public abstract class LogViewerTemplate extends GuiWindow {
 				l_endDate.setText("End: " + formatter.format(m_endDate));
 				
 				m_table.setModel(this.createTableModel(m_startDate, m_endDate));
+				
+				//update the total time at the bottom
+				this.updateTotal();
 			}
 			else
 			{
 				JOptionPane.showMessageDialog(this, "The start date must be before the end date");
 			}
 		}
+	}
+	
+	private void updateTotal() {
+		DecimalFormat formatter = new DecimalFormat("#.##");
+		
+		//get the total time by summing up the table model
+		double total = 0;
+		for(int count = 0; count < m_table.getModel().getRowCount(); count ++)
+		{
+			total = total + Double.parseDouble(m_table.getModel().getValueAt(count, m_timeColumn).toString());
+		}
+		
+		l_totalTime.setText("Total: " + formatter.format(total) +  " " + TimeFormatter.toString(this.getTimeFormat()));
 	}
 	
 	private void deleteSelectedRow(){
@@ -374,12 +395,20 @@ public abstract class LogViewerTemplate extends GuiWindow {
 			
 		});
 		
+		//wrap the table in a scroller
 		JScrollPane scroller = new JScrollPane(m_table);
 		scroller.setAlignmentX(Component.CENTER_ALIGNMENT);
 		scroller.setPreferredSize(new Dimension(Short.MAX_VALUE,Short.MAX_VALUE));
 		layoutPane.add(scroller);
 		
-		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,10)));
+		//show total at the bottom
+		JComponent wrapper2= new JPanel();
+		wrapper2.setSize(new Dimension(WIDTH,40));
+		
+		l_totalTime = new JLabel("");
+		wrapper2.add(l_totalTime);
+		
+		layoutPane.add(wrapper2);
 		
 		//generate the report
 		generateReport();

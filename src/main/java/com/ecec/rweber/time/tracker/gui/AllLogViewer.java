@@ -19,7 +19,7 @@ public class AllLogViewer extends LogViewerTemplate {
 	private SimpleDateFormat m_dateFormat = null;
 	
 	public AllLogViewer(ActivityManager manager){
-		super("Log Viewer",manager);
+		super("Log Viewer",manager, 3);
 		
 		m_dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 	}
