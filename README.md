@@ -2,7 +2,7 @@
 
 This is a very basic time tracking utility with a reporting option. The need for this arose when I needed an easy way to report time to different organizations, or different projects. My requirements were that it should be with the least amount of effort as possible, and record time in a reportable format. 
 
-This program achieves both those issues. It runs as a Windows task bar item Right click to start a timer. Right-click again to stop the timer and you'll see a small prompt to choose the activity you just timed. These are set up ahead of time from the Activities menu. This is then logged to the database. 
+This program achieves both those issues. It runs as a Windows task bar item. Right-click to start a timer. Right-click again to stop the timer and you'll see a small prompt to choose the activity you just timed. These are set up ahead of time from the Activities menu. This is then logged to the database. 
 
 ## Compiling
 
