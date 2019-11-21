@@ -367,6 +367,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,10)));
 		
 		m_table = new JTable();
+		m_table.setAutoCreateRowSorter(true);
 		m_table.getTableHeader().setReorderingAllowed(true);
 		m_table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		m_table.addMouseListener(new MouseAdapter(){
