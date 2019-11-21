@@ -4,9 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.SortOrder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.Log;
@@ -157,6 +160,12 @@ public class AllLogViewer extends LogViewerTemplate {
 		//get the log object and delete it
 		Log aLog = (Log)m_table.getValueAt(row, 0);
 		g_manage.deleteEntry(aLog);
+	}
+	
+	@Override
+	protected TableSorter createTableSorter(TableModel model) {
+		//sort by start date on this screen
+		return new TableSorter(model,TableSorter.generateSortOrder(1,SortOrder.DESCENDING));
 	}
 	
 	@Override 

@@ -4,7 +4,7 @@ package com.ecec.rweber.time.tracker.gui;
 import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-
+import javax.swing.table.TableModel;
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.LogGroup;
 import com.ecec.rweber.time.tracker.util.TimeFormatter;
@@ -40,6 +40,11 @@ public class GroupLogViewer extends LogViewerTemplate{
 	@Override
 	protected void deleteRowImpl(int row) {
 		//do nothing
+	}
+
+	@Override
+	protected TableSorter createTableSorter(TableModel model) {
+		return new TableSorter(model,TableSorter.generateSortOrder(0));
 	}
 
 }

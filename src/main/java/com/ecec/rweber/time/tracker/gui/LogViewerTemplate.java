@@ -16,9 +16,12 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -36,9 +39,13 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.util.CSVWriter;
@@ -77,6 +84,9 @@ public abstract class LogViewerTemplate extends GuiWindow {
 				l_endDate.setText("End: " + formatter.format(m_endDate));
 				
 				m_table.setModel(this.createTableModel(m_startDate, m_endDate));
+				
+				//model has been updated, generate a sorter
+				m_table.setRowSorter(this.createTableSorter(m_table.getModel()));
 				
 				//update the total time at the bottom
 				this.updateTotal();
@@ -287,6 +297,8 @@ public abstract class LogViewerTemplate extends GuiWindow {
 	
 	protected abstract void deleteRowImpl(int row);
 	
+	protected abstract TableSorter createTableSorter(TableModel model);
+	
 	protected void notifyUpdate(){
 		generateReport();
 	}
@@ -367,7 +379,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,10)));
 		
 		m_table = new JTable();
-		m_table.setAutoCreateRowSorter(true);
+		//m_table.setAutoCreateRowSorter(true);
 		m_table.getTableHeader().setReorderingAllowed(true);
 		m_table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		m_table.addMouseListener(new MouseAdapter(){
