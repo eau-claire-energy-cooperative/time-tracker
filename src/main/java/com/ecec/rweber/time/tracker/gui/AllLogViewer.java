@@ -82,7 +82,7 @@ public class AllLogViewer extends LogViewerTemplate {
 		{
 			aLog = m_report.get(count);
 			
-			m_model.setValueAt(aLog, count, 0);
+			m_model.setValueAt(aLog.toString(), count, 0);
 			m_model.setValueAt(aLog.getStartDate(), count, 1);
 			m_model.setValueAt(aLog.getEndDate(), count, 2);
 			m_model.setValueAt(aLog.getTotal(this.getTimeFormat()),count,3);
