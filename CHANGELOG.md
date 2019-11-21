@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+## 1.8.2
+
+### Added
+
+- TableSorter class to allow reports to specify default sorts and columns that can be custom sorted
+- Use CellRenderers to customize look of data, especially for Date types, helps with sorting
+
 ## 1.8.1
 
 ### Added
