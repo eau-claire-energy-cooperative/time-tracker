@@ -166,7 +166,7 @@ public class AllLogViewer extends LogViewerTemplate {
 	@Override
 	protected TableSorter createTableSorter(TableModel model) {
 		//sort by start date on this screen
-		return new TableSorter(model,TableSorter.generateSortOrder(1,SortOrder.DESCENDING), new int[] {4,5});
+		return new TableSorter(model,TableSorter.generateSortOrder(1,SortOrder.ASCENDING), new int[] {4,5});
 	}
 	
 	@Override 
