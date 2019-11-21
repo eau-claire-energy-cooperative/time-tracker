@@ -33,4 +33,14 @@ public class TableSorter extends TableRowSorter<TableModel>{
 		
 		this.setSortKeys(defaultSort);
 	}
+	
+	public TableSorter(TableModel model, List<RowSorter.SortKey> defaultSort, int[] nonSortable) {
+		this(model,defaultSort);
+		
+		//these columns are non-sortable
+		for(int count = 0; count < nonSortable.length; count ++)
+		{
+			this.setSortable(nonSortable[count], false);
+		}
+	}
 }

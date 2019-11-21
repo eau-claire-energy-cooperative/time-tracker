@@ -44,7 +44,7 @@ public class GroupLogViewer extends LogViewerTemplate{
 
 	@Override
 	protected TableSorter createTableSorter(TableModel model) {
-		return new TableSorter(model,TableSorter.generateSortOrder(0));
+		return new TableSorter(model,TableSorter.generateSortOrder(0), new int[] {2});
 	}
 
 }
