@@ -8,10 +8,12 @@ import javax.swing.table.DefaultTableModel;
 public class LogTableModel extends DefaultTableModel{
 	private static final long serialVersionUID = -5870488478365971908L;
 	private List<Integer> m_editableCells = null;
+	private Class[] m_colClasses = null;
 	
-	public LogTableModel(String[] strings, int size) {
+	public LogTableModel(String[] strings, Class[] colClasses, int size) {
 		super(strings,size);
-		
+	
+		m_colClasses = colClasses;
 		m_editableCells = new ArrayList<Integer>();
 	}
 
@@ -24,5 +26,16 @@ public class LogTableModel extends DefaultTableModel{
 		return m_editableCells.contains(column);
 	}
 
+	@Override
+	public Class<?> getColumnClass(int columnIndex) {
+		Class result = null;
+		
+		if(columnIndex < m_colClasses.length)
+		{
+			result = m_colClasses[columnIndex]; 
+		}
+		
+		return result;
+	}
 	
 }

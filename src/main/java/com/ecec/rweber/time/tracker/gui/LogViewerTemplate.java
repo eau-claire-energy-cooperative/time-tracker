@@ -43,7 +43,9 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -407,6 +409,11 @@ public abstract class LogViewerTemplate extends GuiWindow {
 			}
 			
 		});
+		
+		//set cell renderers for a few types
+		m_table.setDefaultRenderer(Date.class, new DateCellRenderer());
+		m_table.setDefaultRenderer(Double.class, new DefaultTableCellRenderer());
+		m_table.setDefaultRenderer(String.class, new DefaultTableCellRenderer());
 		
 		//wrap the table in a scroller
 		JScrollPane scroller = new JScrollPane(m_table);

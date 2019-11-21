@@ -22,7 +22,7 @@ public class GroupLogViewer extends LogViewerTemplate{
 		//generate the report
 		List<LogGroup> report = g_manage.generateGroupReport(startDate.getTime(), endDate.getTime());
 		
-		DefaultTableModel tModel = new LogTableModel(new String[]{"Activity Name","Total Time","Time Unit"},report.size());
+		DefaultTableModel tModel = new LogTableModel(new String[]{"Activity Name","Total Time","Time Unit"},new Class[] {String.class, Double.class, String.class}, report.size());
 		
 		//add the data to the table
 		LogGroup aLog = null;
