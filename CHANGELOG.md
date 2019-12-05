@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 - start/stop the timer on a double left-click of the mouse on the icon, just a quicker way to access
 
+### Changed
+
+- changed README document to mention new double click method
+
 ## 1.8.2
 
 ### Added
