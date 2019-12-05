@@ -318,6 +318,12 @@ public class TrayService implements Observer {
 						m_isRunning.setLabel("Start Timer");
 					}
 				}
+				
+				//double click to start/stop quickly
+				if(SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2)
+				{
+					toggleTimer();
+				}
 			}
         	
         });
