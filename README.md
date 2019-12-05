@@ -2,7 +2,7 @@
 
 This is a very basic time tracking utility with a reporting option. The need for this arose when I needed an easy way to report time to different organizations, or different projects. My requirements were that it should be with the least amount of effort as possible, and record time in a reportable format. 
 
-This program achieves both those issues. It runs as a Windows task bar item. Right-click to start a timer. Right-click again to stop the timer and you'll see a small prompt to choose the activity you just timed. These are set up ahead of time from the Activities menu. This is then logged to the database. 
+This program achieves both those issues. It runs as a Windows task bar item. Double-click to start a timer. Double-click again to stop the timer and you'll see a small prompt to choose the activity you just timed. These are set up ahead of time from the Activities menu. This is then logged to the database. 
 
 ## Compiling
 
@@ -14,7 +14,7 @@ You can run the program directly by launching the jar file, however there is als
 
 ## Using the Program
 
-Pretty simple operations, right click and select "Start Timer" to start the timer. When done right-click and select the "Running" menu item, which contains a readout of the current amount of time, to stop the timer. Once the timer is stopped you will get a prompt for where to log to the activity. 
+Pretty simple operations, you can either double-click the icon or right click and select "Start Timer" to start the timer. When done another double-click or right-click and select the "Running" menu item, to stop the timer. Additionally a right-click will show the currently elapsed time. Once the timer is stopped you will get a prompt for where to log to the activity. 
 
 Reporting is done by right-clicking the tray icon and selecting reports. From here you can choose date options and run reports from your logged history. Exporting to CSV is available. 
 
