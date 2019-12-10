@@ -93,7 +93,7 @@ public class AllLogViewer extends LogViewerTemplate {
 		//set the description as editable
 		m_model.setEditableCol(1);
 		m_model.setEditableCol(2);
-		m_model.setEditableCol(4);
+		m_model.setEditableCol(5);
 		
 		m_model.addTableModelListener(new TableModelListener(){
 
@@ -141,7 +141,7 @@ public class AllLogViewer extends LogViewerTemplate {
 					}
 	
 				}
-				else if(event.getColumn() == 4)
+				else if(event.getColumn() == 5)
 				{
 					//get the log for this row
 					Log aLog = m_report.get(event.getFirstRow());
