@@ -305,7 +305,14 @@ public abstract class LogViewerTemplate extends GuiWindow {
 	protected abstract TableSorter createTableSorter(TableModel model);
 	
 	protected void notifyUpdate(){
+		//save the selected row
+		int selected = m_table.getSelectedRow();
+
+		//update the view
 		generateReport();
+		
+		//select the same row again
+		m_table.setRowSelectionInterval(selected, selected);
 	}
 	
 	protected int getTimeFormat(){
@@ -438,6 +445,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		
 		//generate the report
 		generateReport();
+
 	}
 
 }
