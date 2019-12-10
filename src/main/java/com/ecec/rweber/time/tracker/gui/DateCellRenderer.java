@@ -14,10 +14,14 @@ public class DateCellRenderer extends DefaultTableCellRenderer {
 		//will render any date given with this string
 		m_dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 	}
-
+	
 	@Override
 	protected void setValue(Object value) {
 		setText(m_dateFormat.format((Date)value));
+	}
+	
+	public String formatDate(Object value) {
+		return m_dateFormat.format((Date)value);
 	}
 	
 }
