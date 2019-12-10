@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+## 1.8.4
+
+### Added
+
+- Added an editor class to handle date formatting when date cells are highlighted for editing
+
+### Changed
+
+- wrong editable cell for the Description field resulted in time interval (minutes/hours) being editable instead. Fixed. 
+- selected row is re-highlighted again after editing instead of selection moving to the top
+
 ## 1.8.3
 
 ### Added
