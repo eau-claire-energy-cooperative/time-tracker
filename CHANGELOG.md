@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+## 1.8.5
+
+### Added
+
+- added a Time field to the DateChooser pop-up so both a date and time value can be edited within the same window
+
+### Changed
+
+- fixed error when cancel was hit in DateChooser, opening calendar again returned null pointer error
+- modified the DateCellEditor class to use the DateChooser pop-up. No more manual string manipulation when editing times
+- changed how row sorting works after an edit, now will move highlighted row within table after update
+
 ## 1.8.4
 
 ### Added
