@@ -99,6 +99,8 @@ public class AllLogViewer extends LogViewerTemplate {
 						aLog.setStartDate(newDate);
 						g_manage.saveEntry(aLog);
 					
+						//also update the time field
+						m_model.setValueAt(aLog.getTotal(getTimeFormat()), event.getFirstRow(), 3);
 					}
 					else
 					{
@@ -117,7 +119,9 @@ public class AllLogViewer extends LogViewerTemplate {
 					{
 						aLog.setEndDate(newDate);
 						g_manage.saveEntry(aLog);
-
+						
+						//also update the time field
+						m_model.setValueAt(aLog.getTotal(getTimeFormat()), event.getFirstRow(), 3);
 					}
 					else
 					{
