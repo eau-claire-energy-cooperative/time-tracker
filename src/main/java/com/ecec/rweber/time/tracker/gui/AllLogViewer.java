@@ -27,42 +27,35 @@ public class AllLogViewer extends LogViewerTemplate {
 		m_dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 	}
 	
-	private Date checkTime(Log aLog, String dateString, boolean isStart){
+	private Date checkTime(Log aLog, Date newDate, boolean isStart){
 		Date result = null;
-		
-		try{
-			//check that it's parseable
-			Date newDate = m_dateFormat.parse(dateString);
-			
-			if(isStart)
-			{
-				if(newDate.getTime() <= aLog.getEndDate().getTime())
-				{
-					//make sure the start happens before the end
-					result = newDate;
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(null, "Start date/time must be before ending date/time");
-				}
-			}
-			else if(!isStart)
-			{
-				if(newDate.getTime() >= aLog.getStartDate().getTime())
-				{
-					//make sure end is after start
-					result = newDate;
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(null, "End date/time must be after starting date/time");
-				}
-			}
-		}
-		catch(ParseException pe)
+		System.out.println(newDate);
+		//check the time window
+		if(isStart)
 		{
-			JOptionPane.showMessageDialog(null, "Date/Time format is incorrect");
+			if(newDate.getTime() <= aLog.getEndDate().getTime())
+			{
+				//make sure the start happens before the end
+				result = newDate;
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Start date/time must be before ending date/time");
+			}
 		}
+		else if(!isStart)
+		{
+			if(newDate.getTime() >= aLog.getStartDate().getTime())
+			{
+				//make sure end is after start
+				result = newDate;
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "End date/time must be after starting date/time");
+			}
+		}
+		
 		
 		return result;
 	}
@@ -105,8 +98,8 @@ public class AllLogViewer extends LogViewerTemplate {
 					//we are formatting the start date
 					Log aLog = m_report.get(event.getFirstRow());
 					
-					Date newDate = checkTime(aLog,m_model.getValueAt(event.getFirstRow(), 1).toString(),true);
-					
+					Date newDate = checkTime(aLog,(Date)m_model.getValueAt(event.getFirstRow(), 1),true);
+
 					if(newDate != null)
 					{
 						aLog.setStartDate(newDate);
@@ -117,7 +110,7 @@ public class AllLogViewer extends LogViewerTemplate {
 					else
 					{
 						//reset the date
-						m_model.setValueAt(m_dateFormat.format(aLog.getStartDate()), event.getFirstRow(), 1);
+						m_model.setValueAt(aLog.getStartDate(), event.getFirstRow(), 1);
 					}
 				}
 				else if(event.getColumn() == 2)
@@ -125,7 +118,7 @@ public class AllLogViewer extends LogViewerTemplate {
 					//we are formatting the start date
 					Log aLog = m_report.get(event.getFirstRow());
 					
-					Date newDate = checkTime(aLog,m_model.getValueAt(event.getFirstRow(), 2).toString(),false);
+					Date newDate = checkTime(aLog,(Date)m_model.getValueAt(event.getFirstRow(), 2),false);
 					
 					if(newDate != null)
 					{
@@ -137,7 +130,7 @@ public class AllLogViewer extends LogViewerTemplate {
 					else
 					{
 						//reset the date
-						m_model.setValueAt(m_dateFormat.format(aLog.getEndDate()), event.getFirstRow(), 2);
+						m_model.setValueAt(aLog.getEndDate(), event.getFirstRow(), 2);
 					}
 	
 				}

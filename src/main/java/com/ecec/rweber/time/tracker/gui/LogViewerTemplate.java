@@ -133,7 +133,14 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		DateChooser sChooser = new DateChooser(this,title);
 		sChooser.setLocation(this.getX(), this.getY());
 	
-		return sChooser.select(startDate);
+		Date newDate = sChooser.select(startDate);
+		if(newDate == null)
+		{
+			//this can return null if canceled
+			newDate = startDate;
+		}
+		
+		return newDate;
 	}
 	
 	private JPopupMenu createTablePopup(){
@@ -426,7 +433,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		m_table.setDefaultRenderer(String.class, new DefaultTableCellRenderer());
 		
 		//add a special editor for dates
-		m_table.setDefaultEditor(Date.class, new DateCellEditor());
+		m_table.setDefaultEditor(Date.class, new DateCellEditor(this));
 		
 		//wrap the table in a scroller
 		JScrollPane scroller = new JScrollPane(m_table);
