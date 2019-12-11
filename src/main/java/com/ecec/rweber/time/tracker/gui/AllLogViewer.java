@@ -1,6 +1,5 @@
 package com.ecec.rweber.time.tracker.gui;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -9,8 +8,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.Log;
 import com.ecec.rweber.time.tracker.util.TimeFormatter;
@@ -19,12 +16,9 @@ public class AllLogViewer extends LogViewerTemplate {
 	private static final long serialVersionUID = 1L;
 	private List<Log> m_report = null;
 	private LogTableModel m_model = null;
-	private SimpleDateFormat m_dateFormat = null;
 	
 	public AllLogViewer(ActivityManager manager){
 		super("Log Viewer",manager, 3);
-		
-		m_dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 	}
 	
 	private Date checkTime(Log aLog, Date newDate, boolean isStart){
