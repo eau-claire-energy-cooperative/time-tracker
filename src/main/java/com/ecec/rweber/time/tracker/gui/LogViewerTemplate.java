@@ -82,7 +82,7 @@ public abstract class LogViewerTemplate extends GuiWindow {
 				
 				//model has been updated, generate a sorter
 				m_table.setRowSorter(this.createTableSorter(m_table.getModel()));
-				
+
 				//update the total time at the bottom
 				this.updateTotal();
 			}
@@ -301,17 +301,6 @@ public abstract class LogViewerTemplate extends GuiWindow {
 	
 	protected abstract TableSorter createTableSorter(TableModel model);
 	
-	protected void notifyUpdate(){
-		//save the selected row
-		int selected = m_table.getSelectedRow();
-
-		//update the view
-		generateReport();
-		
-		//select the same row again
-		m_table.setRowSelectionInterval(selected, selected);
-	}
-	
 	protected int getTimeFormat(){
 		return m_timeFormat;
 	}
@@ -388,7 +377,6 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,10)));
 		
 		m_table = new JTable();
-		//m_table.setAutoCreateRowSorter(true);
 		m_table.getTableHeader().setReorderingAllowed(true);
 		m_table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		m_table.addMouseListener(new MouseAdapter(){

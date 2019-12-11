@@ -23,7 +23,7 @@ public class AllLogViewer extends LogViewerTemplate {
 	
 	private Date checkTime(Log aLog, Date newDate, boolean isStart){
 		Date result = null;
-		System.out.println(newDate);
+
 		//check the time window
 		if(isStart)
 		{
@@ -99,7 +99,6 @@ public class AllLogViewer extends LogViewerTemplate {
 						aLog.setStartDate(newDate);
 						g_manage.saveEntry(aLog);
 					
-						notifyUpdate();
 					}
 					else
 					{
@@ -118,8 +117,7 @@ public class AllLogViewer extends LogViewerTemplate {
 					{
 						aLog.setEndDate(newDate);
 						g_manage.saveEntry(aLog);
-					
-						notifyUpdate();
+
 					}
 					else
 					{
