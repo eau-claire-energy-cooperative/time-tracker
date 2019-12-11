@@ -43,4 +43,11 @@ public class TableSorter extends TableRowSorter<TableModel>{
 			this.setSortable(nonSortable[count], false);
 		}
 	}
+
+	@Override
+	public boolean getSortsOnUpdates() {
+		return true;
+	}
+	
+	
 }
