@@ -46,6 +46,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -95,6 +96,18 @@ public class DateChooser extends JDialog
 	      "Fri",
 	      "Sat"
 	  };
+    
+    /** Hours of the day */
+    private static final Integer[] HOURS = 
+    	new Integer[] {
+    		1,2,3,4,5,6,7,8,9,10,11,12
+    };
+    
+    /** Minutes in the an hour */
+    private static final Integer[] MINUTES = 
+    	new Integer[] {
+    		1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59
+    };
 
     /** Text color of the days of the weeks, used as column headers in
         the calendar. */
@@ -143,6 +156,15 @@ public class DateChooser extends JDialog
     /** Year selection control. */
     private JComboBox<String> year;
 
+    /** hours selection control. */
+    private JComboBox<Integer> hour;
+    
+    /** minutes selection control. */
+    private JComboBox<Integer> minutes;
+    
+    /** AM/PM selection control. */
+    private JComboBox<String> am_pm;
+    
     /** "Ok" button. */
     private JButton ok;
 
@@ -164,7 +186,8 @@ public class DateChooser extends JDialog
         dialog box, <code>false</code> otherwise. */
     private boolean okClicked;
 
-
+    /** if the time editor should be shown, defaults to false */
+    private boolean showTime = false;
 
     /**
      * Custom panel that can receive the focus. Used to implement the
@@ -252,9 +275,28 @@ public class DateChooser extends JDialog
 	    daysGrid.add( days[i][j] );
 	  daysGrid.setBackground( Color.white );
 	  daysGrid.setBorder( BorderFactory.createLoweredBevelBorder() );
+	  
 	  JPanel daysPanel = new JPanel();
-	  daysPanel.add( daysGrid );
-	
+	  daysPanel.setLayout(new BoxLayout(daysPanel,BoxLayout.Y_AXIS));
+	  daysPanel.add(daysGrid );
+
+	  JLabel l_time = new JLabel("Time: ");
+	  
+	  hour = new JComboBox<Integer>(HOURS);
+	  minutes = new JComboBox<Integer>(MINUTES);
+	  am_pm = new JComboBox<String>(new String[] {"AM","PM"});
+
+	  if(showTime)
+	  {
+		  JPanel timePanel = new JPanel();
+		  timePanel.add(l_time);
+		  timePanel.add(hour);
+		  timePanel.add(minutes);
+		  timePanel.add(am_pm);
+		  
+		  daysPanel.add(timePanel);
+	  }
+	  
 	  JPanel buttons = new JPanel();
 	  buttons.add( ok );
 	  buttons.add( cancel );
@@ -446,13 +488,28 @@ public class DateChooser extends JDialog
      * @param owner owner dialog
      *
      * @param title dialog title
+     * 
+     * @param showTime if the time editing dialog should be shown
+     **/
+    public DateChooser( Dialog owner, String title, boolean showTime )
+    {
+	  super( owner, title, true );
+	  this.showTime = showTime;
+	  construct();
+    }
+    
+    /**
+     * Constructs a new <code>DateChooser</code> with the given title.
+     *
+     * @param owner owner dialog
+     *
+     * @param title dialog title
      **/
     public DateChooser( Dialog owner, String title )
     {
 	  super( owner, title, true );
 	  construct();
     }
-
 
 
     /**
@@ -467,6 +524,21 @@ public class DateChooser extends JDialog
     }
 
 
+    /**
+     * Constructs a new <code>DateChooser</code> with the given title.
+     *
+     * @param owner owner frame
+     *
+     * @param title dialog title
+     * 
+     * @param showTime if the time editor should be shown
+     **/
+    public DateChooser( Frame owner, String title, boolean showTime )
+    {
+	  super( owner, title, true );
+	  this.showTime = showTime;
+	  construct();
+    }
 
     /**
      * Constructs a new <code>DateChooser</code> with the given title.
@@ -493,8 +565,7 @@ public class DateChooser extends JDialog
 	  super( owner, true );
 	  construct();
     }
-
-
+    
 
     /**
      * Selects a date. Displays the dialog box, with a given date as
@@ -511,9 +582,19 @@ public class DateChooser extends JDialog
 		  int _day = calendar.get(Calendar.DATE);
 		  int _month = calendar.get(Calendar.MONTH);
 		  int _year = calendar.get(Calendar.YEAR);
-		
+		  int _hour = calendar.get(Calendar.HOUR);
+		  
+		  if(_hour == 0)
+		  {
+			  _hour = 12;
+		  }
+		  
 		  year.setSelectedIndex( _year-FIRST_YEAR );
 		  month.setSelectedIndex( _month-Calendar.JANUARY );
+		  hour.setSelectedIndex(_hour - 1);
+		  minutes.setSelectedIndex(calendar.get(Calendar.MINUTE) - 1); //subtract one to get 0 based index
+		  am_pm.setSelectedIndex(calendar.get(Calendar.AM_PM));
+		  
 		  setSelected( _day );
 		  okClicked = false;
 		  this.setVisible(true);
@@ -522,8 +603,24 @@ public class DateChooser extends JDialog
 		  calendar.set( Calendar.DATE, getSelectedDay() );
 		  calendar.set( Calendar.MONTH, month.getSelectedIndex()+Calendar.JANUARY );
 		  calendar.set( Calendar.YEAR, year.getSelectedIndex()+FIRST_YEAR );
-		  calendar.set(Calendar.HOUR_OF_DAY, 0);
-		  calendar.set(Calendar.MINUTE, 0);
+		  
+		  if(this.showTime)
+		  {
+			  _hour = hour.getSelectedIndex() + 1; //add one as is 0 indexed
+			  if(_hour == 12)
+			  {
+				  _hour = 0; //0 is 12
+			  }
+			  
+			  calendar.set(Calendar.HOUR, _hour);
+			  calendar.set(Calendar.MINUTE, minutes.getSelectedIndex() + 1); //add one as it's 0 indexed
+			  calendar.set(Calendar.AM_PM, am_pm.getSelectedIndex());
+		  }
+		  else
+		  {
+			  calendar.set(Calendar.HOUR_OF_DAY, 0);
+			  calendar.set(Calendar.MINUTE, 0);
+		  }
 		  
 		  return calendar.getTime();
     }
