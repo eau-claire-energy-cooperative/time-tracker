@@ -309,6 +309,11 @@ public abstract class LogViewerTemplate extends GuiWindow {
 		return false;
 	}
 	
+	protected void notifyUpdate() {
+		//update the total field
+		this.updateTotal();
+	}
+	
 	@Override
 	protected void setupInformation() {
 		this.HEIGHT = 400;
