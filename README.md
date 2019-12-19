@@ -32,4 +32,4 @@ The Grouped Logs Report will group all log entries by activity type and sum the 
 
 ### Custom DB Path 
 
-By default the program looks for the ```resources/activities.db``` file. You can set a custom location by creating a ```resources/db.conf``` file. This will get read on startup. The file should contain the full path to the db file you wish to load. 
+By default the program looks for the ```resources/activities.db``` file. You can set a custom location by modifiying ```resources/db.conf``` file. This will get read on startup. The file should contain the full path to the db file you wish to load. If there is no file in this location a blank database file will be created in this location when the program starts. 
