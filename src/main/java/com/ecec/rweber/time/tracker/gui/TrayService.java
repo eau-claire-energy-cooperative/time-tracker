@@ -40,6 +40,7 @@ import com.ecec.rweber.time.tracker.CountdownTimer;
 import com.ecec.rweber.time.tracker.Log;
 import com.ecec.rweber.time.tracker.TimerState;
 import com.ecec.rweber.time.tracker.ElapsedTimer;
+import com.ecec.rweber.time.tracker.util.DBFile;
 import com.ecec.rweber.time.tracker.util.Notifier;
 import com.ecec.rweber.time.tracker.util.TimeFormatter;
 
@@ -62,39 +63,9 @@ public class TrayService implements Observer {
 		m_countdown = new CountdownTimer();
 		m_countdown.addObserver(this);
 		
-		//check if we've specified the DB location custom
-		File customDb = new File("resources/db.conf");
-		
-		if(!customDb.exists())
-		{
-			//load the default
-			m_actManage = new ActivityManager();
-		}
-		else
-		{
-			//try and load the db path from the file
-			File dbFile = null;
-			
-			try {
-				byte[] encoded = Files.readAllBytes(Paths.get(customDb.getAbsolutePath()));
-				 dbFile = new File(new String(encoded, Charset.defaultCharset()));
-			} catch (IOException e) {
-				m_log.error("Cannot read custom DB file path");
-				e.printStackTrace();
-			}
-			
-			//make sure the DB file exists
-			if(dbFile.exists())
-			{
-				m_actManage = new ActivityManager(dbFile.getAbsolutePath());
-			}
-			else
-			{
-				m_log.error("DB file path does not exist: " + dbFile);
-				JOptionPane.showMessageDialog(null, "DB Path does not exist\n" + dbFile);
-				System.exit(1);
-			}
-		}
+		//load the database
+		m_actManage = new ActivityManager();
+
 	}
 	
 	private void setupLogger(){

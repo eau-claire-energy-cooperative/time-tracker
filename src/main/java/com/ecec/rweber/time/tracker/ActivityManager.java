@@ -11,39 +11,27 @@ import org.apache.log4j.Logger;
 import com.ecec.rweber.time.tracker.sql.DatasourceDrivers;
 import com.ecec.rweber.time.tracker.sql.SQLDatasource;
 import com.ecec.rweber.time.tracker.sql.SQLiteDatasource;
+import com.ecec.rweber.time.tracker.util.DBFile;
 
 public class ActivityManager {
-	public static final String DEFAULT_DB = "resources/activities.db";
-	
 	private Logger m_log = null;
-	private File m_dbFile = null;
+	private DBFile m_dbFile = null;  //manages storage of the DB file location
 	
 	public ActivityManager(){
-		this(ActivityManager.DEFAULT_DB);
-	}
-	
-	public ActivityManager(String dbFile){
 		m_log = Logger.getLogger(this.getClass());
-		m_dbFile = new File(dbFile); 
+		m_dbFile = new DBFile();
 	}
 	
-	private SQLDatasource loadDatabase(File dbFile){
-		
-		//first check if the database exists
-		if(!dbFile.exists())
-		{
-			File defaultFile = new File("resources/activities_default.db");
-			defaultFile.renameTo(dbFile);
-		}
-		
+	private SQLDatasource loadDatabase(){
+		String dbFile = m_dbFile.getDatabaseLocation().getAbsolutePath();
 		SQLDatasource result = null;
 		
-		m_log.debug("Loading DB file: " + dbFile.getAbsolutePath());
+		m_log.debug("Loading DB file: " + dbFile);
 		Map<String,String> props = new HashMap<String,String>();
-		props.put("database",dbFile.getAbsolutePath());
-		props.put("schema_name",dbFile.getAbsolutePath());
-		props.put("username",dbFile.getAbsolutePath());
-		props.put("password",dbFile.getAbsolutePath());
+		props.put("database",dbFile);
+		props.put("schema_name",dbFile);
+		props.put("username",dbFile);
+		props.put("password",dbFile);
 		
 		result = new SQLiteDatasource("activities",DatasourceDrivers.getConnection("sql_lite", props));
 		
@@ -52,7 +40,7 @@ public class ActivityManager {
 	
 	private List<Activity> loadActivities(){
 		m_log.debug("loading activities");
-		SQLDatasource database = this.loadDatabase(m_dbFile);
+		SQLDatasource database = this.loadDatabase();
 		
 		List<Activity> result = new ArrayList<Activity>();
 		
@@ -73,7 +61,7 @@ public class ActivityManager {
 	
 	private void saveActivity(Activity a){
 		m_log.debug("Saving activity: " + a.getName());
-		SQLDatasource database = this.loadDatabase(m_dbFile);
+		SQLDatasource database = this.loadDatabase();
 		
 		database.executeUpdate("insert into activities (name,description) values (?,?)", a.getName(), a.getDescription());
 		
@@ -82,7 +70,7 @@ public class ActivityManager {
 	
 	private void saveLog(Log l){
 		m_log.debug("Saving log " + l.getActivity());
-		SQLDatasource database = this.loadDatabase(m_dbFile);
+		SQLDatasource database = this.loadDatabase();
 		
 		database.executeUpdate("insert into log (activity,start,end,description) values (?,?,?,?)",l.getActivity(),l.getStartDate().getTime(),l.getEndDate().getTime(),l.getDescription());
 		
@@ -91,7 +79,7 @@ public class ActivityManager {
 	
 	private void updateLog(Log l){
 		m_log.debug("updating log: " + l.getId());
-		SQLDatasource database = this.loadDatabase(m_dbFile);
+		SQLDatasource database = this.loadDatabase();
 		
 		database.executeUpdate("update log set activity = ?, start = ?, end = ?, description = ? where id = ?", l.getActivity(),l.getStartDate().getTime(),l.getEndDate().getTime(),l.getDescription(),l.getId());
 		
@@ -100,7 +88,7 @@ public class ActivityManager {
 	
 	public List<Log> generateReport(long startDate, long endDate){
 		m_log.debug("Generating report: " + startDate + " to " + endDate);
-		SQLDatasource database = this.loadDatabase(m_dbFile);
+		SQLDatasource database = this.loadDatabase();
 		
 		List<Log> result = new ArrayList<Log>();
 		
@@ -118,7 +106,7 @@ public class ActivityManager {
 	
 	public List<LogGroup> generateGroupReport(long startDate, long endDate){
 		m_log.debug("Generating report: " + startDate + " to " + endDate);
-		SQLDatasource database = this.loadDatabase(m_dbFile);
+		SQLDatasource database = this.loadDatabase();
 		
 		List<LogGroup> result = new ArrayList<LogGroup>();
 	
@@ -156,7 +144,7 @@ public class ActivityManager {
 	
 	public void deleteEntry(Log l){
 		m_log.debug("deleting log " + l.getId());
-		SQLDatasource database = this.loadDatabase(m_dbFile);
+		SQLDatasource database = this.loadDatabase();
 		
 		database.executeUpdate("delete from log where id = ?", l.getId());
 		
@@ -173,7 +161,7 @@ public class ActivityManager {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setActivities(Vector table){
-		SQLDatasource database = this.loadDatabase(m_dbFile);
+		SQLDatasource database = this.loadDatabase();
 		
 		database.executeUpdate("delete from activities");
 		
