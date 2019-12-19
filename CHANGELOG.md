@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## 1.8.6
 
+### Added
+
+- added a settings menu and moved the Activities configuration area there to organize the menu more
+
 ### Changed
 
 - always load database from the db.conf file, create the file with a default location if it doesn't exist

@@ -255,7 +255,10 @@ public class TrayService implements Observer {
         countdownMenu.add(sixtyMinCountdown);
         countdownMenu.add(customCountdown);
         
+        Menu settingsMenu = new Menu("Settings");
         MenuItem activitiesItem = new MenuItem("Activities");
+        settingsMenu.add(activitiesItem);
+        
         MenuItem exitItem = new MenuItem("Exit");
         
         //add the menu items to the popup menu
@@ -263,7 +266,7 @@ public class TrayService implements Observer {
         popup.addSeparator();
         popup.add(reportMenu);
         popup.add(countdownMenu);
-        popup.add(activitiesItem);
+        popup.add(settingsMenu);
         popup.add(exitItem);
         
         //add menu to tray
