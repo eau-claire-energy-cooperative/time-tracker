@@ -2,7 +2,7 @@
 
 This is a very basic time tracking utility with a reporting option. The need for this arose when I needed an easy way to report time to different organizations, or different projects. My requirements were that it should be with the least amount of effort as possible, and record time in a reportable format. 
 
-This program achieves both those issues. It runs as a Windows task bar item. Double-click to start a timer. Double-click again to stop the timer and you'll see a small prompt to choose the activity you just timed. These are set up ahead of time from the Activities menu. This is then logged to the database. 
+This program achieves both those issues. It runs as a Windows task bar item. Double-click to start a timer. Double-click again to stop the timer and you'll see a small prompt to choose the activity you just timed. These are set up ahead of time from the Settings->Activities menu. This is then logged to the database. 
 
 ## Compiling
 
@@ -14,7 +14,7 @@ You can run the program directly by launching the jar file, however there is als
 
 ## Using the Program
 
-Pretty simple operations, you can either double-click the icon or right click and select "Start Timer" to start the timer. When done another double-click or right-click and select the "Running" menu item, to stop the timer. Additionally a right-click will show the currently elapsed time. Once the timer is stopped you will get a prompt for where to log to the activity. 
+Pretty simple operation, you can either double-click the icon or right click and select "Start Timer" to start the timer. When done another double-click or right-click and select the "Running" menu item, to stop the timer. Additionally a right-click will show the currently elapsed time. Once the timer is stopped you will get a prompt for where to log to the activity. 
 
 Reporting is done by right-clicking the tray icon and selecting reports. From here you can choose date options and run reports from your logged history. Exporting to CSV is available. 
 
@@ -32,4 +32,4 @@ The Grouped Logs Report will group all log entries by activity type and sum the 
 
 ### Custom DB Path 
 
-By default the program looks for the ```resources/activities.db``` file. You can set a custom location by modifiying ```resources/db.conf``` file. This will get read on startup. The file should contain the full path to the db file you wish to load. If there is no file in this location a blank database file will be created in this location when the program starts. 
+By default the program looks for the ```resources/activities.db``` file. You can set a custom location by modifying ```resources/db.conf``` file. This will get read on startup. The file should contain the full path to the db file you wish to load. If there is no file in this location a blank database file will be created in this location when the program starts. 
