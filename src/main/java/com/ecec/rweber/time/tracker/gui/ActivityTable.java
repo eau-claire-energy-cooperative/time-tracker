@@ -12,6 +12,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,6 +29,16 @@ public class ActivityTable extends GuiWindow{
 	
 	public ActivityTable(ActivityManager manager){
 		super("Activities",manager);
+	}
+	
+	private void deleteSelectedRow(){
+		int row = m_table.getSelectedRow();
+		
+		if(JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this?") == JOptionPane.YES_OPTION)
+		{
+			DefaultTableModel model = (DefaultTableModel)m_table.getModel();
+			model.removeRow(row);
+		}
 	}
 	
 	@Override
@@ -71,7 +82,7 @@ public class ActivityTable extends GuiWindow{
 			public void actionPerformed(ActionEvent arg0) {
 				//add a new row
 				DefaultTableModel model = (DefaultTableModel)m_table.getModel();
-				model.addRow(new String[]{"new activity",""});
+				model.addRow(new String[]{"New Activity",""});
 				
 				m_table.editCellAt(m_table.getRowCount() -1, 0);
 			}
@@ -85,10 +96,7 @@ public class ActivityTable extends GuiWindow{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int selected = m_table.getSelectedRow();
-				
-				DefaultTableModel model = (DefaultTableModel)m_table.getModel();
-				model.removeRow(selected);
+				deleteSelectedRow();
 			}
 			
 		});
