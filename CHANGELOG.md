@@ -16,6 +16,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - always load database from the db.conf file, create the file with a default location if it doesn't exist
 - copy the database template file instead of a move operation
 - made DBFile class in charge of keeping track of the database file and copying the template, this was previously part of the TrayService and ActivityManager classes
+- made activities sortable within editing table
+- added prompt to confirm activity deletes
+- moved Activity row delete to a pop-up menu
 
 ## 1.8.5
 

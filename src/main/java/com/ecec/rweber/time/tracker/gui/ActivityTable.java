@@ -7,17 +7,22 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SortOrder;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import com.ecec.rweber.time.tracker.Activity;
@@ -63,6 +68,44 @@ public class ActivityTable extends GuiWindow{
 		m_table.setRowSorter(new TableSorter(m_table.getModel(),TableSorter.generateSortOrder(0, SortOrder.ASCENDING)));
 		m_table.getTableHeader().setReorderingAllowed(false);
 		m_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		m_table.addMouseListener(new MouseAdapter(){
+
+			@Override
+			public void mouseReleased(MouseEvent event) {
+				//make sure it's a right click
+				if(SwingUtilities.isRightMouseButton(event))
+				{
+					int row = m_table.rowAtPoint(event.getPoint());
+					
+					//make sure this is a valid row
+					if(row >=0 && row < m_table.getRowCount())
+					{
+						m_table.setRowSelectionInterval(row, row);
+						
+						JPopupMenu popup = new JPopupMenu();
+						
+						//create the delete popup
+						JMenuItem deleteAction = new JMenuItem("Delete Row");
+						deleteAction.addActionListener(new ActionListener(){
+				
+							@Override
+							public void actionPerformed(ActionEvent arg0) {
+								deleteSelectedRow();
+							}
+							
+						});
+						
+						popup.add(deleteAction);
+						popup.show(event.getComponent(), event.getX(), event.getY());
+					}
+					else
+					{
+						m_table.clearSelection();
+					}
+				}
+			}
+			
+		});
 	}
 	
 	@Override
@@ -90,18 +133,6 @@ public class ActivityTable extends GuiWindow{
 			
 		});
 		wrapper1.add(b_addRow);
-		
-		JButton b_deleteRow = new JButton("Delete Row");
-		b_deleteRow.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		b_deleteRow.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				deleteSelectedRow();
-			}
-			
-		});
-		wrapper1.add(b_deleteRow);
 		
 		layoutPane.add(wrapper1);
 		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,10)));
