@@ -74,26 +74,32 @@ public class DBFile {
 	}
 	
 	public boolean saveDatabaseLocation(File dbLocation) {
-		boolean result = this.createDatabase(dbLocation);
-		
-		if(result)
+		boolean result = false;
+
+		//make sure the location is different
+		if(!dbLocation.equals(this.getDatabaseLocation()))
 		{
-			try {
-				//save the location of the DB file
-				BufferedWriter writer = new BufferedWriter(new FileWriter(m_dbFile));
-				
-				writer.write(dbLocation.getAbsolutePath());
-				
-				writer.flush();
-				writer.close();
-			}
-			catch(Exception e)
+			result = this.createDatabase(dbLocation);
+			
+			if(result)
 			{
-				//save the error but not worth crashing the program here
-				m_log.error("Error writing DB location file: " + m_dbFile);
-				e.printStackTrace();
-				
-				result = false;
+				try {
+					//save the location of the DB file
+					BufferedWriter writer = new BufferedWriter(new FileWriter(m_dbFile));
+					
+					writer.write(dbLocation.getAbsolutePath());
+					
+					writer.flush();
+					writer.close();
+				}
+				catch(Exception e)
+				{
+					//save the error but not worth crashing the program here
+					m_log.error("Error writing DB location file: " + m_dbFile);
+					e.printStackTrace();
+					
+					result = false;
+				}
 			}
 		}
 		
