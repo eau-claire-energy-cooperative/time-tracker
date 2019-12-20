@@ -15,6 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import com.ecec.rweber.time.tracker.Activity;
@@ -45,10 +46,11 @@ public class ActivityTable extends GuiWindow{
 			model.setValueAt(act.getName(), count, 0);
 			model.setValueAt(act.getDescription(), count, 1);
 		}
-		
+
 		m_table = new JTable(model);
-		m_table.setFont(new Font(Font.SERIF,Font.PLAIN,15));
+		m_table.setRowSorter(new TableSorter(m_table.getModel()));
 		m_table.getTableHeader().setReorderingAllowed(false);
+		m_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 	
 	@Override
@@ -98,6 +100,7 @@ public class ActivityTable extends GuiWindow{
 		//add the scroller
 		JScrollPane scroller = new JScrollPane(m_table);
 		scroller.setAlignmentX(Component.CENTER_ALIGNMENT);
+		scroller.setPreferredSize(new Dimension(Short.MAX_VALUE,Short.MAX_VALUE));
 		layoutPane.add(scroller);
 		
 		layoutPane.add(Box.createRigidArea(new Dimension(WIDTH,15)));
