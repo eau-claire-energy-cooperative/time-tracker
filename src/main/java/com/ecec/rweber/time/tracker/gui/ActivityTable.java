@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 
 import com.ecec.rweber.time.tracker.Activity;
@@ -59,7 +60,7 @@ public class ActivityTable extends GuiWindow{
 		}
 
 		m_table = new JTable(model);
-		m_table.setRowSorter(new TableSorter(m_table.getModel()));
+		m_table.setRowSorter(new TableSorter(m_table.getModel(),TableSorter.generateSortOrder(0, SortOrder.ASCENDING)));
 		m_table.getTableHeader().setReorderingAllowed(false);
 		m_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
