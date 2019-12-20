@@ -441,46 +441,8 @@ public class TrayService implements Observer {
 			public void actionPerformed(ActionEvent e) {
 				if(m_timer.getState() != TimerState.RUNNING) {
 					//create a chooser, overriding the image icon
-					JFileChooser chooser = new JFileChooser() {
-						private static final long serialVersionUID = 1L;
+					DatabaseFileChooser chooser = new DatabaseFileChooser(m_actManage.getDatabaseLocation());
 
-						@Override
-						protected JDialog createDialog(Component parent) {
-							JDialog dialog = super.createDialog(parent);
-							
-							dialog.setIconImage(TrayService.PROGRAM_ICON.getImage());
-							
-							return dialog;
-						}
-					};
-					
-					chooser.setSelectedFile(m_actManage.getDatabaseLocation());
-					chooser.setMultiSelectionEnabled(false);
-					chooser.setApproveButtonText("Choose");
-					
-					chooser.setFileFilter(new FileFilter() {
-
-						@Override
-						public boolean accept(File f) {
-							boolean result = f.isDirectory(); //always show directories
-							
-							//check for .db extension
-							if(f.getAbsolutePath().contains("."))
-							{
-								String ext = f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf("."));
-								result = ext.toLowerCase().equals(".db");
-							}
-							
-							return result;
-						}
-
-						@Override
-						public String getDescription() {
-							return "*.db - SQLite Database File";
-						}
-						
-					});
-					
 					//let the user choose the file
 					int returnVal = chooser.showOpenDialog(null);
 					
