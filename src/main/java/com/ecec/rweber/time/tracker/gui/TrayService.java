@@ -1,6 +1,5 @@
 package com.ecec.rweber.time.tracker.gui;
 import java.awt.AWTException;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
@@ -17,10 +16,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -31,8 +26,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileFilter;
-
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.Level;
@@ -44,7 +37,6 @@ import com.ecec.rweber.time.tracker.CountdownTimer;
 import com.ecec.rweber.time.tracker.Log;
 import com.ecec.rweber.time.tracker.TimerState;
 import com.ecec.rweber.time.tracker.ElapsedTimer;
-import com.ecec.rweber.time.tracker.util.DBFile;
 import com.ecec.rweber.time.tracker.util.Notifier;
 import com.ecec.rweber.time.tracker.util.TimeFormatter;
 
