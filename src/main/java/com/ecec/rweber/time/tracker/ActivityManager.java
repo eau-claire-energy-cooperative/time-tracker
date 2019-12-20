@@ -180,4 +180,12 @@ public class ActivityManager {
 		
 		database.disconnect();
 	}
+	
+	public File getDatabaseLocation() {
+		return this.m_dbFile.getDatabaseLocation();
+	}
+	
+	public boolean setDatabaseLocation(File f) {
+		return this.m_dbFile.saveDatabaseLocation(f);
+	}
 }

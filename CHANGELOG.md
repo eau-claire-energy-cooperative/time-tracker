@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 
 - added a settings menu and moved the Activities configuration area there to organize the menu more
+- added method to set the DB path within the program via a file chooser, path can now be changed while the program is running
 
 ### Changed
 

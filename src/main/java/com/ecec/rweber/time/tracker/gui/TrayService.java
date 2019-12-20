@@ -1,5 +1,6 @@
 package com.ecec.rweber.time.tracker.gui;
 import java.awt.AWTException;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
@@ -26,9 +27,12 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileFilter;
+
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.Level;
@@ -256,8 +260,10 @@ public class TrayService implements Observer {
         countdownMenu.add(customCountdown);
         
         Menu settingsMenu = new Menu("Settings");
-        MenuItem activitiesItem = new MenuItem("Activities");
+        MenuItem activitiesItem = new MenuItem("Edit Activities");
+        MenuItem dbItem = new MenuItem("Set Database Path");
         settingsMenu.add(activitiesItem);
+        settingsMenu.add(dbItem);
         
         MenuItem exitItem = new MenuItem("Exit");
         
@@ -422,6 +428,76 @@ public class TrayService implements Observer {
 			public void actionPerformed(ActionEvent arg0) {
 				ActivityTable table = new ActivityTable(m_actManage);
 				table.run();
+			}
+        	
+        });
+        
+        dbItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(m_timer.getState() != TimerState.RUNNING) {
+					//create a chooser, overriding the image icon
+					JFileChooser chooser = new JFileChooser() {
+						private static final long serialVersionUID = 1L;
+
+						@Override
+						protected JDialog createDialog(Component parent) {
+							JDialog dialog = super.createDialog(parent);
+							
+							dialog.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
+							
+							return dialog;
+						}
+					};
+					
+					chooser.setSelectedFile(m_actManage.getDatabaseLocation());
+					chooser.setMultiSelectionEnabled(false);
+					chooser.setApproveButtonText("Choose");
+					
+					chooser.setFileFilter(new FileFilter() {
+
+						@Override
+						public boolean accept(File f) {
+							boolean result = f.isDirectory(); //always show directories
+							
+							//check for .db extension
+							if(f.getAbsolutePath().contains("."))
+							{
+								String ext = f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf("."));
+								result = ext.toLowerCase().equals(".db");
+							}
+							
+							return result;
+						}
+
+						@Override
+						public String getDescription() {
+							return "*.db - SQLite Database File";
+						}
+						
+					});
+					
+					//let the user choose the file
+					int returnVal = chooser.showOpenDialog(null);
+					
+					if(returnVal == JFileChooser.APPROVE_OPTION)
+					{
+						//set the new file
+						if(m_actManage.setDatabaseLocation(chooser.getSelectedFile()))
+						{
+							m_trayIcon.displayMessage(PROGRAM_NAME, "Database Location Changed", MessageType.INFO);
+						}
+						else
+						{
+							m_trayIcon.displayMessage(PROGRAM_NAME, "Error Changing Database Location", MessageType.ERROR);
+						}
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Can't change the DB path while the timer is running");
+				}
 			}
         	
         });
