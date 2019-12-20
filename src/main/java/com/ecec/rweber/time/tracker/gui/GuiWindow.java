@@ -7,8 +7,6 @@ import java.awt.TrayIcon.MessageType;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
@@ -31,7 +29,7 @@ public abstract class GuiWindow extends JFrame{
 		
 		//set some default things
 		this.setTitle(windowName);
-		this.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
+		this.setIconImage(TrayService.PROGRAM_ICON.getImage());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		g_manage = manage;

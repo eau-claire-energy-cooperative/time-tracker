@@ -49,6 +49,9 @@ import com.ecec.rweber.time.tracker.util.Notifier;
 import com.ecec.rweber.time.tracker.util.TimeFormatter;
 
 public class TrayService implements Observer {
+	public static final ImageIcon PROGRAM_ICON  = new ImageIcon("resources/timer-small.png");
+	public static final ImageIcon PROGRAM_RUNNING_ICON  = new ImageIcon("resources/timer-running-small.png");
+	
 	private final String PROGRAM_NAME = "Time Tracker";
 	private Logger m_log = null;
 	private ActivityManager m_actManage = null;
@@ -111,7 +114,7 @@ public class TrayService implements Observer {
 		selectBox.setup();
 		
 		JDialog dialog = new JDialog(null,"Choose Activity",ModalityType.APPLICATION_MODAL);
-		dialog.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
+		dialog.setIconImage(TrayService.PROGRAM_ICON.getImage());
 		dialog.setSize(selectBox.WIDTH, selectBox.HEIGHT);
 		
 		Container contentPane = dialog.getContentPane();
@@ -160,7 +163,7 @@ public class TrayService implements Observer {
 		completeBox.setup(TimeFormatter.format((long)time, TimeFormatter.MILLISECONDS, timeFormat) + " " + TimeFormatter.toString(timeFormat));
 		
 		JDialog dialog = new JDialog(null,"Countdown Complete!",ModalityType.APPLICATION_MODAL);
-		dialog.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
+		dialog.setIconImage(TrayService.PROGRAM_ICON.getImage());
 		dialog.setSize(width, height);
 		
 		Container contentPane = dialog.getContentPane();
@@ -194,7 +197,7 @@ public class TrayService implements Observer {
 			m_timer.start();
 			m_trayIcon.displayMessage(PROGRAM_NAME, "Timer started", MessageType.INFO);
 			
-			m_trayIcon.setImage(new ImageIcon("resources/timer-running-small.png").getImage());
+			m_trayIcon.setImage(TrayService.PROGRAM_RUNNING_ICON.getImage());
 			m_trayIcon.setToolTip(PROGRAM_NAME + " - Running");
 		}
 		else
@@ -222,7 +225,7 @@ public class TrayService implements Observer {
 			
 			m_timer.reset();
 			
-			m_trayIcon.setImage(new ImageIcon("resources/timer-small.png").getImage());
+			m_trayIcon.setImage(TrayService.PROGRAM_ICON.getImage());
 			m_trayIcon.setToolTip(PROGRAM_NAME);
 		}
 	}
@@ -400,7 +403,7 @@ public class TrayService implements Observer {
 				customBox.setup();
 				
 				JDialog dialog = new JDialog(null,"Set Countdown Timer",ModalityType.APPLICATION_MODAL);
-				dialog.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
+				dialog.setIconImage(TrayService.PROGRAM_ICON.getImage());
 				dialog.setSize(width, height);
 				
 				Container contentPane = dialog.getContentPane();
@@ -445,7 +448,7 @@ public class TrayService implements Observer {
 						protected JDialog createDialog(Component parent) {
 							JDialog dialog = super.createDialog(parent);
 							
-							dialog.setIconImage(new ImageIcon("resources/timer-small.png").getImage());
+							dialog.setIconImage(TrayService.PROGRAM_ICON.getImage());
 							
 							return dialog;
 						}
