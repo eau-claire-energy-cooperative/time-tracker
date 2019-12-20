@@ -74,7 +74,7 @@ public class DBFile {
 	}
 	
 	public boolean saveDatabaseLocation(File dbLocation) {
-		boolean result = false;
+		boolean result = true;
 
 		//make sure the location is different
 		if(!dbLocation.equals(this.getDatabaseLocation()))
