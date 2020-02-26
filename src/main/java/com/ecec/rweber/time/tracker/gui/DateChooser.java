@@ -106,7 +106,7 @@ public class DateChooser extends JDialog
     /** Minutes in the an hour */
     private static final Integer[] MINUTES = 
     	new Integer[] {
-    		1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59
+    		0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59
     };
 
     /** Text color of the days of the weeks, used as column headers in
@@ -592,7 +592,7 @@ public class DateChooser extends JDialog
 		  year.setSelectedIndex( _year-FIRST_YEAR );
 		  month.setSelectedIndex( _month-Calendar.JANUARY );
 		  hour.setSelectedIndex(_hour - 1);
-		  minutes.setSelectedIndex(calendar.get(Calendar.MINUTE) - 1); //subtract one to get 0 based index
+		  minutes.setSelectedIndex(calendar.get(Calendar.MINUTE));
 		  am_pm.setSelectedIndex(calendar.get(Calendar.AM_PM));
 		  
 		  setSelected( _day );
@@ -613,7 +613,7 @@ public class DateChooser extends JDialog
 			  }
 			  
 			  calendar.set(Calendar.HOUR, _hour);
-			  calendar.set(Calendar.MINUTE, minutes.getSelectedIndex() + 1); //add one as it's 0 indexed
+			  calendar.set(Calendar.MINUTE, minutes.getSelectedIndex()); //starts with 0 and 0 indexed
 			  calendar.set(Calendar.AM_PM, am_pm.getSelectedIndex());
 		  }
 		  else
