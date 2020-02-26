@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+## 1.8.7
+
+### Added
+
+- added the top of the hour (0 min) as selectable in the DateChooser selection dialog. This was omitted by mistake in 1.8.5
+
 ## 1.8.6
 
 ### Added
