@@ -76,8 +76,8 @@ public class DBFile {
 	public boolean saveDatabaseLocation(File dbLocation) {
 		boolean result = true;
 
-		//make sure the location is different
-		if(!dbLocation.equals(this.getDatabaseLocation()))
+		//if the db.conf files is missing create it, otherwise make sure the location is different
+		if(!m_dbFile.exists() || !dbLocation.equals(this.getDatabaseLocation()))
 		{
 			result = this.createDatabase(dbLocation);
 			
