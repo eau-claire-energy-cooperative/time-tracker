@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import com.ecec.rweber.time.tracker.sql.DatasourceDrivers;
 import com.ecec.rweber.time.tracker.sql.SQLDatasource;
 import com.ecec.rweber.time.tracker.sql.SQLiteDatasource;
-import com.ecec.rweber.time.tracker.sql.upgrade.DatabaseUpgrade;
+import com.ecec.rweber.time.tracker.upgrade.DatabaseUpgrade;
 import com.ecec.rweber.time.tracker.util.DBFile;
 
 public class ActivityManager {
@@ -42,7 +42,7 @@ public class ActivityManager {
 		for(int i = dbVersion; i < DB_VERSION; i ++)
 		{
 			try {
-				upgrade = (DatabaseUpgrade) Class.forName("com.ecec.rweber.time.tracker.sql.upgrade.Version" + (i + 1)).newInstance();
+				upgrade = (DatabaseUpgrade) Class.forName(DatabaseUpgrade.class.getPackageName() + ".Version" + (i + 1)).newInstance();
 				
 				upgrade.doUpgrade(database);
 			}

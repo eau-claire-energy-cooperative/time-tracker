@@ -1,4 +1,4 @@
-package com.ecec.rweber.time.tracker.sql.upgrade;
+package com.ecec.rweber.time.tracker.upgrade;
 
 import com.ecec.rweber.time.tracker.sql.SQLDatasource;
 
