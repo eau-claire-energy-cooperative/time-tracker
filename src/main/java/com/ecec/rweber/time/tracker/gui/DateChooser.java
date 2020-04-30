@@ -69,7 +69,7 @@ public class DateChooser extends JDialog
 	private static final long serialVersionUID = 1L;
 
 	/** Names of the months. */
-    private static final String[] MONTHS = 
+	protected static final String[] MONTHS = 
 	  new String[] {
 	      "January",
 	      "February",
@@ -86,7 +86,7 @@ public class DateChooser extends JDialog
 	  };
 
     /** Names of the days of the week. */
-    private static final String[] DAYS =
+    protected static final String[] DAYS =
 	  new String[] {
 	      "Sun",
 	      "Mon",
@@ -98,13 +98,13 @@ public class DateChooser extends JDialog
 	  };
     
     /** Hours of the day */
-    private static final Integer[] HOURS = 
+    protected static final Integer[] HOURS = 
     	new Integer[] {
     		1,2,3,4,5,6,7,8,9,10,11,12
     };
     
     /** Minutes in the an hour */
-    private static final Integer[] MINUTES = 
+    protected static final Integer[] MINUTES = 
     	new Integer[] {
     		0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59
     };
