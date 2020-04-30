@@ -98,6 +98,31 @@ public class TrayService implements Observer {
 	        }
 	    }
 	
+	private void setMinimumsPrompt() {
+		SetMinimumsDialog minimums = new SetMinimumsDialog();
+		minimums.setup();
+		
+		JDialog dialog = new JDialog(null,"Set Minimums",ModalityType.APPLICATION_MODAL);
+		dialog.setIconImage(TrayService.PROGRAM_ICON.getImage());
+		//dialog.setSize(minimums.WIDTH, minimums.HEIGHT);
+		dialog.setMaximumSize(new Dimension(minimums.WIDTH, minimums.HEIGHT));
+		Container contentPane = dialog.getContentPane();
+		contentPane.setSize(minimums.WIDTH,minimums.HEIGHT);
+		contentPane.add(minimums);
+		
+		//open in the middle of the screen
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		dialog.setLocation((int)(screenSize.getWidth()/2 - (minimums.WIDTH/2)), (int)(screenSize.getHeight()/2 - (minimums.HEIGHT/2)));
+		
+		dialog.pack();
+		dialog.setVisible(true);
+		
+		if(minimums.shouldSave())
+		{
+
+		}
+	}
+	
 	private List<Log> activityPrompt(){
 		List<Log> result = new ArrayList<Log>();
 		
@@ -256,8 +281,10 @@ public class TrayService implements Observer {
         
         Menu settingsMenu = new Menu("Settings");
         MenuItem activitiesItem = new MenuItem("Edit Activities");
+        MenuItem setMinimumItem = new MenuItem("Set Minimums");
         MenuItem dbItem = new MenuItem("Set Database Path");
         settingsMenu.add(activitiesItem);
+        settingsMenu.add(setMinimumItem);
         settingsMenu.add(dbItem);
         
         MenuItem exitItem = new MenuItem("Exit");
@@ -426,6 +453,16 @@ public class TrayService implements Observer {
 			}
         	
         });
+        
+        setMinimumItem.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setMinimumsPrompt();
+			}
+        	
+        });
+        
         
         dbItem.addActionListener(new ActionListener() {
 
