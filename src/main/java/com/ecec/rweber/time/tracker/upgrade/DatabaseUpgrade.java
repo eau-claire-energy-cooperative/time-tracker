@@ -29,5 +29,10 @@ public abstract class DatabaseUpgrade {
 			//update the version
 			this.updateVersion(database);
 		}
+		else
+		{
+			//throw the exception
+			throw new DatabaseUpgradeException();
+		}
 	}
 }
