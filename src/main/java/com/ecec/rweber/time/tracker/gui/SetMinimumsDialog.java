@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -97,9 +100,13 @@ public class SetMinimumsDialog extends DialogWindow {
 	}
 
 	@Override
-	public int[] getSelected() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String,Object> getResults() {
+		Map<String,Object> result = new HashMap<String,Object>();
+		
+		result.put("minTime", m_minTime.getSelectedItem().toString());
+		result.put("roundTime", m_roundTime.getSelectedItem().toString());
+		
+		return result;
 	}
 
 }

@@ -8,6 +8,12 @@ import java.awt.Window;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -18,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
 
 import com.ecec.rweber.time.tracker.Activity;
 import com.ecec.rweber.time.tracker.ActivityManager;
@@ -26,7 +33,7 @@ public class SelectActivityDialog extends DialogWindow {
 	private static final long serialVersionUID = -8610097326110926200L;
 	private ActivityManager m_manage = null;
 	private String m_timeString = null;
-	private int[] m_selected = null;
+	private List<Integer> m_selected = null;
 	private JCheckBox m_splitTime = null;
 	private JComboBox<Activity> m_select = null;
 	private JTextArea m_descrip = null;
@@ -37,7 +44,7 @@ public class SelectActivityDialog extends DialogWindow {
 		m_timeString = timeString;
 	}
 	
-	private int[] showMultipleSelect(){
+	private List<Integer> showMultipleSelect(){
 		
 		SelectListDialog selectList = new SelectListDialog(m_manage.getActivities(),m_select.getSelectedIndex());
 		selectList.setup();
@@ -57,14 +64,14 @@ public class SelectActivityDialog extends DialogWindow {
 		dialog.pack();
 		dialog.setVisible(true);
 		
-		return selectList.getSelected();
+		return (List<Integer>)selectList.getResults().get("selected");
 	}
 	
 	@Override
 	protected void activitySelected(){
 		Window win = SwingUtilities.getWindowAncestor(this);
 		
-		if (win != null) {
+		if(win != null) {
 			
 			if(m_splitTime.isSelected())
 			{
@@ -72,8 +79,8 @@ public class SelectActivityDialog extends DialogWindow {
 			}
 			else
 			{
-				m_selected = new int[1];
-				m_selected[0] = m_select.getSelectedIndex();
+				m_selected = new ArrayList<Integer>();
+				m_selected.add(m_select.getSelectedIndex());
 			}
 			
 			m_shouldSave = true;
@@ -143,7 +150,11 @@ public class SelectActivityDialog extends DialogWindow {
 	}
 
 	@Override
-	public int[] getSelected() {
-		return m_selected;
+	public Map<String,Object> getResults() {
+		Map<String,Object> result = new HashMap<String,Object>();
+		
+		result.put("selected", m_selected);
+		
+		return result;
 	}
 }

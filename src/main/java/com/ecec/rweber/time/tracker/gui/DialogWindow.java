@@ -2,6 +2,7 @@ package com.ecec.rweber.time.tracker.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Window;
+import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -17,7 +18,7 @@ public abstract class DialogWindow extends JPanel {
 	}
 	
 	public abstract void setup();
-	public abstract int[] getSelected();
+	public abstract Map<String,Object> getResults();
 	
 	protected void activitySelected(){
 		Window win = SwingUtilities.getWindowAncestor(this);

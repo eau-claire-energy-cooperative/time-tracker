@@ -147,17 +147,17 @@ public class TrayService implements Observer {
 		
 		if(selectBox.shouldSave())
 		{
-			int[] selected = selectBox.getSelected();
+			List<Integer> selected = (List<Integer>)selectBox.getResults().get("selected");
 			
-			if(selected.length > 0)
+			if(selected != null && selected.size() > 0)
 			{
-				ElapsedTimer[] times = ElapsedTimer.splitTime(m_timer, selected.length);
+				ElapsedTimer[] times = ElapsedTimer.splitTime(m_timer, selected.size());
 				
 				//save each of the times
-				m_log.info("Saving " + selected.length + " entries");
-				for(int count = 0; count < selected.length; count ++)
+				m_log.info("Saving " + selected.size() + " entries");
+				for(int count = 0; count < selected.size(); count ++)
 				{
-					result.add(new Log(m_actManage.getActivity(selected[count]),times[count],selectBox.getDescription()));
+					result.add(new Log(m_actManage.getActivity(selected.get(count).intValue()),times[count],selectBox.getDescription()));
 				}
 			}
 			else

@@ -5,7 +5,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -64,7 +69,19 @@ public class SelectListDialog extends DialogWindow {
 	}
 
 	@Override
-	public int[] getSelected() {
-		return m_list.getSelectedIndices();
+	public Map<String,Object> getResults() {
+		Map<String,Object> result = new HashMap<String,Object>();
+		
+		//set array as a list
+		List<Integer> list = new ArrayList<Integer>();
+		int[] array = m_list.getSelectedIndices();
+		for(int count = 0; count < array.length; count ++)
+		{
+			list.add(array[count]);
+		}
+		
+		result.put("selected", list);
+		
+		return result;
 	}
 }
