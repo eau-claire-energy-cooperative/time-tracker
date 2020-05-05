@@ -9,7 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 
 - implemented a DB update system to add settings table and default settings to older version automatically
+- added DatabaseUpgradeException, this will halt the program when thrown
 - added a settings table to the database to keep track of various system settings
+- added set minimum time and round to nearest time settings
 
 ## 1.8.8
 
