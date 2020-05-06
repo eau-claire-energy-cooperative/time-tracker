@@ -20,7 +20,7 @@ public abstract class DialogWindow extends JPanel {
 	public abstract void setup();
 	public abstract Map<String,Object> getResults();
 	
-	protected void activitySelected(){
+	protected void saveClicked(){
 		Window win = SwingUtilities.getWindowAncestor(this);
 		
 		if (win != null) {
@@ -29,7 +29,7 @@ public abstract class DialogWindow extends JPanel {
 		}
 	}
 	
-	protected void cancel(){
+	protected void cancelClicked(){
 		Window win = SwingUtilities.getWindowAncestor(this);
 		
 		if (win != null) {

@@ -72,7 +72,7 @@ public class SetMinimumsDialog extends DialogWindow {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cancel();
+				cancelClicked();
 			}
 			
 		});
@@ -82,7 +82,7 @@ public class SetMinimumsDialog extends DialogWindow {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				activitySelected();
+				saveClicked();
 			}
 			
 		});

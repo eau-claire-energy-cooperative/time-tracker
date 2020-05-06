@@ -68,7 +68,7 @@ public class SelectActivityDialog extends DialogWindow {
 	}
 	
 	@Override
-	protected void activitySelected(){
+	protected void saveClicked(){
 		Window win = SwingUtilities.getWindowAncestor(this);
 		
 		if(win != null) {
@@ -114,7 +114,7 @@ public class SelectActivityDialog extends DialogWindow {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cancel();
+				cancelClicked();
 			}
 			
 		});
@@ -124,7 +124,7 @@ public class SelectActivityDialog extends DialogWindow {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				activitySelected();
+				saveClicked();
 			}
 			
 		});

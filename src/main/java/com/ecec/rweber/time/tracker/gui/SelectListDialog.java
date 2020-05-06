@@ -6,11 +6,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -57,7 +55,7 @@ public class SelectListDialog extends DialogWindow {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				activitySelected();
+				saveClicked();
 			}
 			
 		});

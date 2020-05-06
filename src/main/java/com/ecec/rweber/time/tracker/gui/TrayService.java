@@ -104,7 +104,7 @@ public class TrayService implements Observer {
 		
 		JDialog dialog = new JDialog(null,"Set Minimums",ModalityType.APPLICATION_MODAL);
 		dialog.setIconImage(TrayService.PROGRAM_ICON.getImage());
-		//dialog.setSize(minimums.WIDTH, minimums.HEIGHT);
+
 		dialog.setMaximumSize(new Dimension(minimums.WIDTH, minimums.HEIGHT));
 		Container contentPane = dialog.getContentPane();
 		contentPane.setSize(minimums.WIDTH,minimums.HEIGHT);
