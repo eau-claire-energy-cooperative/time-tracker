@@ -120,6 +120,30 @@ public class ActivityManager {
 		database.disconnect();
 	}
 	
+	private String getSetting(String name) {
+		String result = null;
+		SQLDatasource database = this.loadDatabase();
+
+		Map<String,String> sqlQuery = database.executeQueryGetFirst("select setting_value from settings where setting_name = ?", name);
+		
+		if(sqlQuery.containsKey("setting_value"))
+		{
+			result = sqlQuery.get("setting_value").toString();
+		}
+		
+		database.disconnect();
+		
+		return result;
+	}
+	
+	private void setSetting(String name, String value) {
+		SQLDatasource database = this.loadDatabase();
+
+		database.executeUpdate("update settings set setting_value = ? where setting_name = ?", value, name);
+		
+		database.disconnect();
+	}
+	
 	public List<Log> generateReport(long startDate, long endDate){
 		m_log.debug("Generating report: " + startDate + " to " + endDate);
 		SQLDatasource database = this.loadDatabase();
@@ -213,6 +237,22 @@ public class ActivityManager {
 		}
 		
 		database.disconnect();
+	}
+	
+	public Integer getMinTime() {
+		return Integer.valueOf(this.getSetting("minimum_time"));
+	}
+	
+	public void setMinTime(Integer minTime) {
+		this.setSetting("minimum_time", minTime.toString());
+	}
+	
+	public Integer getRoundTime() {
+		return Integer.valueOf(this.getSetting("round_time"));
+	}
+	
+	public void setRoundTime(Integer roundTime) {
+		this.setSetting("round_time", roundTime.toString());
 	}
 	
 	public File getDatabaseLocation() {

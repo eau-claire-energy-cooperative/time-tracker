@@ -18,6 +18,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.ImageIcon;
@@ -99,7 +100,7 @@ public class TrayService implements Observer {
 	    }
 	
 	private void setMinimumsPrompt() {
-		SetMinimumsDialog minimums = new SetMinimumsDialog();
+		SetMinimumsDialog minimums = new SetMinimumsDialog(m_actManage.getMinTime(), m_actManage.getRoundTime());
 		minimums.setup();
 		
 		JDialog dialog = new JDialog(null,"Set Minimums",ModalityType.APPLICATION_MODAL);
@@ -119,7 +120,9 @@ public class TrayService implements Observer {
 		
 		if(minimums.shouldSave())
 		{
-
+			Map<String,Object> results = minimums.getResults();
+			m_actManage.setMinTime((Integer)results.get("minTime"));
+			m_actManage.setRoundTime((Integer)results.get("roundTime"));
 		}
 	}
 	

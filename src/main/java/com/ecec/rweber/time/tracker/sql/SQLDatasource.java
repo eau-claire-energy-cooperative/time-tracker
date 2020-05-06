@@ -29,6 +29,20 @@ public class SQLDatasource {
 		this.connect();
 	}
 	
+	public Map<String,String> executeQueryGetFirst(String statement, Object ...params){
+		//execute the query
+		List<Map<String,String>> result = this.executeQuery(statement, params);
+		
+		if(result.size() > 0)
+		{
+			return result.get(0);
+		}
+		else
+		{
+			return new HashMap<String,String>();
+		}
+	}
+	
 	public List<Map<String,String>> executeQuery(String statement, Object ... params){
 		List<Map<String,String>> result = new ArrayList<Map<String,String>>();
 		

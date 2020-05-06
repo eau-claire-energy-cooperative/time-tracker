@@ -21,11 +21,14 @@ public class SetMinimumsDialog extends DialogWindow {
 	private JComboBox<Integer> m_minTime = null;
 	private JComboBox<Integer> m_roundTime = null;
 	
-	public SetMinimumsDialog() {
+	public SetMinimumsDialog(Integer minTime, Integer roundTime) {
 		super();
-		
+
 		m_minTime = new JComboBox<Integer>(DateChooser.MINUTES);
+		m_minTime.setSelectedItem(minTime.intValue());
+		
 		m_roundTime = new JComboBox<Integer>(new Integer[]{0,5,10,15,30,60});
+		m_roundTime.setSelectedItem(roundTime.intValue());
 	}
 	
 	@Override
@@ -103,8 +106,8 @@ public class SetMinimumsDialog extends DialogWindow {
 	public Map<String,Object> getResults() {
 		Map<String,Object> result = new HashMap<String,Object>();
 		
-		result.put("minTime", m_minTime.getSelectedItem().toString());
-		result.put("roundTime", m_roundTime.getSelectedItem().toString());
+		result.put("minTime", Integer.valueOf(m_minTime.getSelectedItem().toString()));
+		result.put("roundTime", Integer.valueOf(m_roundTime.getSelectedItem().toString()));
 		
 		return result;
 	}
