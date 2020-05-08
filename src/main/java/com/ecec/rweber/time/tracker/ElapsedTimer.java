@@ -3,6 +3,7 @@ package com.ecec.rweber.time.tracker;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ecec.rweber.time.tracker.modifer.TimeModifier;
 import com.ecec.rweber.time.tracker.util.TimeFormatter;
 
 public class ElapsedTimer implements Timer{
@@ -90,6 +91,14 @@ public class ElapsedTimer implements Timer{
 			stopTime = 0;
 			startTime = 0;
 		}
+	}
+	
+	public void stop(TimeModifier m) {
+		//first stop the time normally
+		this.stop();
+		
+		//modify the time if needed
+		stopTime = m.modifyTime(this);
 	}
 	
 	@Override

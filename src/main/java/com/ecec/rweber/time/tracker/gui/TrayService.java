@@ -37,10 +37,13 @@ import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.CountdownTimer;
 import com.ecec.rweber.time.tracker.Log;
 import com.ecec.rweber.time.tracker.TimerState;
+import com.ecec.rweber.time.tracker.modifer.TimeModifier;
+import com.ecec.rweber.time.tracker.modifer.TimeModifierFactory;
 import com.ecec.rweber.time.tracker.ElapsedTimer;
 import com.ecec.rweber.time.tracker.util.Notifier;
 import com.ecec.rweber.time.tracker.util.TimeFormatter;
 
+@SuppressWarnings("deprecation")
 public class TrayService implements Observer {
 	public static final ImageIcon PROGRAM_ICON  = new ImageIcon("resources/timer-small.png");
 	public static final ImageIcon PROGRAM_RUNNING_ICON  = new ImageIcon("resources/timer-running-small.png");
@@ -50,6 +53,7 @@ public class TrayService implements Observer {
 	private ActivityManager m_actManage = null;
 	private ElapsedTimer m_timer = null;
 	private CountdownTimer m_countdown = null;
+	private TimeModifier m_modifier = null;
 	
 	//for the gui
 	private TrayIcon m_trayIcon = null;
@@ -65,6 +69,9 @@ public class TrayService implements Observer {
 		
 		//load the database
 		m_actManage = new ActivityManager();
+		
+		//setup any active time modifiers
+		m_modifier = TimeModifierFactory.createModifier(m_actManage.getMinTime(), m_actManage.getRoundTime());
 
 	}
 	
@@ -123,6 +130,9 @@ public class TrayService implements Observer {
 			Map<String,Object> results = minimums.getResults();
 			m_actManage.setMinTime((Integer)results.get("minTime"));
 			m_actManage.setRoundTime((Integer)results.get("roundTime"));
+			
+			//create the new time modifier
+			m_modifier = TimeModifierFactory.createModifier((Integer)results.get("minTime"), (Integer)results.get("roundTime"));
 		}
 	}
 	
@@ -223,7 +233,7 @@ public class TrayService implements Observer {
 		else
 		{
 			//stop the timer
-			m_timer.stop();
+			m_timer.stop(m_modifier);
 			
 			//ask the user for the activity
 			List<Log> activity = this.activityPrompt();
