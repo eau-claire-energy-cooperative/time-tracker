@@ -4,6 +4,7 @@ import java.util.Observable;
 
 import com.ecec.rweber.time.tracker.util.TimeFormatter;
 
+@SuppressWarnings("deprecation")
 public class CountdownTimer extends Observable implements Timer  {
 	private TimerState current_state = TimerState.IDLE;
 	private CountdownThread countdown = null;

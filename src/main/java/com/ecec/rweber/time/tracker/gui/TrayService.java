@@ -160,6 +160,7 @@ public class TrayService implements Observer {
 		
 		if(selectBox.shouldSave())
 		{
+			@SuppressWarnings("unchecked")
 			List<Integer> selected = (List<Integer>)selectBox.getResults().get("selected");
 			
 			if(selected != null && selected.size() > 0)

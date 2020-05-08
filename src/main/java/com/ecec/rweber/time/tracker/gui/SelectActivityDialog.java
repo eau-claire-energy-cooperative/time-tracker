@@ -9,11 +9,9 @@ import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -24,8 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-
 import com.ecec.rweber.time.tracker.Activity;
 import com.ecec.rweber.time.tracker.ActivityManager;
 
@@ -44,6 +40,7 @@ public class SelectActivityDialog extends DialogWindow {
 		m_timeString = timeString;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<Integer> showMultipleSelect(){
 		
 		SelectListDialog selectList = new SelectListDialog(m_manage.getActivities(),m_select.getSelectedIndex());

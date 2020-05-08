@@ -191,7 +191,6 @@ public abstract class LogViewerTemplate extends GuiWindow {
 					Desktop.getDesktop().mail(new URI(String.format("mailto:?subject=%s&body=%s", subject,body)));
 					
 				} catch (IOException | URISyntaxException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}

@@ -26,6 +26,7 @@ public class ActivityManager {
 		this.updateDatabase();
 	}
 
+	@SuppressWarnings("deprecation")
 	private void updateDatabase() {
 		SQLDatasource database = this.loadDatabase();
 		
