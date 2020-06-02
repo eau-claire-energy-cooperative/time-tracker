@@ -13,6 +13,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - added a settings table to the database to keep track of various system settings
 - added support for minimum time and round to nearest time settings. These will work as indicated in the README file
 
+### Changed
+
+- migrated from Log4j to Log4j2, now use log4j2.xml file in jars directory for setting up logging
+
 ## 1.8.8
 
 ### Changed
