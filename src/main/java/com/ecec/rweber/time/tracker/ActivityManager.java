@@ -7,7 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.ecec.rweber.time.tracker.sql.DatasourceDrivers;
 import com.ecec.rweber.time.tracker.sql.SQLDatasource;
 import com.ecec.rweber.time.tracker.sql.SQLiteDatasource;
@@ -20,7 +21,7 @@ public class ActivityManager {
 	private DBFile m_dbFile = null;  //manages storage of the DB file location
 	
 	public ActivityManager(){
-		m_log = Logger.getLogger(this.getClass());
+		m_log = LogManager.getLogger(this.getClass());
 		m_dbFile = new DBFile();
 		
 		this.updateDatabase();

@@ -1,6 +1,7 @@
 package com.ecec.rweber.time.tracker.upgrade;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ecec.rweber.time.tracker.sql.SQLDatasource;
 
@@ -9,7 +10,7 @@ public abstract class DatabaseUpgrade {
 	protected Logger m_log = null;
 	
 	public DatabaseUpgrade(int version) {
-		m_log = Logger.getLogger(this.getClass().toString());
+		m_log = LogManager.getLogger(this.getClass().toString());
 		
 		m_version = version;
 	}

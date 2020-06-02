@@ -1,5 +1,6 @@
 package com.ecec.rweber.time.tracker.gui;
 import java.awt.AWTException;
+
 import java.awt.Container;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
@@ -27,12 +28,15 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.DailyRollingFileAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.SimpleLayout;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.ConsoleAppender;
+import org.apache.logging.log4j.core.appender.RollingFileAppender;
+import org.apache.logging.log4j.core.layout.PatternLayout;
+
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.CountdownTimer;
 import com.ecec.rweber.time.tracker.Log;
@@ -60,7 +64,7 @@ public class TrayService implements Observer {
 	private MenuItem m_isRunning = null;
 	
 	public TrayService(){
-		setupLogger();
+		m_log = LogManager.getLogger(this.getClass());
 		
 		//setup timers
 		m_timer = new ElapsedTimer();
@@ -73,26 +77,6 @@ public class TrayService implements Observer {
 		//setup any active time modifiers
 		m_modifier = TimeModifierFactory.createModifier(m_actManage.getMinTime(), m_actManage.getRoundTime());
 
-	}
-	
-	private void setupLogger(){
-		String directory = System.getProperty("user.dir");
-		
-		m_log = Logger.getLogger(this.getClass());
-		
-		Logger rootLog = Logger.getRootLogger();
-		rootLog.setLevel(Level.INFO);
-		
-		try{
-			//setup the console
-			rootLog.addAppender(new ConsoleAppender(new SimpleLayout(),ConsoleAppender.SYSTEM_OUT));
-			rootLog.addAppender(new DailyRollingFileAppender(new PatternLayout("%p %d{DATE} - %m %n"),directory + "/logs/tracker.log","yyyy-ww"));
-		}
-		catch(Exception e)
-		{
-			m_log.error("Cannot write to log file");
-			e.printStackTrace();
-		}
 	}
 	
 	private Image createImage(String path, String description) {

@@ -9,7 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DBFile {
 	private static final String DEFAULT_DB = "resources/activities.db"; //location of the default DB file
@@ -19,7 +20,7 @@ public class DBFile {
 	private final File m_dbFile = new File("resources/db.conf");
 	
 	public DBFile() {
-		m_log =  Logger.getLogger(this.getClass());
+		m_log =  LogManager.getLogger(this.getClass());
 		
 		if(!m_dbFile.exists())
 		{

@@ -1,6 +1,7 @@
 package com.ecec.rweber.time.tracker.gui;
 
 import java.awt.Container;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.TrayIcon.MessageType;
@@ -8,9 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFrame;
-
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.util.Notifier;
 
@@ -24,7 +24,7 @@ public abstract class GuiWindow extends JFrame{
 	protected ActivityManager g_manage = null;
 	
 	public GuiWindow(String windowName,ActivityManager manage){
-		g_log = Logger.getLogger(this.getClass());
+		g_log = LogManager.getLogger(this.getClass());
 		m_observers = new ArrayList<Notifier>();
 		
 		//set some default things

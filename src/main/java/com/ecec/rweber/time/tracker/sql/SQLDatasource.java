@@ -1,5 +1,6 @@
 package com.ecec.rweber.time.tracker.sql;
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -9,7 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SQLDatasource {
 	//private variables
@@ -22,7 +24,7 @@ public class SQLDatasource {
 	
 	public SQLDatasource(String dbName, Connection connection){
 		this.dbName = dbName;
-		log = Logger.getLogger("SQLDatasource");
+		log = LogManager.getLogger("SQLDatasource");
 		
 		connect = connection;
 		
