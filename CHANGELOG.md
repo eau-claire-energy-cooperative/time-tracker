@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - added DatabaseUpgradeException, this will halt the program when thrown
 - added a settings table to the database to keep track of various system settings
 - added support for minimum time and round to nearest time settings. These will work as indicated in the README file
+- added the version number to the tray pop-up so it can be found easily
 
 ### Changed
 
