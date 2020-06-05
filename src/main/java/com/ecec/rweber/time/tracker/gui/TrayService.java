@@ -1,6 +1,6 @@
 package com.ecec.rweber.time.tracker.gui;
-import java.awt.AWTException;
 
+import java.awt.AWTException;
 import java.awt.Container;
 import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
@@ -28,15 +28,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.appender.ConsoleAppender;
-import org.apache.logging.log4j.core.appender.RollingFileAppender;
-import org.apache.logging.log4j.core.layout.PatternLayout;
-
 import com.ecec.rweber.time.tracker.ActivityManager;
 import com.ecec.rweber.time.tracker.CountdownTimer;
 import com.ecec.rweber.time.tracker.Log;
@@ -51,8 +44,9 @@ import com.ecec.rweber.time.tracker.util.TimeFormatter;
 public class TrayService implements Observer {
 	public static final ImageIcon PROGRAM_ICON  = new ImageIcon("resources/timer-small.png");
 	public static final ImageIcon PROGRAM_RUNNING_ICON  = new ImageIcon("resources/timer-running-small.png");
+	public static final String VERSION = "1.8.9";
 	
-	private final String PROGRAM_NAME = "Time Tracker";
+	private final String PROGRAM_NAME = "Time Tracker v" + VERSION;
 	private Logger m_log = null;
 	private ActivityManager m_actManage = null;
 	private ElapsedTimer m_timer = null;
