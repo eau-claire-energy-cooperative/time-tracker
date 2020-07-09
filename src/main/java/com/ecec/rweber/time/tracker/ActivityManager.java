@@ -56,6 +56,8 @@ public class ActivityManager {
 				System.exit(2);
 			}
 		}
+		
+		database.disconnect();
 	}
 	
 	private SQLDatasource loadDatabase(){
