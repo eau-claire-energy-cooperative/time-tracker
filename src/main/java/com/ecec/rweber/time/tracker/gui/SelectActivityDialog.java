@@ -8,6 +8,8 @@ import java.awt.Window;
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -137,6 +139,30 @@ public class SelectActivityDialog extends DialogWindow {
 		this.add(endPanel,BorderLayout.LINE_END);
 		
 		m_descrip = new JTextArea("",4,50);
+		m_descrip.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// if ctl+enter is pressed then save the dialog
+				if(e.isControlDown() && e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					saveClicked();
+				}
+			}
+			
+		});
 		this.add(m_descrip,BorderLayout.PAGE_END);
 		
 		this.setSize(HEIGHT, WIDTH);
