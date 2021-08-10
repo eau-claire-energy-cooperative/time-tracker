@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+## 1.9.0
+
+### Added 
+
+- added key listener for CTL+Enter when in a dialog save field. Will automatically save when pressed. 
+
 ## 1.8.9
 
 ### Added
