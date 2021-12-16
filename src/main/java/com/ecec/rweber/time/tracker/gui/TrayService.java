@@ -44,7 +44,7 @@ import com.ecec.rweber.time.tracker.util.TimeFormatter;
 public class TrayService implements Observer {
 	public static final ImageIcon PROGRAM_ICON  = new ImageIcon("resources/timer-small.png");
 	public static final ImageIcon PROGRAM_RUNNING_ICON  = new ImageIcon("resources/timer-running-small.png");
-	public static final String VERSION = "1.9.0";
+	public static final String VERSION = "1.9.1";
 	
 	private final String PROGRAM_NAME = "Time Tracker v" + VERSION;
 	private Logger m_log = null;
