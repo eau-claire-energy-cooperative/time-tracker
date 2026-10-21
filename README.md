@@ -85,6 +85,10 @@ By default the program looks for the database file ```resources/activities.db```
 
 Since the database is closed after each transaction it is OK to switch DB paths without a program restart. 
 
+## Contributing
+
+This is an internal tool posted in the hopes it will help someone with a similar issue. Post an [Issue](https://github.com/eau-claire-energy-cooperative/time-tracker/issues) for errors with base functionality but no enhancements beyond what we need for our use cases will be considered.
+
 ## License
 
 [GPLv3](/LICENSE)
